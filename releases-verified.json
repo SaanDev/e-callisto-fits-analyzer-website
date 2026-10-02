@@ -1,0 +1,197 @@
+[
+  {
+    "tag": "v3.1.0-beta(Windows)",
+    "prerelease": true,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0-beta(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v3.1.0-beta_Setup.exe",
+        "size": 263575643,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.0-beta%28Windows%29/e-CALLISTO_FITS_Analyzer_v3.1.0-beta_Setup.exe",
+        "digest": "sha256:3a2b92eebe7175e7afb5e8800caadc127439499f76b830a031c28fbb497b60fc"
+      }
+    ]
+  },
+  {
+    "tag": "v3.0.0(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.0.0(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v3.0.0_Setup.exe",
+        "size": 263011902,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.0.0%28Windows%29/e-CALLISTO_FITS_Analyzer_v3.0.0_Setup.exe",
+        "digest": "sha256:0deb3a1eab97433b57ae3f937d32d0567dacf1f2024a3db523e8991b81261aaf"
+      }
+    ]
+  },
+  {
+    "tag": "v3.0.0(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.0.0(MacOS)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.0.0_macOS_arm64.dmg",
+        "size": 850905879,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.0.0%28MacOS%29/e-callisto-fits-analyzer_3.0.0_macOS_arm64.dmg",
+        "digest": "sha256:50e0b6bd7dbc11114edc8a6b3d4784cf3d0f6d71f8cda33ac24a69638ddede78"
+      }
+    ]
+  },
+  {
+    "tag": "v3.0.0(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.0.0(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.0.0_amd64.deb",
+        "size": 413714304,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.0.0%28Linux%29/e-callisto-fits-analyzer_3.0.0_amd64.deb",
+        "digest": "sha256:d20c19cf7602a2dd2728b7e2ab307e1a539c482515bd375818b0c3feba421b1d"
+      }
+    ]
+  },
+  {
+    "tag": "v2.8.0(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.8.0(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v2.8.0_Setup.exe",
+        "size": 262866892,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.8.0%28Windows%29/e-CALLISTO_FITS_Analyzer_v2.8.0_Setup.exe",
+        "digest": "sha256:b3aba4b42a635e57bc183cae2438e4dfb3830ccec5a2cb93192d44256ca45a0c"
+      }
+    ]
+  },
+  {
+    "tag": "v2.8.0(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.8.0(MacOS)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_2.8.0_macOS_arm64.dmg",
+        "size": 852850662,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.8.0%28MacOS%29/e-callisto-fits-analyzer_2.8.0_macOS_arm64.dmg",
+        "digest": "sha256:4fb6e5a9ca0b205a5e6b0b96cbfd77c1a35a57768f4c23c503044e40de716f57"
+      }
+    ]
+  },
+  {
+    "tag": "v2.8.0(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.8.0(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_2.8.0_amd64.deb",
+        "size": 423543794,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.8.0%28Linux%29/e-callisto-fits-analyzer_2.8.0_amd64.deb",
+        "digest": "sha256:60f640909fba1b3452063172d13dffafd8a753cb4e167aad37a1bbe82b99f3e8"
+      }
+    ]
+  },
+  {
+    "tag": "v2.8.0(AppImage)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.8.0(AppImage)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer-2.8.0-x86_64.AppImage",
+        "size": 386636280,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.8.0%28AppImage%29/e-CALLISTO_FITS_Analyzer-2.8.0-x86_64.AppImage",
+        "digest": "sha256:f82044b6733d3ade315510fb430ceff7c6019a784b8c529a00fa0989747fd9fb"
+      }
+    ]
+  },
+  {
+    "tag": "v2.7.0(AppImage)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.7.0(AppImage)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer-2.7.0-x86_64.AppImage",
+        "size": 377747960,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.7.0%28AppImage%29/e-CALLISTO_FITS_Analyzer-2.7.0-x86_64.AppImage",
+        "digest": "sha256:dba2c9c3c679d6169962ef8b0efb2c03a8252bc1e67d279542a3754adfa866c1"
+      }
+    ]
+  },
+  {
+    "tag": "v2.7.0(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.7.0(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v2.7.0_Setup.exe",
+        "size": 262822697,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.7.0%28Windows%29/e-CALLISTO_FITS_Analyzer_v2.7.0_Setup.exe",
+        "digest": "sha256:4f84317f16847beead4c580607c3de7508819285d5b09cb5fb8ad1a8ec73cb63"
+      }
+    ]
+  },
+  {
+    "tag": "v2.7.0(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.7.0(MacOS)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v2.7.0_macOS_arm64.dmg",
+        "size": 851654190,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.7.0%28MacOS%29/e-CALLISTO_FITS_Analyzer_v2.7.0_macOS_arm64.dmg",
+        "digest": "sha256:de6e7485b3438e21e64ff0c5102e13b64131dd5ab4931dc9869a91f8a6922d20"
+      }
+    ]
+  },
+  {
+    "tag": "v2.7.0(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.7.0(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_2.7.0_amd64.deb",
+        "size": 422442558,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.7.0%28Linux%29/e-callisto-fits-analyzer_2.7.0_amd64.deb",
+        "digest": "sha256:2bc31b328cb841763f56bc2d04c420f0da327fd300f3d6863a7d1ebd70b040c6"
+      }
+    ]
+  },
+  {
+    "tag": "v2.6.0(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.6.0(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v2.6.0_Setup.exe",
+        "size": 236541301,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.6.0%28Windows%29/e-CALLISTO_FITS_Analyzer_v2.6.0_Setup.exe",
+        "digest": "sha256:21035fce49f43a513c0d6322200aac678c048b8d9e9f534c9c378265809242e5"
+      }
+    ]
+  },
+  {
+    "tag": "v2.6.0(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.6.0(MacOS)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v2.6.0.dmg",
+        "size": 742147402,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.6.0%28MacOS%29/e-CALLISTO_FITS_Analyzer_v2.6.0.dmg",
+        "digest": "sha256:c44a88de8de7816f65923eb1eba786db0fecf3921ea22b6ce3091d8540d14481"
+      }
+    ]
+  },
+  {
+    "tag": "v2.6.0(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v2.6.0(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_2.6.0_amd64.deb",
+        "size": 386543268,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v2.6.0%28Linux%29/e-callisto-fits-analyzer_2.6.0_amd64.deb",
+        "digest": "sha256:40ddfd1edb22afe7c9b21f5e749cfb39decd2c4ea68dbca888018080ad9227b5"
+      }
+    ]
+  }
+]

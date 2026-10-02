@@ -1,0 +1,5 @@
+import PageIntro from '@/components/page-intro';
+import CopyButton from '@/components/copy-button';
+import { citation, bibtex } from '@/lib/citation';
+export const metadata = { title: 'Citation' };
+export default function Citation() { return <><PageIntro label="ACKNOWLEDGE THE TOOLS BEHIND YOUR WORK" title="Good science gives credit.">If you use e-CALLISTO FITS Analyzer in your research, please cite the software paper.</PageIntro><section className="wrap content-section"><article className="prose"><h2>Recommended citation</h2><p>{citation}</p><CopyButton text={citation} label="Copy citation"/><p><a href="https://doi.org/10.1093/rasti/rzag056">Read the paper · DOI: 10.1093/rasti/rzag056</a></p><h2>BibTeX</h2><CopyButton text={bibtex} label="Copy BibTeX"/><pre>{bibtex}</pre><h2>Make your methods reproducible</h2><p>State the software version used, including whether it was a beta, and report important processing and model choices. Cite the relevant data providers and scientific methods separately where appropriate.</p><p>The citation above matches the recommendation in the software’s documentation and built-in citation dialog.</p></article></section></>; }
