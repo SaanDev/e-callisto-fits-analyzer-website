@@ -32,6 +32,8 @@ Visitors choose a public display name. Profiles, discussions, replies, and posti
 - `releases-verified.json`: public GitHub release metadata checked 2 October 2026. Downloads are direct links to the real release assets; installers are not copied into this website.
 - Windows and Linux v3.0.0: x64/amd64. macOS v3.0.0: Apple silicon arm64. Windows v3.1.0 beta is labeled separately.
 - `public/logo.png` and `public/screenshots/`: assets copied from the software project.
+- `public/showcase/`: optimized copies of the supplied radio, solar imaging, and GCS screenshots and example movies. The 4096px AIA movie is served at 1080px (4.7 MB); the GCS movie is 1.4 MB. Original media in the parent `assets/` folder is preserved. Videos load on demand and include download links.
+- The homepage distinguishes the two main tools and nests image analysis and GCS fitting within Solar Image Analyzer. `/tools/solar-imaging` and `/tools/gcs-fitting` provide dedicated workflow guides. PFSS and GCS examples are labeled for v3.1.0 beta.
 - `public/docs/`: full guide, architecture notes, and release notes copied from the software project. The website guide summarizes v3.1.0 beta documentation and distinguishes beta functions.
 - `lib/tutorials.ts`: three original written walkthroughs based on that documentation.
 - `lib/citation.ts`: recommended paper citation and BibTeX from the project documentation.
