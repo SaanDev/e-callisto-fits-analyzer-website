@@ -139,9 +139,6 @@ After launching the application, the main window opens with tools for loading FI
 
 The main functions are available through a compact **icon toolbar** for quick access and a clean layout.
 
-### **Main Window**
-![Main Window](../screenshots/main_window.png)
-
 ---
 
 # 2. Loading a FITS File
@@ -183,9 +180,6 @@ Features:
 - Dynamic spectrum refreshes automatically
 - No data are lost when switching x-axis units (seconds ↔ UT)
 
-### Example: Noise Reduction
-![Noise Reduction](../screenshots/noise_reduction.png)
-
 ### RFI Cleaning Toolkit (Processing → RFI Cleaning)
 
 RFI cleaning applies a deterministic pipeline to 2D dynamic spectrum data (**frequency × time**).  
@@ -213,9 +207,6 @@ Suggested tuning workflow:
 3. If burst detail looks over-smoothed, reduce kernel sizes and/or raise **Channel Z threshold**.
 4. Use **Preview** repeatedly, then **Apply** when satisfied.
 5. Use **Reset** in the RFI panel to restore default RFI settings. Use **Edit → Reset to Raw** to fully revert applied data.
-
-### Example: RFI Cleaning
-![RFI Cleaning](../screenshots/RFI_cleaning.png)
 
 ---
 
@@ -318,17 +309,11 @@ Light-curve overlays are preserved in project state and can be included in gener
 Click **Isolate Burst** and draw around the emission region.  
 Only the selected region is retained for further analysis. In v2.6.0, the lasso mask is calculated against the rendered image pixel centers, so the isolated region follows the drawn path more accurately on the displayed spectrum.
 
-### Example: Isolated Burst
-![Isolated Burst](../screenshots/burst_isolation.png)
-
 ---
 
 # 10. Maximum Intensities Extraction
 
 Use **Analysis → Maximum Intensities → Open Maximum Intensities** to compute the maximum frequency for each time channel after noise reduction or burst isolation.
-
-### Example: Maximum Intensities
-![Maximum Intensities](../screenshots/maximum_intensity.png)
 
 ### Automatic Ridge Tracking
 
@@ -405,7 +390,6 @@ Optional additional plots:
 - Height vs frequency
 
 ### Example: Analyzer
-![Analyzer](../screenshots/analysis.png)
 
 The **Best Fit** graph is drawn in the OriginPro style on screen: filled black squares for the maximum-intensity points, the fitted power law as a red curve, a boxed legend and a closed frame with inward ticks. The other Analyzer plots keep their usual look on screen.
 
@@ -476,11 +460,6 @@ Features:
 - Use **Reset Filters** to clear catalog filters while keeping the selected dates, and drag the divider to resize the event and FITS tables
 
 Catalog coverage varies by year. Missing periods, source notices, and loading errors appear below the event list; hover over event rows for the original record and source URL. Station/type metadata may be unavailable in older lists, and catalog detections do not guarantee that matching FITS data is archived.
-
-### Example: Downloader
-![Downloader](../screenshots/callisto_downloader.png)
-
-![Downloader](../screenshots/callisto_downloader_preview.png)
 
 ### Learmonth Station Downloader
 
@@ -635,9 +614,6 @@ Features:
 - Show associated LASCO movies
 - Event metadata panel
 
-### Example: CME Viewer
-![CME Viewer](../screenshots/cme_catalog.png)
-
 ---
 
 # 20. GOES X-Ray Flux Viewer and Overlay
@@ -650,9 +626,6 @@ Features:
 - Automatically fall back across date-appropriate **legacy and modern GOES XRS satellites** when loading overlay archives
 - Display GOES overlay curves with a dedicated right-side flare-class guide (**A / B / C / M / X**) without modifying the spectrogram data
 - Adjust time windows, extract flare parameters, and export plots/data from the standalone GOES viewer
-
-### Example: GOES X-Ray Viewer
-![GOES X-Ray](../screenshots/goes_xray.png)
 
 ---
 
