@@ -3,11 +3,14 @@ import PageIntro from '@/components/page-intro';
 import CopyButton from '@/components/copy-button';
 import { citation, bibtex } from '@/lib/citation';
 import { links } from '@/lib/site';
+import JsonLd from '@/components/json-ld';
+import { pageMetadata, softwarePaper } from '@/lib/seo';
 
-export const metadata = { title: 'Citation', description: 'How to cite e-CALLISTO FITS Analyzer: the RAS Techniques and Instruments software paper, a copyable reference and BibTeX.' };
+export const metadata = pageMetadata({ title: 'Citation', description: 'How to cite e-CALLISTO FITS Analyzer: the RAS Techniques and Instruments software paper, a copyable reference and BibTeX.', path: '/citation/' });
 
 export default function Citation() {
   return <>
+    <JsonLd data={{ '@context': 'https://schema.org', ...softwarePaper }} />
     <PageIntro label="Acknowledge the tools behind your work" title="Good science gives credit." crumbs={[['Citation']]}>
       If you use e-CALLISTO FITS Analyzer in your research, please cite the software paper.
     </PageIntro>

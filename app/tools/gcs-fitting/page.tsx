@@ -3,8 +3,9 @@ import { Download, ArrowLeft, BookOpen } from 'lucide-react';
 import ExampleMovie from '@/components/example-movie';
 import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'GCS CME Fitting', description: 'Fit a Graduated Cylindrical Shell and a separate shock model to multi-viewpoint coronagraph images and record CME kinematics.' };
+export const metadata = pageMetadata({ title: 'GCS CME Fitting', description: 'Fit a Graduated Cylindrical Shell and a separate shock model to multi-viewpoint coronagraph images and record CME kinematics.', path: '/tools/gcs-fitting/' });
 
 export default function GCSFitting() {
   return <>

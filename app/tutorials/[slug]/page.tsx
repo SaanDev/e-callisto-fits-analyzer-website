@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Info } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import { tutorials } from '@/lib/tutorials';
 import { asset } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
 export const dynamicParams = false;
 
@@ -14,7 +15,8 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const t = tutorials.find(t => t.slug === slug);
-  return { title: t?.title ?? 'Tutorial', description: t?.description };
+  if (!t) return { title: 'Tutorial' };
+  return pageMetadata({ title: `${t.title} · Tutorial`, description: `${t.description} A step-by-step walkthrough for e-CALLISTO FITS Analyzer v3.1.0.`, path: `/tutorials/${slug}/` });
 }
 
 export default async function Tutorial({ params }: { params: Promise<{ slug: string }> }) {

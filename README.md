@@ -36,6 +36,16 @@ The site is served from `https://saandev.github.io/<repository>/`. The workflow 
 
 Inside the code, links between pages use `next/link`, which adds the base path automatically. Files from `public/` (images, video, the PDF) are referenced through `asset()` from `lib/site.ts`.
 
+## Search engines
+
+Each page declares a canonical URL, its own title, description and link preview (`pageMetadata()` in `lib/seo.ts`), and schema.org structured data: the software, the user guide, each guide chapter, the software paper and breadcrumbs. `sitemap.xml` lists every page.
+
+To get the site indexed:
+
+1. Add the site in [Google Search Console](https://search.google.com/search-console) as a **URL prefix** property (`https://saandev.github.io/e-callisto-fits-analyzer-website/`). Choose the **HTML tag** method, paste the `content` value into `searchVerification.google` in `lib/site.ts`, push, and click **Verify**.
+2. Submit `sitemap.xml` under **Sitemaps**. (A project site's `robots.txt` is not at the domain root, so search engines will not find the sitemap on their own.)
+3. In [Bing Webmaster Tools](https://www.bing.com/webmasters), import the site from Search Console, or verify with `searchVerification.bing`.
+
 ## Community
 
 The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Callisto_FITS_Analyzer/discussions) on the software repository. Enable it once under the software repository's **Settings → General → Features → Discussions**. The page links to the default `Q&A`, `Ideas` and `Show and tell` categories.

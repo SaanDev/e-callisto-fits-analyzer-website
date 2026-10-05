@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'Scientific background', description: 'What dynamic spectra show, plasma emission, frequency drift and coronal density models, and the limits of interpretation.' };
+export const metadata = pageMetadata({ title: 'Scientific background', description: 'What dynamic spectra show, plasma emission, frequency drift and coronal density models, and the limits of interpretation.', path: '/science/' });
 
 const sections = [['spectrum', 'Dynamic spectra'], ['emission', 'Plasma emission'], ['drift', 'Drift & density models'], ['imaging', 'Imaging & CME geometry'], ['limits', 'Interpretation limits'], ['sources', 'Read further']];
 

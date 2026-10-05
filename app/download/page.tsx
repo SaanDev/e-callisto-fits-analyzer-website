@@ -5,11 +5,14 @@ import DownloadCards from '@/components/download-cards';
 import releases from '@/releases-verified.json';
 import { highlights, fixes, notes } from '@/lib/release-notes';
 import { links } from '@/lib/site';
+import JsonLd from '@/components/json-ld';
+import { pageMetadata, softwareData } from '@/lib/seo';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'Download v3.1.0',
   description: 'Download e-CALLISTO FITS Analyzer v3.1.0 for Windows, Linux and macOS, with checksums, installation steps and the full list of what’s new.',
-};
+  path: '/download/',
+});
 
 const icons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
@@ -23,6 +26,7 @@ const previous = Object.values(releases.reduce<Record<string, { version: string;
 
 export default function Downloads() {
   return <>
+    <JsonLd data={softwareData()} />
     <PageIntro label="Download · v3.1.0" title={<>One toolkit.<br />A wider view of the Sun.</>} crumbs={[['Download']]}>
       Process radio spectra, analyze solar images and reconstruct CMEs in three dimensions. Free and open source for Windows, Linux and macOS.
     </PageIntro>

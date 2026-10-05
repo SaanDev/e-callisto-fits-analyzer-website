@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import GuidePdf from '@/components/guide-pdf';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'User guide PDF · v3.1.0', description: 'Download or read the complete 174-page e-CALLISTO FITS Analyzer User Guide v3.1.0 as a PDF.' };
+export const metadata = pageMetadata({ title: 'User guide PDF · v3.1.0', description: 'Download or read the complete 174-page e-CALLISTO FITS Analyzer User Guide v3.1.0 as a PDF.', path: '/guide/pdf/' });
 
 export default function PdfEdition() {
   return <>

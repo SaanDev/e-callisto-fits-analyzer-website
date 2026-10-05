@@ -4,15 +4,19 @@ import GuidePdf from '@/components/guide-pdf';
 import HandbookSearch from '@/components/handbook-search';
 import HandbookCover from '@/components/handbook-cover';
 import handbook from '@/content/handbook.json';
+import JsonLd from '@/components/json-ld';
+import { pageMetadata, userGuideData } from '@/lib/seo';
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: 'User guide · v3.1.0',
   description: 'The complete, illustrated v3.1.0 user guide: 21 chapters, five appendices, glossary, bibliography and index. Read online or download the 174-page PDF.',
-};
+  path: '/guide/',
+});
 
 export default function Guide() {
   const parts = [...new Set(handbook.map(c => c.part))];
   return <>
+    <JsonLd data={userGuideData()} />
     <PageIntro label="The complete user guide · v3.1.0" title="Your guide to the analyzer." crumbs={[['User guide']]}>
       From your first FITS observation to solar imaging and three-dimensional CME reconstruction. The complete guide by Sahan S Liyanage.
     </PageIntro>

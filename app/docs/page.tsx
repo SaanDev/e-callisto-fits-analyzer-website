@@ -4,8 +4,9 @@ import PageIntro from '@/components/page-intro';
 import GuidePdf from '@/components/guide-pdf';
 import HandbookCover from '@/components/handbook-cover';
 import { asset, links } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'Documentation', description: 'Everything you need to learn e-CALLISTO FITS Analyzer: the user guide, tutorials, tool guides, scientific background, installation and citation.' };
+export const metadata = pageMetadata({ title: 'Documentation', description: 'Everything you need to learn e-CALLISTO FITS Analyzer: the user guide, tutorials, tool guides, scientific background, installation and citation.', path: '/docs/' });
 
 const resources = [
   { icon: BookOpen, title: 'User guide', body: 'The complete v3.1.0 reference for radio spectra, solar imaging, GCS fitting, exports and more.', href: '/guide/' },

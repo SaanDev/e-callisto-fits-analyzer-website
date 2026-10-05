@@ -12,6 +12,13 @@ export function asset(path: string): string {
   return path.startsWith('/') ? basePath + path : path;
 }
 
+// Ownership codes from Google Search Console ("HTML tag" method: the content
+// value only) and Bing Webmaster Tools. Leave empty until you have them.
+export const searchVerification = {
+  google: '',
+  bing: '',
+};
+
 export const version = '3.1.0';
 export const releaseDate = 'October 2026';
 

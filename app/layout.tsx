@@ -3,24 +3,28 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import SiteHeader from '@/components/site-header';
 import SiteFooter from '@/components/site-footer';
 import SiteEffects from '@/components/site-effects';
-import { asset, basePath, siteUrl } from '@/lib/site';
+import { asset, basePath, siteUrl, searchVerification } from '@/lib/site';
+import { siteName, defaultDescription, absoluteUrl } from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
-const description = 'Free, open-source analysis of e-CALLISTO solar radio spectra and solar images, with CME tracking, PFSS and GCS fitting, for Windows, Linux and macOS. Download v3.1.0, read the complete user guide and join the community.';
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl + basePath + '/'),
-  title: { default: 'e-CALLISTO FITS Analyzer · A clearer view of our dynamic Sun', template: '%s · e-CALLISTO FITS Analyzer' },
-  description,
-  applicationName: 'e-CALLISTO FITS Analyzer',
+  title: { default: `${siteName} · A clearer view of our dynamic Sun`, template: `%s · ${siteName}` },
+  description: defaultDescription,
+  applicationName: siteName,
   authors: [{ name: 'Sahan S Liyanage' }],
   keywords: ['e-CALLISTO', 'CALLISTO', 'FITS', 'solar radio', 'dynamic spectrum', 'Type II burst', 'CME', 'GCS', 'PFSS', 'space weather', 'solar physics'],
   icons: { icon: asset('/favicon.ico'), apple: asset('/apple-touch-icon.png') },
-  openGraph: { type: 'website', siteName: 'e-CALLISTO FITS Analyzer', title: 'e-CALLISTO FITS Analyzer', description, images: [{ url: 'og-image.jpg', width: 1200, height: 630 }] },
+  // Pages set their own canonical URL and link previews through pageMetadata() in lib/seo.ts.
+  openGraph: { type: 'website', siteName, title: siteName, description: defaultDescription, images: [{ url: absoluteUrl('/og-image.jpg'), width: 1200, height: 630 }] },
   twitter: { card: 'summary_large_image' },
+  verification: {
+    google: searchVerification.google || undefined,
+    other: searchVerification.bing ? { 'msvalidate.01': searchVerification.bing } : undefined,
+  },
 };
 
 export const viewport: Viewport = {

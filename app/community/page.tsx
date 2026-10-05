@@ -2,8 +2,9 @@ import { MessagesSquare, Lightbulb, Bug, Megaphone, Mail, ArrowUpRight, ShieldCh
 import PageIntro from '@/components/page-intro';
 import { GitHubIcon } from '@/components/icons';
 import { links } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'Community', description: 'Ask questions, share workflows and report bugs for e-CALLISTO FITS Analyzer on GitHub Discussions and Issues.' };
+export const metadata = pageMetadata({ title: 'Community', description: 'Ask questions, share workflows and report bugs for e-CALLISTO FITS Analyzer on GitHub Discussions and Issues.', path: '/community/' });
 
 const channels = [
   { icon: MessagesSquare, title: 'Questions & answers', body: 'Stuck on a workflow, a FITS file or an interpretation? Ask the community and help others with what you have learned.', href: links.discussions + '/categories/q-a', cta: 'Ask a question' },

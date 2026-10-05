@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { Video, ArrowRight, Clock } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import { tutorials } from '@/lib/tutorials';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'Tutorials', description: 'Practical, step-by-step walkthroughs for e-CALLISTO FITS Analyzer v3.1.0: your first spectrum, burst drift measurement and reproducible exports.' };
+export const metadata = pageMetadata({ title: 'Tutorials', description: 'Practical, step-by-step walkthroughs for e-CALLISTO FITS Analyzer v3.1.0: your first spectrum, burst drift measurement and reproducible exports.', path: '/tutorials/' });
 
 export default function Tutorials() {
   return <>

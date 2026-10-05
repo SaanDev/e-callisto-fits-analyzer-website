@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import JsonLd from '@/components/json-ld';
+import { breadcrumbData } from '@/lib/seo';
 
 type Crumb = [label: string, href?: string];
 
@@ -11,6 +13,7 @@ export default function PageIntro({ label, title, children, crumbs, actions }: {
   actions?: React.ReactNode;
 }) {
   return <div className="page-hero wrap">
+    {crumbs && <JsonLd data={breadcrumbData(crumbs)} />}
     {crumbs && <nav className="breadcrumbs" aria-label="Breadcrumb">
       <Link href="/">Home</Link>
       {crumbs.map(([text, href]) => <span key={text} style={{ display: 'contents' }}>

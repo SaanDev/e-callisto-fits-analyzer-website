@@ -8,7 +8,11 @@ import SolarShowcase from '@/components/solar-showcase';
 import HandbookCover from '@/components/handbook-cover';
 import { GitHubIcon } from '@/components/icons';
 import { highlights } from '@/lib/release-notes';
+import JsonLd from '@/components/json-ld';
 import { links } from '@/lib/site';
+import { pageMetadata, siteName, defaultDescription, websiteData, softwareData } from '@/lib/seo';
+
+export const metadata = pageMetadata({ title: `${siteName} · A clearer view of our dynamic Sun`, absoluteTitle: true, description: defaultDescription, path: '/' });
 
 const highlightIcons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
@@ -20,6 +24,7 @@ const radioFeatures = [
 
 export default function Home() {
   return <>
+    <JsonLd data={[websiteData(), softwareData()]} />
     <section className="hero">
       <HeroSpectrum />
       <div className="wrap">

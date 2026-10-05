@@ -3,8 +3,9 @@ import { Download, ArrowRight, BookOpen } from 'lucide-react';
 import ExampleMovie from '@/components/example-movie';
 import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = { title: 'Solar Image Analyzer', description: 'Analyze SDO, SOHO and STEREO images: CME tracking, height–time fits, PFSS magnetic-field modelling, differences, composites and movie exports.' };
+export const metadata = pageMetadata({ title: 'Solar Image Analyzer', description: 'Analyze SDO, SOHO and STEREO images: CME tracking, height–time fits, PFSS magnetic-field modelling, differences, composites and movie exports.', path: '/tools/solar-imaging/' });
 
 export default function SolarImaging() {
   return <>
