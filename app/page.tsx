@@ -87,13 +87,13 @@ export default function Home() {
         <div data-reveal>
           <span className="eyebrow">Start curious. Go deeper.</span>
           <h2>Your next discovery<br />starts here.</h2>
-          <p>The complete 174-page user guide covers every window, method and formula, from your first FITS file to three-dimensional CME reconstruction. Read it online or keep the PDF.</p>
+          <p>The complete user guide covers every window, method and formula, from your first FITS file to three-dimensional CME reconstruction. Read it online or keep the PDF.</p>
           <div className="resource-links" style={{ marginTop: 32 }}>
             {[['01', 'User guide', 'Searchable, illustrated, chapter by chapter.', '/guide/'], ['02', 'Tutorials', 'Follow an observation from import to export.', '/tutorials/'], ['03', 'The science', 'Understand the physics behind the spectrum.', '/science/']].map(([n, title, body, url]) =>
               <Link href={url} key={n}><span>{n}</span><div><h3>{title}</h3><p>{body}</p></div><ArrowRight size={20} /></Link>)}
           </div>
         </div>
-        <div data-reveal="scale" style={{ '--delay': '120ms' } as React.CSSProperties}><HandbookCover /></div>
+        <div data-reveal="scale" style={{ '--delay': '120ms' } as React.CSSProperties}><HandbookCover badge={false} /></div>
       </div>
     </section>
 

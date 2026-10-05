@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { GitHubIcon } from '@/components/icons';
-import { asset, links, version, guidePdf } from '@/lib/site';
+import { asset, links, version } from '@/lib/site';
 
 const columns: [string, [string, string][]][] = [
   ['Software', [['Download', '/download/'], ['What’s new in v3.1.0', '/download/#whats-new'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
@@ -22,7 +22,7 @@ export default function SiteFooter() {
         <div className="footer-brand">
           <Link className="brand" href="/"><img src={asset('/logo-96.png')} alt="" width={38} height={38} /><span>e-CALLISTO<small>FITS ANALYZER</small></span></Link>
           <p>Free, open tools for solar radio spectra, solar imaging and CME reconstruction.</p>
-          <span className="tag">v{version} · {guidePdf.pages}-page user guide</span>
+          <span className="tag">v{version} · Free and open source</span>
         </div>
         {columns.map(([title, items]) => <div className="footer-col" key={title}>
           <h3>{title}</h3>

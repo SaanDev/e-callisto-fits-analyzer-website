@@ -72,19 +72,11 @@ export default function StatsBand() {
         <span className="stat-value">v3.1<span className="unit">.0</span></span>
         <span className="stat-label">Latest release · October 2026</span>
       </div>
-      <div className="stat" data-reveal style={{ '--delay': '80ms' } as React.CSSProperties}>
-        <span className="stat-value"><CountUp value={174} /></span>
-        <span className="stat-label">Pages in the user guide</span>
-      </div>
-      <div className="stat" data-reveal style={{ '--delay': '160ms' } as React.CSSProperties}>
-        <span className="stat-value"><CountUp value={21} /><span className="unit">+5</span></span>
-        <span className="stat-label">Chapters and appendices</span>
-      </div>
-      <div className="stat" data-reveal style={{ '--delay': '240ms' } as React.CSSProperties}>
+      <div className="stat" data-reveal style={{ '--delay': '100ms' } as React.CSSProperties}>
         <span className="stat-value">3</span>
         <span className="stat-label">Platforms · Windows, Linux, macOS</span>
       </div>
-      <div className="stat" data-reveal style={{ '--delay': '320ms' } as React.CSSProperties}>
+      <div className="stat" data-reveal style={{ '--delay': '200ms' } as React.CSSProperties}>
         <span className="stat-value">{downloads === null ? 'Free' : <CountUp value={downloads} suffix="+" />}</span>
         <span className="stat-label">{downloads === null ? 'Open source · MIT License' : <>Installer downloads<span className="live">LIVE</span></>}</span>
       </div>
