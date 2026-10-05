@@ -1,0 +1,244 @@
+%% Chapter 7 -----------------------------------------------------------------
+\chapter{Viewing, Processing and Annotation Tools}
+\label{ch:processing}
+
+This chapter describes how to navigate the spectrum, set an exact display range, clean
+radio-frequency interference, use processing presets, annotate the plot, overlay light
+curves, and make quick drift-rate and ruler measurements.
+
+\section{Navigating the spectrum}
+\label{sec:navigation}
+\index{navigation}\index{zoom}
+
+Table~\ref{tab:navigation} lists the mouse interactions available in the plotting area.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Navigation and picking in the plotting area.}
+  \label{tab:navigation}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}L@{}}
+    \toprule
+    \thead{Interaction} & \thead{How} \\
+    \midrule
+    Zoom & Scroll the mouse wheel over the plot; the zoom is centered on the pointer. \\
+    Pan & Hold the left mouse button and drag. \\
+    Rectangle zoom & Click \gui{Lock zooming and panning}\index{navigation!lock and unlock} on the toolbar, then \gui{Rectangular Zooming}\index{zoom!rectangle}, and drag a rectangle. Repeat \gui{Rectangular Zooming} for each further zoom. \\
+    Freeze or release the view & \gui{Lock zooming and panning} disables wheel zoom and panning; \gui{Unlock zooming and panning} re-enables them. \\
+    Cursor readout & Move the pointer over the plot; time, frequency and intensity appear in the status bar. \\
+    Estimate drift rate & Click points along the burst; right-click or double-click to finish (Section~\ref{sec:drift}). \\
+    Isolate burst & Press, drag a loop around the burst and release (Section~\ref{sec:isolation}). \\
+    Ruler & Click two points (Section~\ref{sec:ruler}). \\
+    Light curve by click & With click mode on, click a frequency (Section~\ref{sec:light-curves}). \\
+    Annotations & Line: click the start and end. Text: click the position. Polygon: click the vertices and right-click to close (Section~\ref{sec:annotations}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\gui{Reset Selection}\index{Reset Selection} clears an isolated-burst selection and drift markers;
+\gui{Reset to Raw}\index{Reset to Raw} discards all processing; \gui{Reset All}\index{Reset All} clears the workspace
+(Table~\ref{tab:toolbar}).
+
+\section{Setting an exact display range}
+\label{sec:display-range}
+\index{display range}
+
+\menu{View > Set Display Range...}\index{display range!dialog} sets the visible window numerically, which is useful
+for comparing several stations over identical axes (Figure~\ref{fig:display-range}).
+\begin{itemize}
+  \item Choose \gui{Use seconds from file start} or \gui{Use UT clock time}, then enter the
+    start and stop times in the \gui{Seconds} or \gui{UT} group. UT input is unavailable when
+    the file has no \texttt{TIME-OBS}\index{TIME-OBS keyword} value.
+  \item Enter the lower and upper limits in the \gui{Frequency} group (MHz).
+  \item The full time and frequency ranges of the data are shown for reference.
+\end{itemize}
+
+\screenshot[0.5\linewidth]{dialogs/display_range_dialog}{The \gui{Set Display Range} dialog.}{fig:display-range}{The Set Display Range dialog with the Seconds/UT choice, the UT time fields and the Frequency fields, and the full-range information lines.}
+
+\subsection{Display-range presets}
+\index{display range!presets}
+
+A display range can be stored under a name with \menu{View > Save Display Range
+Preset...}, applied later to another file with \menu{Apply Display Range Preset\index{display range!presets}...}, and
+removed with \menu{Delete Display Range Preset...}. Presets are stored in your preferences
+and are available in every session.
+
+\subsection{View configurations}
+\label{sec:view-config}
+\index{view configuration}\index{efaview.json@.efaview.json file}
+
+\menu{View > Export View Config...} saves the display range, units, thresholds, color map
+and graph styling to a portable \file{.efaview.json}\index{efaview.json@.efaview.json file} file; \menu{View > Import View
+Config...} applies such a file. View configurations can be shared with colleagues and are
+also accepted by the batch processor (Section~\ref{sec:batch}) and the Multi-Station
+Comparison (Chapter~\ref{ch:comparison}), so that many spectra can be rendered with
+identical axes and appearance.
+
+\section{RFI cleaning}
+\label{sec:rfi}
+\index{RFI cleaning}
+
+Radio-frequency interference appears as bright horizontal streaks (persistent
+narrow-band emitters) and short spikes. \menu{Processing > RFI Cleaning} offers
+\gui{Open RFI Panel}, \gui{Apply RFI} and \gui{Reset RFI}. The \gui{RFI Cleaning} panel
+(Figure~\ref{fig:rfi}) applies a deterministic pipeline to the dynamic spectrum:
+\begin{steps}
+  \item two-dimensional median smoothing with a window of
+    \gui{Kernel (freq)}~\(\times\)~\gui{Kernel (time)}\index{RFI cleaning!kernel};
+  \item detection of hot channels from a robust \(Z\)-score of each channel's level and
+    variability;
+  \item repair of the masked channels from their neighbors;
+  \item per-channel clipping of high outliers above an upper percentile (the low side is
+    preserved).
+\end{steps}
+
+\screenshot[0.5\linewidth]{dialogs/rfi_cleaning_dialog}{The \gui{RFI Cleaning} panel.}{fig:rfi}{The RFI Cleaning panel with Enable RFI cleaning, the kernel, Z-threshold and percentile fields, the Masked channels line after Preview, and the Preview/Apply/Reset/Close buttons.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{RFI cleaning parameters.}
+  \label{tab:rfi}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.21\linewidth}P{0.15\linewidth}L@{}}
+    \toprule
+    \thead{Parameter} & \thead{Range (default)} & \thead{Effect} \\
+    \midrule
+    Enable RFI cleaning & on/off (on) & Includes RFI cleaning in the processing chain. \\
+    Kernel (time) & 1--31, odd (3) & Median window along time. Larger values suppress short spikes more strongly but can blur fast burst structure. \\
+    Kernel (freq) & 1--31, odd (3) & Median window across frequency channels. Larger values reduce narrow-band striping but can widen spectral features. \\
+    Channel Z threshold\index{RFI cleaning!channel Z threshold} & 0.5--20 (6.0) & Cut-off for hot-channel masking. Lower values mask more channels. \\
+    Percentile clip\index{RFI cleaning!percentile clip} & 90--99.99 (99.5) & Upper cap applied to each channel. Lower values clip peaks more aggressively. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{description}
+  \item[Preview] shows the result without committing it. The \gui{Masked channels}\index{RFI cleaning!masked channels} line
+    reports the number and indices of the channels flagged as hot.
+  \item[Apply] commits the cleaning to the processed data.
+  \item[Reset] restores the default parameters in the panel.
+  \item[Close] closes the panel.
+\end{description}
+
+If channel streaks remain, lower the \gui{Channel Z threshold} gradually (for example from
+6.0 to 5.0 and then 4.0). If burst detail looks over-smoothed, reduce the kernel sizes or
+raise the threshold. \menu{Edit > Reset to Raw} reverts all applied processing, including
+RFI cleaning.
+
+\section{Processing presets}
+\label{sec:presets}
+\index{presets}
+
+A processing preset stores the display thresholds and their scale, the background
+subtraction method, the intensity and time units, the color map, the graph styling, the
+RFI settings and the default annotation style. Presets are managed from
+\menu{Processing > Presets}:
+\begin{description}
+  \item[Raw FITS Percentile (5-98\%)] sets the threshold limits to the 5th and 98th
+    percentiles of the data currently shown --- a quick starting range for raw files.
+  \item[Save Current as Preset...] stores the current settings under a name.
+  \item[Apply Preset...] applies a stored preset to the loaded data.
+  \item[Set Default Preset...] chooses a preset that is applied automatically to every
+    file loaded afterwards.
+  \item[Clear Default Preset] stops applying a default preset.
+  \item[Delete Preset...] removes a stored preset.
+\end{description}
+
+\section{Annotations}
+\label{sec:annotations}
+\index{annotations}
+
+Annotations mark features on the spectrum. They are drawn in both renderers, saved in
+projects, and included in exported figures and reports. \menu{Processing > Annotations}
+(Figure~\ref{fig:annotation-menu}) contains:
+\begin{description}
+  \item[Add Polygon] click the vertices; right-click to close the polygon.
+  \item[Add Line] click the start point and then the end point.
+  \item[Add Text] click where the label should go, then enter it in the text dialog.
+  \item[Edit Text Label...] choose an existing label and change its text and style.
+  \item[Move Text Label...] choose a label, then click its new position.
+  \item[Toggle Visibility] show or hide all annotations.
+  \item[Delete Last] remove the most recent annotation.
+  \item[Clear All] remove every annotation.
+\end{description}
+The text dialog sets the \gui{Text}, \gui{Font}, \gui{Font Size}, \gui{Font Style}
+(\gui{Bold}, \gui{Italic}) and \gui{Color} of a label.
+
+\screenshot[0.24\linewidth]{dialogs/annotation_text_dialog}{The \menu{Processing > Annotations} menu.}{fig:annotation-menu}{The text annotation dialog with the Text, Font, Font Size, Font Style and Color rows.}
+
+\section{Light curves}
+\label{sec:light-curves}
+\index{light curve}
+
+A light curve is the intensity at one frequency as a function of time. Light curves are
+drawn on top of the spectrum (Figure~\ref{fig:light-curves}) from
+\menu{Analysis > Plot Light Curves}:
+\begin{description}
+  \item[Enter frequency] opens a dialog for typing a frequency in MHz; the available range
+    of the data is shown.
+  \item[Click on a frequency] toggles click mode. While it is on, clicking the spectrum
+    plots the light curve at the clicked frequency.
+  \item[Settings...] opens the \gui{Light Curve Settings}\index{light curve!settings} dialog (Table~\ref{tab:light-curves}).
+  \item[Clear light curve(s)] removes all light curves without affecting the data.
+\end{description}
+
+\screenshot{dialogs/light_curve_overlay}{Light curves at two frequencies overlaid on a dynamic spectrum, with the \menu{Analysis > Plot Light Curves} submenu open.}{fig:light-curves}{A background-subtracted spectrum with two light curves at different frequencies, frequency labels shown, and the Light Curve Settings dialog open beside it.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Light-curve settings.}
+  \label{tab:light-curves}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.2\linewidth}P{0.22\linewidth}L@{}}
+    \toprule
+    \thead{Setting} & \thead{Range} & \thead{Effect} \\
+    \midrule
+    Mode & Single / Multiple & \gui{Single light curve} replaces the previous curve; \gui{Multiple light curves} keeps adding curves. \\
+    Color & color picker & Color of the curve. \\
+    Thickness & 0.5--12 & Line width. \\
+    Vertical Scale & 0.1--5 & Height of the curve relative to the plot. \\
+    Opacity & 0.1--1 & Transparency of the curve. \\
+    Line Style & solid, dashed, dotted & Line pattern. \\
+    Labels & on/off & \gui{Show frequency labels} next to each curve. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+\gui{Apply} applies the settings, \gui{Reset to Defaults} restores the defaults and
+\gui{Close} closes the dialog. Light curves are saved in projects and can be included in
+project reports.
+
+\section{Estimating the drift rate}
+\label{sec:drift}
+\index{drift rate!estimate}
+
+The \gui{Estimate Drift Rate}\index{drift rate!estimate tool} toolbar tool gives a quick estimate of a burst's frequency
+drift from points that you click.
+\begin{steps}
+  \item Click \gui{Estimate Drift Rate}.
+  \item Click two or more points along the burst.
+  \item Right-click or double-click to finish.
+\end{steps}
+The points are joined by dashed segments, and the status bar shows the
+\gui{Average Drift Rate} in MHz/s (the mean of the segment drift rates), the start and end
+frequencies, and the duration. Segments of zero duration are ignored. \gui{Reset Selection}
+clears the drift markers. For a fitted drift rate and shock parameters, use the Type~II
+analysis tools (Chapter~\ref{ch:type-ii}).
+
+\section{Ruler measurement}
+\label{sec:ruler}
+
+\menu{Analysis > Ruler Measurement} measures between two points clicked on the spectrum.
+The readout appears in the sidebar's \gui{Ruler Measurement} panel
+(Section~\ref{sec:ruler-panel}): the coordinates of both points, the duration, the
+frequency change and the slope. \menu{Analysis > Clear Ruler Measurement} or the panel's
+\gui{Clear} button removes it. The ruler is kept when the timeline is extended.
+
+\section{Overlays from other instruments}
+
+Two overlays add context directly to the main plot:
+\begin{itemize}
+  \item the GOES X-ray flux curves, enabled from \menu{Solar Events > GOES Overlay}\index{GOES!overlay}
+    (Section~\ref{sec:goes-overlay}); and
+  \item the STEREO/SWAVES spectrum below the CALLISTO spectrum
+    (Section~\ref{sec:swaves}).
+\end{itemize}

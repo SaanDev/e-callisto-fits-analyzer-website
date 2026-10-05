@@ -1,0 +1,154 @@
+%% Chapter 9 -----------------------------------------------------------------
+\chapter{Type II Band-Splitting Analysis}
+\label{ch:band-splitting}
+\index{band splitting}
+
+The emission lanes of many Type~II bursts are split into two parallel bands, interpreted
+as emission from the plasma ahead of (upper band) and behind (lower band) the shock front.
+The frequency ratio of the two bands gives the shock's density compression ratio\index{compression ratio}, from
+which the Alfvén Mach number\index{Alfvén Mach number}, the Alfvén speed\index{Alfvén speed} and the coronal magnetic field\index{magnetic field} can be
+estimated \parencite{vrsnak2002}. The Type~II Band-splitting window performs this analysis
+directly on the current noise-reduced dynamic spectrum.
+
+\section{Opening the window}
+
+Open the window with \menu{Analysis > Type II Band-splitting > Open Type II
+Band-splitting}. The calculation needs the shock speed and the starting frequency from the
+Burst Analyzer, so run the Analyzer (Section~\ref{sec:analyzer}) first. The
+\gui{Analyzer Reference}\index{band splitting!Analyzer reference} panel reports \gui{Analyzer reference data loaded.} when these
+values are available, and \gui{Analyzer input missing.} otherwise.
+
+\section{Window layout}
+
+The tools and panels of the window are numbered in Figure~\ref{fig:band-splitting} and
+described in Table~\ref{tab:band-splitting-tools}.
+
+\screenshot{analysis/typeII_band_splitting_window}{The Type~II Band-splitting window with its tools and panels numbered.}{fig:band-splitting}{Band-splitting window with numbered callouts.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Tools and panels of the Type~II Band-splitting window.}
+  \label{tab:band-splitting-tools}
+  \small
+  \begin{tabularx}{\linewidth}{@{}cP{0.25\linewidth}L@{}}
+    \toprule
+    \thead{No.} & \thead{Tool or panel} & \thead{Function} \\
+    \midrule
+    \callout{1} & Add Points & Toggle point picking; click along the active band on the spectrum to add points. \\
+    \callout{2} & Undo Last Point & Remove the last point added to the active band. \\
+    \callout{3} & Clear Active Band & Remove all points of the active band. \\
+    \callout{4} & Fit Active Band & Fit the points of the active band with a power law. \\
+    \callout{5} & Fit Both Bands & Fit the upper and the lower band. \\
+    \callout{6} & Save Plot & Save the fitted lanes over the spectrum, or the magnetic field versus height plot, as a figure. \\
+    \callout{7} & BvR & Toggle the plot of magnetic field versus shock height (Section~\ref{sec:bvr}). \\
+    \callout{8} & Settings & Graph settings: fonts, lane colors, line widths and marker sizes (Section~\ref{sec:bs-graph-settings}). \\
+    \callout{9} & Controls panel & \gui{Active Band} (\gui{Upper Band} or \gui{Lower Band}), \gui{Shock Speed} (\gui{Initial Shock Speed}\index{shock parameters!initial speed} or \gui{Average Shock Speed}\index{shock parameters!average speed}) and \gui{Calculate}. \\
+    \callout{10} & Results panels & \gui{Analyzer Reference}, \gui{Fitted Bands} and \gui{Averaged Band-Splitting Quantities} (Section~\ref{sec:bs-results}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Picking and fitting the bands}
+\label{sec:bs-fitting}
+
+\begin{steps}
+  \item Select the \gui{Active Band} in the Controls panel \callout{9}.
+  \item Switch on \gui{Add Points} \callout{1} and click points along that band on the
+    spectrum. Points of the upper and lower bands are drawn in different colors.
+  \item Select the other band and add its points.
+  \item Fit each band with \gui{Fit Active Band} \callout{4}, or both at once with
+    \gui{Fit Both Bands}\index{band splitting!fitting} \callout{5}.
+\end{steps}
+Each band is fitted with a power law \(f(t) = a\,t^{-b}\), where \(t\) is measured from the
+start of the file. At least two points with positive time and frequency are needed per
+band. The \gui{Fitted Bands} panel shows each fitted equation, \(R^2\), RMSE and the number
+of selected points.
+
+\section{Calculation and results}
+\label{sec:bs-results}
+
+Choose whether the \gui{Initial Shock Speed} or the \gui{Average Shock Speed} from the
+Analyzer is used, and click \gui{Calculate}. The results panels contain:
+\begin{description}
+  \item[Analyzer Reference] the reference values imported from the Burst Analyzer: the
+    fold number\index{fold number}, the starting frequency \(f_\mathrm{start}\), the average drift rate
+    \(\langle\mathrm{d}f/\mathrm{d}t\rangle\), the initial and average shock speeds
+    \(V_{s,0}\) and \(\langle V_s\rangle\), and the initial and average shock heights
+    \(R_{p,0}\) and \(\langle R_p\rangle\).
+  \item[Fitted Bands] the fitted equation, \(R^2\), RMSE and number of points of each band.
+  \item[Averaged Band-Splitting Quantities] the averaging interval, the start time
+    \(t_\mathrm{start}\) and band frequencies, the mean upper and lower frequencies, the
+    bandwidth \(\langle\Delta f\rangle = \langle f_u - f_l\rangle\), the mean upper-band
+    drift \(\langle\mathrm{d}f_u/\mathrm{d}t\rangle\), the compression ratio
+    \(X = (\langle f_u\rangle/\langle f_l\rangle)^2\), the Alfvén Mach number \(M_A\), the
+    Alfvén speed \(V_A\) and the magnetic field \(B\).
+\end{description}
+The averaging interval is the time span of the upper-band points; the two fitted curves are
+sampled over it. If the lower-band fit has to be extrapolated over part of the interval, a
+warning is shown. The calculation is refused if the compression ratio does not stay
+between 0 and 4 over the interval.
+
+\begin{background}[Background: band-splitting relations]
+  For a perpendicular shock in a low-\(\beta\) plasma the compression ratio \(X\) and the
+  Alfvén Mach number are related by \parencite{vrsnak2002}
+  \begin{equation*}
+    X = \left(\frac{f_u}{f_l}\right)^2, \qquad
+    M_A = \sqrt{\frac{X\,(X+5)}{2\,(4-X)}}.
+  \end{equation*}
+  The Alfvén speed follows from the shock speed \(V_s\) taken from the Analyzer,
+  \(V_A = V_s/M_A\), and the magnetic field from
+  \(B = V_A\sqrt{\mu_0\,m_p\,n_e}\), with the electron density obtained from the plasma
+  frequency, \(n_e = (f/8.98\times10^{-3}\,\mathrm{MHz})^2\)~cm\(^{-3}\). In the averaged
+  result the density is taken at the Analyzer's starting frequency.
+\end{background}
+
+\section{Magnetic field versus height}
+\label{sec:bvr}
+\index{magnetic field!versus height}
+
+After a successful calculation, the \gui{BvR}\index{band splitting!B vs R plot} tool \callout{7} plots the magnetic field
+against shock height (Figure~\ref{fig:bvr}). Along the averaging interval the field is
+computed at each sample time from the local compression ratio, with the density taken from
+the upper-band frequency. The heights are calculated with the Newkirk\index{density model!Newkirk} model and the
+Analyzer's fold number, and the profile is fitted with a power law \(B = a\,R^{-b}\). Click
+\gui{BvR} again to return to the spectrum.
+
+\screenshot{analysis/BvR}{Magnetic field versus shock height in the band-splitting window.}{fig:bvr}{Band-splitting window showing the B vs R plot.}
+
+\begin{note}
+  The shock speed is taken from the Burst Analyzer and therefore follows the density model
+  selected there (Section~\ref{sec:density-models}). The heights of the magnetic field
+  versus height profile always use the Newkirk model, with the fold number set in the
+  Analyzer.
+\end{note}
+
+\section{Graph settings}
+\label{sec:bs-graph-settings}
+
+The \gui{Settings} tool \callout{8} opens the \gui{Type II Graph Settings}\index{band splitting!graph settings} dialog
+(Figure~\ref{fig:bs-settings}):
+\begin{description}
+  \item[Text Formatting] font family, and size, bold and italic for the title, the axis
+    labels and the tick labels.
+  \item[Upper Band, Lower Band] color and width of the fit line, and color and size of
+    the picked points.
+  \item[B vs R] color and width of the fit line, and color and size of the markers.
+\end{description}
+\gui{Apply} applies the settings, \gui{Reset to Defaults} restores the defaults and
+\gui{Close} closes the dialog.
+
+\screenshot[0.45\linewidth]{dialogs/type_ii_graph_settings}{The \gui{Type II Graph Settings} dialog.}{fig:bs-settings}{The Type II Graph Settings dialog showing the Text Formatting, Upper Band, Lower Band and B vs R groups.}
+
+\section{Saving plots}
+
+\gui{Save Plot} \callout{6} exports either the fitted lanes over the dynamic spectrum or the
+magnetic field versus height fit, whichever is on show, as an OriginPro-style graph in PNG,
+PDF, EPS, SVG, TIFF or JPG format. The lane colors and fonts from the graph settings are
+kept.
+
+\begin{caution}
+  Derived magnetic-field values may not be accurate for all events or under all
+  assumptions. They depend on the shock geometry, the density model and the
+  interpretation of the split bands. Confirm results against known or independently
+  validated events before using them for scientific conclusions.
+\end{caution}

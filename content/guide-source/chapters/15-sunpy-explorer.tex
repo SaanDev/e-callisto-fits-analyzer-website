@@ -1,0 +1,99 @@
+%% Chapter 15 ----------------------------------------------------------------
+\chapter{SunPy Multi-Mission Explorer}
+\label{ch:sunpy}
+\index{SunPy Multi-Mission Explorer}
+
+The SunPy Multi-Mission Explorer searches public solar archives through SunPy
+\parencite{sunpy2020}, downloads the selected records into an application-managed cache,
+and plots images and time series for quick inspection. Open it with
+\menu{Solar Events > Archives > SunPy Multi-Mission Explorer}. For in-depth image analysis,
+use Solar Image Analysis (Part~V).
+
+\screenshot[0.8\linewidth]{sunpy/sunpy_explorer}{The SunPy Multi-Mission Solar Explorer.}{fig:sunpy-explorer}{The SunPy Multi-Mission Solar Explorer after a search, with the Archive Query group filled in, records listed in Search Results (some ticked), and the Analysis and Export group.}
+
+\section{Supported instruments}
+
+Table~\ref{tab:sunpy-instruments} lists the instruments that can be searched. Map
+(image) products are shown in the plot window as image sequences; GOES/XRS is a time
+series.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Instruments available in the SunPy Multi-Mission Explorer.}
+  \label{tab:sunpy-instruments}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}P{0.17\linewidth}L@{}}
+    \toprule
+    \thead{Instrument} & \thead{Type} & \thead{Selectable options} \\
+    \midrule
+    SDO/AIA\index{SDO/AIA} & Map & Wavelength 94, 131, 171, 193, 211, 304, 335, 1600, 1700~Å \\
+    SDO/HMI\index{SDO/HMI} & Map & Product: magnetogram, continuum, dopplergram \\
+    SOHO/EIT\index{SOHO/EIT} & Map & Wavelength 171, 195, 284, 304~Å \\
+    SOHO/LASCO\index{SOHO/LASCO} C2, C3 & Map & Detector \\
+    STEREO-A\index{STEREO}/B SECCHI & Map & Detector EUVI (171, 195, 284, 304~Å), COR1, COR2, HI1, HI2 \\
+    GOES/SUVI\index{GOES/SUVI} & Map & Wavelength 94, 131, 171, 195, 284, 304~Å; level 1b or 2 \\
+    PROBA2/SWAP\index{PROBA2/SWAP} & Map & --- \\
+    GOES/XRS & Time series & GOES satellite \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+STEREO-B entries return data only for 2007--2014, before contact with the spacecraft was
+lost.
+
+\section{Searching the archives}
+
+The \gui{Archive Query} group contains:
+\begin{description}
+  \item[Spacecraft, Instrument] the observatory and instrument. The \gui{Detector},
+    \gui{Wavelength (A)}, \gui{GOES Satellite}, product and \gui{Level} fields appear when
+    they apply to the selected instrument.
+  \item[Sample (s)] the sampling cadence in seconds; 0 requests the full archive cadence,
+    which is slower and returns more records.
+  \item[Start (UTC), End (UTC), Max Records] the time range and the maximum number of
+    records returned.
+  \item[Search Archives] runs the query. \gui{Retry Last Query} repeats it, for example after
+    a network error.
+  \item[Use Analyzer Time Window] sets the time range from the spectrum in the main window and
+    searches.
+  \item[Open Cache Folder, Clear Cache] manage the download cache; its size is shown.
+\end{description}
+
+The \gui{Search Results} table lists, for each record, the start and end time, source,
+instrument, provider, file identifier and size. Tick the records to download with the
+\gui{Use} column or \gui{Select All} and \gui{Clear Selection}, then click
+\gui{Download \& Load Selected}\index{Solar Image Analysis!Load Selected}. \gui{Retry Failed} downloads again only the rows that
+failed, and \gui{Stop} cancels a running search or download. Cached files can be reopened
+without a network connection.
+
+\section{The plot window}
+
+\gui{Open Plot Window} in the \gui{Analysis and Export} group opens the
+\gui{SunPy Plot and Animation}\index{SunPy Multi-Mission Explorer!plot window} window with the loaded data (Figure~\ref{fig:sunpy-plot}).
+
+\screenshot[0.72\linewidth]{sunpy/sunpy_plot_window}{The SunPy Plot and Animation window in map mode.}{fig:sunpy-plot}{The SunPy Plot and Animation window showing a coronagraph or EUV image sequence with the frame slider, the Run Diff, AIA Limb (EUVI), NRGF, playback, FPS and ROI controls.}
+
+In \emph{map mode} the controls are:
+\begin{description}
+  \item[Frame slider] steps through the sequence; the frame number is shown.
+  \item[Run Diff] shows running differences\index{running difference} between consecutive frames.
+    \menu{Difference > Base Difference}\index{base difference} shows each frame minus the first.
+  \item[AIA Limb (EUVI)] on STEREO/EUVI images, draws the solar limb as seen from Earth,
+    showing which part of the disk is visible to SDO/AIA.
+  \item[NRGF] applies the normalizing-radial-graded filter \parencite{morgan2006} to
+    coronagraph images (COR1, COR2, LASCO), flattening the radial fall-off of brightness to
+    reveal faint CME fronts.
+  \item[Play, Pause, Rewind, FPS] animate the sequence at 1--30 frames per second.
+  \item[Select ROI, Reset ROI] draw a rectangular region of interest on the map, for which
+    the minimum, maximum, mean, median, standard deviation and 95th and 99th percentiles are
+    computed.
+\end{description}
+In \emph{time-series mode} (GOES/XRS) the window plots the X-ray channels and derives basic
+flare summary metrics.
+
+\section{Exporting}
+
+The \gui{Analysis and Export} group of the explorer provides \gui{Save Files As...}, which
+copies the downloaded data files to a folder of your choice; \gui{Export Plot}, which saves
+the current plot as PNG, PDF, SVG, TIFF or JPG; and \gui{Export Analysis CSV}, which saves
+the ROI statistics or flare summary.

@@ -1,0 +1,161 @@
+%% Chapter 14 ----------------------------------------------------------------
+\chapter{Solar-Event Viewers}
+\label{ch:solar-events}
+\index{solar-event viewers}
+
+The viewers in the \menu{Solar Events} menu place a radio event in its wider context: the
+X-ray flare, energetic protons, the geomagnetic response and any associated coronal mass
+ejection. Each viewer is an independent window that fetches its data from the archive
+listed in Appendix~\ref{app:data-sources}. The viewers can also be started from source as
+standalone programs (Section~\ref{sec:from-source}).
+
+\section{Common controls}
+
+The GOES and geomagnetic viewers share a common layout:
+\begin{itemize}
+  \item a time-range selector with \gui{Start} and \gui{End} rows (date, and hour, minute or
+    three-hour slot) and, where applicable, the spacecraft;
+  \item a \gui{Preset} list with \gui{Apply} for common ranges;
+  \item a plot button that fetches and plots the data, with a progress indicator;
+  \item \gui{Save Plot} (PNG) and \gui{Save Data}\index{Burst Analyzer!Excel export} (CSV);
+  \item a reset or clear button; and
+  \item an information panel summarizing the plotted data or a selected interval.
+\end{itemize}
+
+\section{Synchronizing the time window}
+\label{sec:sync-time}
+\index{time synchronization}
+
+\menu{Solar Events > Sync Current Time Window}\index{time synchronization} sends the time range of the spectrum loaded in
+the main window to every open context window: the GOES X-ray and proton viewers, the Dst and
+Kp viewers and the STEREO/SWAVES dialog plot the new range; the SOHO/LASCO\index{SOHO/LASCO} CME catalog
+searches the day of the middle of the range; and the SunPy Explorer takes the range as its
+query window. The status bar reports which windows were updated, or that none were open.
+
+\section{GOES X-ray flux}
+\label{sec:goes-xrs}
+\index{GOES!X-ray flux}
+
+\menu{Solar Events > Flares > GOES X-Ray Flux} opens the \gui{GOES XRS Plotter}
+(Figure~\ref{fig:goes-xrs}), which plots the soft X-ray flux measured by the GOES X-Ray
+Sensor in its short (XRS-A, 0.05--0.4~nm) and long (XRS-B, 0.1--0.8~nm) channels.
+
+\screenshot{space-weather/goes_xrs}{The GOES XRS Plotter with a selected flare interval.}{fig:goes-xrs}{The GOES XRS Plotter showing XRS-A and XRS-B on a logarithmic flux axis with flare-class levels, a dragged selection over a flare, and the Flare Information panel filled in.}
+
+\begin{description}
+  \item[Start, End, Use] the UTC range and the spacecraft (GOES-8 to GOES-19; default
+    GOES-16). \gui{Preset: Whole day (00:00–23:59)} selects the whole of the start day.
+  \item[Plot XRS Data] downloads the daily science files from NOAA and plots both channels
+    on a logarithmic flux axis.
+  \item[Selection] drag across the plot to select a flare interval. The
+    \gui{Flare Information}\index{GOES!flare information} panel then shows the \gui{Selection window}, the
+    \gui{Peak X-ray Flux (W/m²)} and \gui{Peak Time (UTC)} of the long channel, the
+    \gui{Rise Time} (selection start to peak), the \gui{Decay Time} (peak to selection end),
+    the \gui{Flare Duration} and the \gui{GOES Class}\index{GOES!flare class} derived from the peak flux.
+  \item[Save Plot, Save Data, Reset] save the figure as PNG, save the fluxes as CSV, or clear
+    the plot and selection.
+\end{description}
+
+\subsection{GOES overlay on the spectrum}
+\label{sec:goes-overlay}
+\index{GOES!overlay}
+
+\menu{Solar Events > GOES Overlay > Short(XRS-A)}\index{GOES!overlay} and \menu{Long(XRS-B)} draw the GOES
+X-ray curves directly on the dynamic spectrum in the main window
+(Figure~\ref{fig:goes-overlay}), with a flare-class guide (A, B, C, M, X) on the right. The
+overlay does not modify the spectrum data. The application chooses a GOES satellite
+appropriate for the date automatically, falling back across legacy and modern satellites
+when a file is unavailable. The overlay is included in exported figures.
+
+\screenshot{space-weather/goes_overlay}{GOES X-ray curves overlaid on a dynamic spectrum.}{fig:goes-overlay}{Main window with a dynamic spectrum and both GOES Overlay channels enabled, showing the right-hand flare-class guide (A/B/C/M/X).}
+
+\section{GOES proton flux}
+\label{sec:goes-sep}
+\index{GOES!proton flux}\index{solar energetic particles}
+
+\menu{Solar Events > Energetic Particles > GOES SEP Proton Flux} opens the
+\gui{GOES SEP Proton Flux Plotter} (Figure~\ref{fig:goes-sep}), which plots proton fluxes
+from the GOES Solar and Galactic Proton Sensor (SGPS) archive at NOAA over multi-day UTC
+ranges.
+
+\screenshot{space-weather/goes_sep}{The GOES SEP Proton Flux Plotter.}{fig:goes-sep}{The GOES SEP Proton Flux Plotter for a multi-day range during an SEP event, with the ~10 MeV and ~100 MeV channels plotted, a selected interval, and the SEP Analysis panel filled in.}
+
+\begin{description}
+  \item[Start, End, Use] the UTC range and the spacecraft: \gui{Auto (GOES-19 -> GOES-16)}
+    tries the newest spacecraft first, or a specific GOES satellite can be chosen.
+  \item[Preset] \gui{Last 24 hours}, \gui{Last 72 hours}, \gui{Last 7 days} or
+    \gui{Current UTC day}.
+  \item[Plot SEP Proton Flux] fetches and stitches the daily files and plots the channels
+    closest to about 10~MeV and 100~MeV, with hover readouts.
+  \item[Selection] drag across the plot to measure an event.
+  \item[SEP Analysis] the spacecraft, channels, number of samples and source files, the
+    peaks of both channels in the plot, and for the selection its window, peak (low
+    channel), peak time, rise time, decay time and duration.
+  \item[Save Plot, Save Data, Clear Selection] save the figure as PNG, save the stitched
+    flux table as CSV, or clear the selection.
+\end{description}
+
+\section{Kyoto Dst index}
+\label{sec:dst}
+\index{Dst index}
+
+\menu{Solar Events > Geomagnetic > Kyoto Dst Index} opens the \gui{Dst Index} viewer
+(Figure~\ref{fig:dst}) for the hourly Dst index from the World Data Center for
+Geomagnetism, Kyoto \parencite{nose2015}. Dst measures the strength of the ring current;
+large negative values indicate geomagnetic storms.
+
+\screenshot{space-weather/dst_index}{The Kyoto Dst Index viewer.}{fig:dst}{The Dst Index viewer for a storm interval, showing the Dst curve with the Quiet, −50, −100 and −200 nT guide lines and the Dst Summary panel.}
+
+\begin{description}
+  \item[Start, End] date and hour. \gui{Preset}: \gui{Last 24 hours}, \gui{Last 7 days},
+    \gui{Current month} or \gui{Previous month}.
+  \item[Plot Dst Data] fetches and plots the index with storm-level guides at 0 (quiet),
+    \(-50\), \(-100\) and \(-200\)~nT.
+  \item[Dst Summary] the number of samples, the data sources (final, provisional or
+    real-time), and the minimum, maximum (each with its time) and mean Dst.
+  \item[Save Plot, Save Data, Reset] PNG figure, CSV table, or clear.
+\end{description}
+
+\section{GFZ Kp index}
+\label{sec:kp}
+\index{Kp index}
+
+\menu{Solar Events > Geomagnetic > GFZ Kp Index} opens the \gui{Kp Index} viewer
+(Figure~\ref{fig:kp}) for the three-hourly planetary Kp index from GFZ Potsdam
+\parencite{matzka2021}.
+
+\screenshot{space-weather/kp_index}{The GFZ Kp Index viewer.}{fig:kp}{The Kp Index viewer for a storm interval, showing colored Kp bars with the Kp 5, 7 and 8 guide lines and the Kp Summary panel.}
+
+\begin{description}
+  \item[Start, End] date and three-hour slot (\gui{3h Slot}). \gui{Preset}:
+    \gui{Last 24 hours}, \gui{Last 7 days}, \gui{Current month} or \gui{Previous month}.
+  \item[Plot Kp Data] plots the index as bars colored by activity (quiet below 5, storm from
+    5, severe from 7), with guide lines at Kp~5, 7 and 8.
+  \item[Kp Summary] the number of intervals, the maximum, minimum and mean Kp, and the
+    number of storm intervals (\(\mathrm{Kp}\geq5\)).
+  \item[Save Plot, Save Data, Reset] PNG figure, CSV table, or clear.
+\end{description}
+
+\section{SOHO/LASCO CME catalog}
+\label{sec:lasco-catalog}
+\index{CME catalog}\index{SOHO/LASCO}
+
+\menu{Solar Events > CMEs > SOHO/LASCO CME Catalog} opens the
+\gui{SOHO/LASCO CME Catalog Tool} (Figure~\ref{fig:lasco-catalog}), which reads the CDAW\index{CDAW}
+catalog of CMEs observed by SOHO/LASCO \parencite{yashiro2004}.
+
+\screenshot{space-weather/lasco_cme_catalog}{The SOHO/LASCO CME Catalog Tool.}{fig:lasco-catalog}{The SOHO/LASCO CME Catalog Tool after Search for a day with several CMEs, with one CME selected, its details shown at the right and the movie status panel with the Play Movie, Open in Browser and Copy URL buttons.}
+
+\begin{description}
+  \item[Year, Month, Day, Search] list the CMEs of the chosen day. A progress bar shows the
+    retrieval.
+  \item[CME table] one row per CME with the columns \gui{Date and Time}, \gui{Central PA},
+    \gui{Angular Width}, \gui{Linear Speed}, \gui{Accel}, \gui{Mass},
+    \gui{Kinetic Energy}, \gui{MPA} (measurement position angle) and \gui{Remarks}.
+    Clicking a row shows its details beside the table.
+  \item[Play Movie] plays the LASCO movie associated with the selected CME (double-clicking a
+    row does the same) in a viewer with \gui{Back}, \gui{Forward}, \gui{Reload},
+    \gui{Open in Browser}, \gui{Open Raw Movie} and \gui{Copy URL}.
+  \item[Open in Browser, Copy URL] open the CDAW page of the selected CME, or copy its
+    address.
+\end{description}

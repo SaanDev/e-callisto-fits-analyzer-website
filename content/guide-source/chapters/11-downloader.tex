@@ -1,0 +1,167 @@
+%% Chapter 11 ----------------------------------------------------------------
+\chapter{The e-CALLISTO FITS Downloader}
+\label{ch:downloader}
+\index{FITS Downloader}\index{e-CALLISTO archive}
+
+The e-CALLISTO FITS Downloader retrieves FITS files directly from the e-CALLISTO data
+archive. Open it with the \gui{Download} toolbar tool, \menu{Download > Launch FITS
+Downloader}, or \menu{Solar Events > Radio Bursts > e-CALLISTO}.
+
+The window has four tabs --- \gui{Single Station}\index{FITS Downloader!Single Station}, \gui{Multi-Station Event}\index{FITS Downloader!Multi-Station Event},
+\gui{Spectral Overview}\index{FITS Downloader!Spectral Overview} and \gui{Burst List}\index{FITS Downloader!Burst List} --- described in the sections below. Station
+lists are read from the archive whenever a date changes, so they offer only the stations
+that have data on the chosen UTC days; a line under the date reports how many, for example
+\gui{42 stations have data on 2026-10-04 (UTC)}.
+
+\section{Common features}
+
+\subsection{The download cache}
+\index{cache!downloader}
+
+Previewed and downloaded files are kept in a persistent cache on disk, so re-previewing,
+importing or extending a dataset never fetches the same file twice. The size of the cache is
+shown at the bottom left of the window (\gui{Cache: …}). \gui{Open Cache Folder} opens the
+cache in the file manager and \gui{Clear Cache}\index{cache!clearing} empties it.
+
+\subsection{Preview, download, import and compare}
+
+The tabs share four actions on the files you have ticked:
+\begin{description}
+  \item[Preview] opens the \gui{FITS Preview}\index{FITS Downloader!preview} window with a background-subtracted
+    spectrogram of the selection. A selection that can be combined in time, in frequency or
+    in both is previewed as it would be imported; otherwise each file appears in its own
+    tab.
+  \item[Download] asks for a folder (\gui{Select Download Folder}) and saves the files
+    there.
+  \item[Import] loads the selection into the main window, combining it automatically when
+    possible (Section~\ref{sec:combine-rules}). Gap and overlap options are requested when
+    needed.
+  \item[Compare] opens the Multi-Station Comparison with the selection
+    (Chapter~\ref{ch:comparison}).
+\end{description}
+During downloads a progress panel shows the overall progress, transfer statistics and an
+estimated time remaining; \gui{Show file details}\index{FITS Downloader!download progress} expands a table with the progress, speed
+and status of every file.
+
+\section{Single Station}
+\label{sec:single-station}
+
+The \gui{Single Station} tab (Figure~\ref{fig:single-station}) lists all files of one
+station for a complete UTC day.
+
+\screenshot{downloader/single_station}{The \gui{Single Station} tab.}{fig:single-station}{Single Station tab.}
+
+\begin{steps}
+  \item In \gui{Observation Parameters}, choose the \gui{Date} and then the \gui{Station}.
+  \item Click \gui{Show Available FITS}.
+  \item In \gui{Available FITS Files (Whole Day, grouped by focus code)}, expand a focus
+    code and tick files, or tick a whole focus-code group. Each group heading shows the
+    number of files and the time span covered, for example
+    \gui{Focus 63 — 34 files (00:00–08:14)}, so the receivers that covered an event are
+    visible at a glance.
+  \item Use the buttons in \gui{Actions}: \gui{Select All}, \gui{Deselect All},
+    \gui{Download Selected}, \gui{Preview Selected}, \gui{Compare} or \gui{Import}.
+\end{steps}
+
+When several files are ticked, the downloader determines whether they can be combined in
+time, in frequency or in both, using the rules of Section~\ref{sec:combine-rules}. Files that
+cannot be combined are reported with an explanation (Figure~\ref{fig:combine-error}).
+
+\section{Multi-Station Event}
+\label{sec:multi-station-event}
+
+The \gui{Multi-Station Event} tab (Figure~\ref{fig:multi-station-event}) finds the files
+recorded by several stations during the same event in a single search.
+
+\screenshot{downloader/multi_station_download}{The \gui{Multi-Station Event} tab.}{fig:multi-station-event}{Multi-Station Event tab.}
+
+\begin{steps}
+  \item In \gui{Event Window}, set \gui{Start (UTC)} and \gui{Stop (UTC)}. The station list
+    is updated to the stations with data in that window (windows of up to seven days).
+  \item In \gui{Stations}, tick the stations to search. \gui{Filter stations} narrows the
+    list by name; \gui{Select All} and \gui{Clear} tick or untick all stations.
+  \item Click \gui{Search Matching FITS}. The \gui{Matching FITS Files} table lists the
+    station, UTC time, file name and receiver (focus code) of every file overlapping the
+    window.
+  \item Use \gui{Select All}, \gui{Clear Selection}, \gui{Download Selected}, \gui{Import}
+    or \gui{Compare}.
+\end{steps}
+
+A compatible selection is imported directly into the main window, combined in time, in
+frequency or in both. Files from several stations cannot be combined into one spectrum; use
+\gui{Compare} to view them side by side. The comparison workspace opens only when
+\gui{Compare} is clicked.
+
+\section{Spectral Overview}
+\label{sec:spectral-overview}
+\index{spectral overview}
+
+The \gui{Spectral Overview} tab (Figure~\ref{fig:spectral-overview}) assembles a station's
+observations for a complete UTC day into one overview figure.
+
+\screenshot{downloader/spectral_overview}{The \gui{Spectral Overview} tab with a full-day overview for one focus code.}{fig:spectral-overview}{Spectral Overview tab.}
+
+\begin{description}
+  \item[Date (UTC), Station] the day and station to summarize.
+  \item[Focus code] \gui{All available focus codes}, or a single focus code to generate or
+    regenerate on its own.
+  \item[Generate Overview] downloads (or reuses from the cache) every file of the day and
+    builds the overview. The status line reports the focus codes generated and the number of
+    files loaded. \gui{Cancel} stops a running generation.
+  \item[Overview Preview] one tab per focus code. Each overview shows the day as six
+    four-hour panels (00--04~UT to 20--24~UT), background-subtracted with a day-wide median
+    (dB) baseline and a common color scale; intervals without data are marked
+    \emph{No data}.
+  \item[Export...] saves the overview of the selected tab as a PNG, PDF, EPS, SVG or TIFF
+    figure at 300~dpi on a white background.
+\end{description}
+
+\section{Burst List}
+\label{sec:burst-list}
+\index{burst list}\index{Monstein catalog}
+
+The \gui{Burst List} tab (Figure~\ref{fig:burst-list}) gives access to the e-CALLISTO solar
+radio burst catalog compiled by C.~Monstein \parencite{monsteinlist}, so that the FITS files
+for a listed burst can be found together with its type and reporting stations. The
+\gui{Monstein source catalog} link opens the original lists in a web browser.
+
+\screenshot{downloader/burst_list}{The \gui{Burst List} tab with a selected Type~II event and its FITS files.}{fig:burst-list}{Burst List tab.}
+
+\procedure{Catalog filters}
+\begin{description}
+  \item[From (UTC), Through (UTC)] the date range to load; click \gui{Load Events}.
+  \item[Burst type] \gui{All types} or one of the burst types found in the loaded catalog (for example II or III).
+  \item[Reporting station] events reported by a given station.
+  \item[Min. stations] events reported by at least this many stations (\gui{Any} for no
+    limit).
+  \item[Search] free-text search in the type, stations or remarks.
+  \item[Reset Filters] clears the filters while keeping the selected dates.
+\end{description}
+A progress bar with a \gui{Cancel} button reports catalog loading, FITS searches, preview
+preparation and downloads. The final state remains visible after completion.
+
+\procedure{1.~Choose a burst}
+The event table lists the start and end time (UTC), type, number of stations, and the
+observatories and remarks of each matching event, with a count such as
+\gui{1 of 2 events match the filters}. Hovering over a row shows the original catalog
+record and its source URL. Missing periods, source notices and loading errors are reported
+below the table.
+
+\procedure{2.~Preview or import FITS}
+\begin{description}
+  \item[Station] \gui{All reported stations}, one of them, or the name of any archive
+    station typed in the box.
+  \item[Extra time] padding added on both sides of the burst (0--120~min, default 2~min).
+  \item[Find FITS] searches the archive. Overlapping 15-minute files and events that cross
+    UTC midnight are included. The table lists the station, start time, focus code and file
+    name of each file found.
+  \item[Select All, Clear Selection, Preview, Download, Import, Compare] act on the ticked
+    files as described above; the number of selected files is shown.
+\end{description}
+The divider between the two tables can be dragged to resize them.
+
+\begin{note}
+  Catalog coverage varies by year, station and type information may be unavailable in
+  older lists, and a listed detection does not guarantee that matching FITS data are
+  archived. Catalog times are UTC with one-minute precision.
+\end{note}

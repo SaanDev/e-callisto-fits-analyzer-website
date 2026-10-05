@@ -1,0 +1,350 @@
+%% Chapter 8 -----------------------------------------------------------------
+\chapter{Type II Burst Analysis}
+\label{ch:type-ii}
+\index{Type II burst}
+
+Type~II solar radio bursts are slowly drifting emission lanes produced by shock waves
+traveling outward through the corona. The plasma frequency falls with height, so the
+drift of the emission to lower frequencies traces the shock's motion. The Type~II tools
+fit the burst backbone and convert its frequency and drift into a shock height and speed
+using a coronal electron-density model.
+
+\section{The analysis chain}
+
+The analysis uses four tools, normally applied in this order:
+\begin{steps}
+  \item \textbf{Burst isolation} restricts the data to the emission of interest
+    (Section~\ref{sec:isolation}).
+  \item \textbf{Maximum intensities} extracts the frequency of peak emission in each time
+    channel, or tracks the burst ridge (Sections~\ref{sec:max-intensities}
+    and~\ref{sec:ridge-tracking}).
+  \item \textbf{Outlier removal} discards points that do not belong to the burst
+    (Section~\ref{sec:outliers}).
+  \item \textbf{The Burst Analyzer} fits the backbone and derives the drift rate, shock
+    speed and shock height (Section~\ref{sec:analyzer}).
+\end{steps}
+Each tool works on the spectrum as currently displayed: background-subtracted,
+RFI-cleaned or isolated. Figure~\ref{fig:type-ii-spectrum} shows a background-subtracted
+spectrum containing a Type~II burst.
+
+\screenshot{analysis/loaded_fits}{A background-subtracted dynamic spectrum containing a Type~II burst.}{fig:type-ii-spectrum}{Main window showing a background-subtracted spectrum with a Type II burst.}
+
+\section{Burst isolation}
+\label{sec:isolation}
+\index{burst isolation}\index{lasso}
+
+The \gui{Isolate Burst}\index{burst isolation!Isolate Burst tool} toolbar tool (tool~9) draws a freehand lasso mask around the
+emission region of a burst. Background subtraction must be applied first.
+\begin{steps}
+  \item Click \gui{Isolate Burst}.
+  \item Press the mouse button, drag a loop around the burst, and release.
+\end{steps}
+Only the data inside the loop are retained; everything outside is set to zero, which is the
+background level of the background-subtracted spectrum. This removes unrelated emission and
+residual noise from the analysis (Figure~\ref{fig:isolated}). Isolation can be undone\index{undo} with
+\kbd{Ctrl+Z}. The plot
+title changes to \gui{-Isolated Burst}. The mask follows the drawn path on the displayed
+spectrum. \gui{Reset Selection}\index{Reset Selection} (tool~14) clears the selection.
+
+\screenshot{analysis/isolated_burst}{An isolated Type~II burst lane.}{fig:isolated}{Main window after burst isolation.}
+
+\section{The Maximum Intensities window}
+\label{sec:max-intensities}
+\index{maximum intensities}
+
+The Maximum Intensities window (Figure~\ref{fig:max-intensities}) shows, for each time
+channel of the displayed spectrum, the frequency at which the intensity is highest. These
+points trace the burst backbone that the Analyzer fits. Open it with the
+\gui{Plot Maximum Intensities}\index{maximum intensities!toolbar tool} toolbar tool (tool~10) or
+\menu{Analysis > Maximum Intensities > Open Maximum Intensities}. When the maxima are taken
+from an isolated burst, time channels with no emission inside the mask are excluded.
+
+\screenshot{analysis/max_intensities}{The Maximum Intensities window. Without isolation, a persistent RFI channel near 89~MHz produces spurious points.}{fig:max-intensities}{Maximum Intensities window.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Controls of the Maximum Intensities window.}
+  \label{tab:max-controls}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.3\linewidth}L@{}}
+    \toprule
+    \thead{Control} & \thead{Function} \\
+    \midrule
+    \gui{Select Outliers}\index{outlier removal!manual} & Draw a lasso around points to remove. \\
+    \gui{Remove Outliers} & Remove the selected points. \\
+    \gui{Track Ridge}\index{ridge tracking!Track Ridge} & Replace the per-column maxima by an automatically tracked ridge (Section~\ref{sec:ridge-tracking}). \\
+    \gui{Pick Start}\index{ridge tracking!Pick Start} & Click a point on the burst from which ridge tracking starts. \\
+    \gui{Fundamental} / \gui{Harmonic} & Whether the lane is fundamental or harmonic plasma emission (Section~\ref{sec:harmonic}). \\
+    \gui{Analyze Burst}\index{Burst Analyzer!opening} & Open the Burst Analyzer with the current points. \\
+    \menu{File > Save As} & Save the points as CSV: time channel, time (s) and frequency (MHz). \\
+    \menu{File > Export As} & Save the plot as a figure (PNG, PDF, EPS, SVG, TIFF or JPG). \\
+    \menu{Edit > Reset All} & Clear the selection, the ridge start point and the stored Analyzer state. \\
+    \menu{Edit > Restore Per-Column Maxima}\index{ridge tracking!restore maxima} & Bring back the points replaced by ridge tracking. \\
+    \menu{Analyze > Open Analyzer} & Open the Burst Analyzer. \\
+    \menu{Analyze > Ridge Tracking Settings...}\index{ridge tracking!settings} & Parameters of the ridge tracker (Table~\ref{tab:ridge-settings}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The status bar at the bottom of the window reports the result of each action, for example
+the number of selected points.
+
+\section{Ridge tracking}
+\label{sec:ridge-tracking}
+\index{ridge tracking}
+
+Taking the brightest channel in every time column picks up RFI, a second burst or noise,
+leaving scattered points to remove by hand. \gui{Track Ridge} follows the burst itself
+instead:
+\begin{itemize}
+  \item Tracking starts from the brightest point of the burst, or from a point chosen with
+    \gui{Pick Start} (marked with a star), and continues forwards and backwards in time,
+    searching only a few channels around the ridge position in the previous column.
+  \item A channel that is bright for most of the file is treated as RFI and is not chosen
+    as a starting point. An error is reported if a picked start point is not above the
+    background.
+  \item Short dropouts in the burst are bridged. After a gap, tracking continues only once
+    two consecutive columns show signal, so a single noise spike cannot extend the ridge.
+    Tracking stops once the signal has stayed below the threshold for longer than the
+    allowed gap.
+  \item Each peak is refined to sub-channel frequency.
+\end{itemize}
+The tracked points replace the per-column maxima; outlier removal, the
+fundamental/harmonic choice and \gui{Analyze Burst} work on them as before.
+\menu{Edit > Restore Per-Column Maxima} brings the original points back.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Ridge Tracking Settings.}
+  \label{tab:ridge-settings}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.3\linewidth}LP{0.14\linewidth}@{}}
+    \toprule
+    \thead{Setting} & \thead{Description} & \thead{Default} \\
+    \midrule
+    Search window (channels) & Maximum movement of the ridge between two consecutive time columns (1--100). & 3 \\
+    Threshold (\(\sigma\)) & Minimum height of a peak above the background, in robust standard deviations (0--50). & 3.0 \\
+    Allowed gap (columns) & Number of consecutive columns below the threshold before tracking stops (0--1000). & 8 \\
+    Only follow drift to lower frequency & Restricts the ridge to move toward lower frequencies with time, as in Type~II and Type~III bursts. & Off \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\screenshot[0.5\linewidth]{dialogs/ridge_tracking_settings}{The \gui{Ridge Tracking Settings} dialog.}{fig:ridge-settings}{The Ridge Tracking Settings dialog with its four fields and OK/Cancel.}
+
+\section{Outlier removal}
+\label{sec:outliers}
+\index{outlier removal}
+
+Outliers are removed manually in the Maximum Intensities window:
+\begin{steps}
+  \item Click \gui{Select Outliers} and draw a lasso around the unwanted points
+    (Figure~\ref{fig:outliers}).
+  \item Click \gui{Remove Outliers}.
+\end{steps}
+
+\screenshot{analysis/outlier_removal}{Selecting outliers with the lasso in the Maximum Intensities window.}{fig:outliers}{Outlier selection in the Maximum Intensities window.}
+
+When \menu{Processing > Maximum Intensity > Auto-Clean Isolated Burst Outliers}\index{outlier removal!automatic} is ticked
+(the default), outliers are also removed automatically whenever the maxima are taken from
+an isolated burst. The manual tools remain available in either case.
+
+\section{Fundamental and harmonic emission}
+\label{sec:harmonic}
+\index{harmonic emission}
+
+Type~II emission occurs at the local plasma frequency (fundamental) and at twice that
+frequency (harmonic). Select \gui{Harmonic} when the fitted lane is the harmonic. The
+observed frequencies and drift rates are then divided by two before the shock parameters
+are calculated, so that heights and speeds always refer to the plasma frequency. Saved
+summaries keep both the converted values and the observed reference values.
+
+\section{The Burst Analyzer}
+\label{sec:analyzer}
+\index{Burst Analyzer}
+
+The Burst Analyzer (Figure~\ref{fig:analyzer}) fits the burst backbone with a power law and
+derives the frequency drift rate, shock speed and shock height, with the goodness of fit.
+Open it with \gui{Analyze Burst} or \menu{Analyze > Open Analyzer} in the Maximum
+Intensities window.
+
+\screenshot{analysis/analyzer}{The Burst Analyzer window with the best fit, shock parameters and density-model comparison.}{fig:analyzer}{Burst Analyzer window.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Controls and displays of the Burst Analyzer.}
+  \label{tab:analyzer}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.29\linewidth}L@{}}
+    \toprule
+    \thead{Control or display} & \thead{Function} \\
+    \midrule
+    \gui{Maximum Intensities} & Plot the extracted points. \\
+    \gui{Best Fit} & Fit the points with a power law and plot the fit. \\
+    \gui{t₀} & Time origin of the power law (Section~\ref{sec:t0}). \\
+    \gui{Density model} & Coronal density model for heights and speeds (Section~\ref{sec:density-models}). \\
+    \gui{Fold-number}\index{fold number} & Multiplier 1--4 applied to the model density; press \gui{Calculate} after changing it. \\
+    \gui{Best Fit Equation} & The fitted power law. \\
+    \gui{Fit Metrics} & \(R^2\) and RMSE of the fit. \\
+    \gui{Shock Parameters} & Derived quantities with uncertainties (Table~\ref{tab:shock-params}). \\
+    \gui{Density model comparison}\index{density model!comparison table} & Initial and average shock speed and height from all five models (Section~\ref{sec:model-comparison}). \\
+    \gui{Save Graph}\index{Burst Analyzer!Save Graph} & Save the plot on show as a figure. \\
+    \gui{Save Data}\index{Burst Analyzer!Excel export} & Save the results to an Excel workbook (Section~\ref{sec:analyzer-export}). \\
+    \gui{Existing Excel File} & Append to an existing workbook instead of creating a new one. \\
+    \gui{Extra Plots}\index{Burst Analyzer!extra plots} and \gui{Plot} & Additional plots (Section~\ref{sec:extra-plots}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{Power-law fit and the time origin}
+\label{sec:t0}
+\index{power law}\index{time origin}
+
+The backbone is fitted as
+\begin{equation}
+  f(t) = a\,(t - t_0)^{-b},
+  \label{eq:power-law}
+\end{equation}
+where \(f\) is the frequency in MHz, \(t\) the time in seconds, and \(a\) and \(b\) the fitted
+parameters. The drift rate at each point follows from the derivative,
+\(\mathrm{d}f/\mathrm{d}t = -ab\,(t-t_0)^{-b-1}\). On the \gui{Best Fit} graph the points are
+drawn as filled black squares and the fitted power law as a red curve, with a boxed legend.
+
+Because a power law depends on where \(t=0\) lies, the fitted exponent, drift rate and shock
+parameters depend on the chosen time origin. \(t_0\) is selected from the \gui{t₀} list next
+to \gui{Best Fit}:
+\begin{description}
+  \item[File start] measures time from the start of the loaded data (the default).
+  \item[Burst onset] places \(t_0\) one time sample before the first fitted point, so that
+    every point lies on the curve.
+  \item[Custom time] uses a time that you enter, in UT when the start time of the file is
+    known and otherwise in seconds from the start of the file.
+\end{description}
+Changing \(t_0\) re-runs the fit automatically. The graph keeps the data's own time axis,
+and the equation shows \((x - t_0)\) whenever \(t_0\) is not the file start.
+
+\subsection{Shock parameters}
+
+Table~\ref{tab:shock-params} defines the quantities in the \gui{Shock Parameters} block. The
+heading names the density model and fold in use, for example
+\gui{Shock Parameters (Newkirk 1-fold)}\index{density model!Newkirk}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Shock parameters reported by the Burst Analyzer.}
+  \label{tab:shock-params}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}L@{}}
+    \toprule
+    \thead{Quantity} & \thead{Definition} \\
+    \midrule
+    Average Frequency & Mean frequency of the maximum-intensity points (MHz), with its standard error. \\
+    Average Drift Rate & Mean of the fitted drift rate along the backbone (MHz/s). \\
+    Starting Frequency\index{shock parameters!starting frequency} & The 90th percentile of the fitted frequencies, taken as the start of the burst (MHz). \\
+    Initial Shock Speed\index{shock parameters!initial speed} & Shock speed at the starting frequency (km/s). \\
+    Initial Shock Height & Heliocentric height at the starting frequency (\(R_\odot\)). \\
+    Average Shock Speed\index{shock parameters!average speed} & Mean shock speed along the backbone (km/s), with its standard error. \\
+    Average Shock Height & Mean height along the backbone (\(R_\odot\)), with its standard error. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{background}[Background: from drift rate to shock speed]
+  The emission frequency is identified with the local plasma frequency,
+  \(f_p \approx 8.98\times10^{-3}\sqrt{n_e}\)~MHz for an electron density \(n_e\) in
+  cm\(^{-3}\). A density model \(n_e(r)\) therefore maps each frequency to a heliocentric
+  height \(r\), and the drift rate to a radial speed,
+  \begin{equation*}
+    v = \left|\frac{\mathrm{d}f}{\mathrm{d}t}\right| \left|\frac{\mathrm{d}r}{\mathrm{d}f}\right|,
+    \qquad \frac{\mathrm{d}r}{\mathrm{d}f} = \frac{2\,n_e}{f\,|\mathrm{d}n_e/\mathrm{d}r|}.
+  \end{equation*}
+  Uncertainties are propagated linearly from the drift-rate and frequency errors. The
+  results are only as good as the density model, which describes an average corona and
+  can differ from the actual medium by large factors; the fold number scales the model
+  density to account for denser structures such as streamers.
+\end{background}
+
+\subsection{Density models}
+\label{sec:density-models}
+\index{density model}
+
+Shock heights and speeds are calculated from one of five coronal electron-density models
+(Table~\ref{tab:density-models}). Changing the model recalculates the shock parameters
+immediately. The fold number (1--4) multiplies the model density; press \gui{Calculate}
+after changing it. The formulas are given in Appendix~\ref{app:formulas}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Coronal electron-density models.}
+  \label{tab:density-models}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.25\linewidth}L@{}}
+    \toprule
+    \thead{Model} & \thead{Reference} \\
+    \midrule
+    Newkirk (default) & \textcite{newkirk1961} \\
+    Saito\index{density model!Saito} & \textcite{saito1977} \\
+    Leblanc\index{density model!Leblanc} & \textcite{leblanc1998} \\
+    Baumbach\index{density model!Baumbach--Allen}--Allen & \textcite{baumbach1937}; \textcite{allen1947} \\
+    Mann & \textcite{mann1999}\index{density model!Mann} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Models other than Newkirk are evaluated between the photosphere (\(1\,R_\odot\)) and 1~AU.
+A frequency that a model cannot reach in this range --- for example above about 116~MHz
+for the 1-fold Saito model --- has no height, and is shown as a dash rather than an
+extrapolated value.
+
+\subsection{Density-model comparison}
+\label{sec:model-comparison}
+
+The \gui{Density model comparison} table below the shock parameters lists the initial shock
+speed \(v_0\), initial height \(h_0\), average speed \(\bar v\) and average height \(\bar h\)
+obtained with every model at the current fold, with the selected model in bold. It shows at
+a glance how strongly the derived kinematics depend on the assumed corona.
+
+\subsection{Additional plots}
+\label{sec:extra-plots}
+
+Choose an entry in \gui{Extra Plots} and click \gui{Plot} to show:
+\gui{Shock Speed vs Shock Height}, \gui{Shock Speed vs Frequency} or
+\gui{Shock Height vs Frequency}. These plots use the selected density model.
+
+\subsection{Saving graphs and data}
+\label{sec:analyzer-export}
+\index{Excel export}
+
+\gui{Save Graph} writes whichever plot is on show --- maximum intensities, best fit or an
+additional plot --- as an OriginPro-style graph on a white page in PNG, PDF, EPS, SVG, TIFF
+or JPG format.
+
+\gui{Save Data} writes one row of results to an Excel workbook (\file{.xlsx}). With
+\gui{Existing Excel File} ticked, you choose a workbook and the row is appended, which builds
+an event table over many analyses. The columns are listed in Table~\ref{tab:excel-columns}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Columns of the Burst Analyzer Excel export.}
+  \label{tab:excel-columns}
+  \small
+  \begin{tabularx}{\linewidth}{@{}rL@{}}
+    \toprule
+    \thead{No.} & \thead{Column} \\
+    \midrule
+    1--2 & Observation date; station \\
+    3--5 & Best-fit equation; \(R^2\); RMSE \\
+    6--9 & Average frequency and error; average drift rate and error \\
+    10--11 & Starting frequency and error \\
+    12--15 & Initial shock speed and error; initial shock height and error \\
+    16--19 & Average shock speed and error; average shock height and error \\
+    20 & Absolute value of the average drift rate \\
+    21 & Density model \\
+    22 & \(t_0\) in seconds from the start of the file \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The density model and \(t_0\) are also saved in projects and named in project reports.
+Projects saved before these options existed open with the Newkirk model and the file start
+as \(t_0\), matching how they were calculated.

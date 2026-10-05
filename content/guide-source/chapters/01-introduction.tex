@@ -1,0 +1,176 @@
+%% Chapter 1 -----------------------------------------------------------------
+\chapter{Introduction}
+\label{ch:introduction}
+
+\section{What the \appname{} is}
+
+The \appname{}\index{e-CALLISTO FITS Analyzer} is a cross-platform desktop application for
+visualizing, processing and analyzing solar radio dynamic spectra recorded in FITS format
+by the e-CALLISTO spectrometer network, and for placing those observations in their solar
+and geophysical context. It runs natively on Windows, macOS and Linux (Debian and Ubuntu)
+and is distributed as self-contained installers, so no separate Python installation is
+required.
+
+e-CALLISTO\index{e-CALLISTO network} is a world-wide network of CALLISTO radio
+spectrometers that monitors the Sun around the clock \parencite{benz2009}. Each station
+records dynamic spectra --- radio intensity as a function of frequency and time --- in
+FITS files that normally span 15~minutes. A station may operate several receivers or
+frequency bands, each identified by a two-digit \emph{focus code}\index{focus code}. File
+names follow the pattern
+\file{STATION_YYYYMMDD_HHMMSS_FC.fit.gz}, for example
+\file{Australia-ASSA_20261004_000000_63.fit.gz} for focus code~63 of the Australia-ASSA
+station starting at 00:00:00~UT on 4~October~2026.
+
+The application merges fragmented observations across time and frequency, removes the
+receiver background, mitigates radio-frequency interference (RFI)\index{RFI}, and isolates
+solar radio bursts with an interactive mask. Dedicated tools derive the frequency drift
+rate and shock parameters of Type~II bursts and estimate the coronal magnetic field\index{magnetic field} from
+band-split emission. Around this core, the software retrieves archive data from several
+radio instruments, displays X-ray, particle, geomagnetic and coronal mass ejection (CME)
+data for the same interval, analyzes solar images from space-borne observatories, models
+the coronal magnetic field, and reconstructs CMEs in three dimensions.
+
+\section{Capabilities at a glance}
+
+Table~\ref{tab:modules} summarizes the main modules, where they are opened, and where they
+are described in this guide.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Main modules of the \appname{}.}
+  \label{tab:modules}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}P{0.33\linewidth}Lr@{}}
+    \toprule
+    \thead{Module} & \thead{Opened from} & \thead{Purpose} & \thead{Chapter} \\
+    \midrule
+    Main window & Application start & Display and process dynamic spectra & \ref{ch:main-window}--\ref{ch:processing} \\
+    Type~II analysis & Toolbar; \menu{Analysis} & Burst isolation, maxima, drift and shock parameters & \ref{ch:type-ii} \\
+    Band-splitting analysis & \menu{Analysis > Type II Band-splitting} & Compression ratio, Alfvén speed\index{Alfvén speed}, magnetic field & \ref{ch:band-splitting} \\
+    Projects and export & \menu{File} & Projects, figures, FITS, reports, batch export & \ref{ch:projects} \\
+    FITS Downloader & \menu{Download}; toolbar & e-CALLISTO archive search, preview and import & \ref{ch:downloader} \\
+    Multi-Station Comparison & \menu{View} & Stacked spectra from several stations & \ref{ch:comparison} \\
+    Learmonth, STEREO/SWAVES & \menu{Solar Events > Radio Bursts} & Additional radio spectra & \ref{ch:other-radio} \\
+    Solar-event viewers & \menu{Solar Events} & GOES X-rays and protons, Dst, Kp, CME catalog & \ref{ch:solar-events} \\
+    SunPy Explorer & \menu{Solar Events > Archives} & Multi-mission archive search and plots & \ref{ch:sunpy} \\
+    Solar Image Analysis & \menu{Analysis > Solar Image Analysis} & Imaging, measurement, CME kinematics, PFSS & \ref{ch:solar-window}--\ref{ch:pfss} \\
+    GCS CME Fitting & \menu{Analysis > GCS CME Fitting…} & 3-D flux-rope and shock reconstruction & \ref{ch:gcs-window}--\ref{ch:gcs-fitting} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Supported data}
+\label{sec:supported-data}
+
+The application reads and retrieves the data types listed in Table~\ref{tab:data-types}.
+The archives behind each retrieval tool are listed in Appendix~\ref{app:data-sources}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Data types handled by the \appname{}.}
+  \label{tab:data-types}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.36\linewidth}L@{}}
+    \toprule
+    \thead{Data} & \thead{Use in the application} \\
+    \midrule
+    CALLISTO FITS (\file{.fit}, \file{.fits}, \file{.fit.gz}, \file{.fits.gz}) & Loaded, combined, processed and analyzed in the main window. \\
+    ARTEMIS-IV \texttt{ARTLOOK} FITS & Loaded in the main window with instrument-specific time and intensity scaling (Section~\ref{sec:artemis}). \\
+    Learmonth Solar Radio Spectrograph archive & Converted to FIT files and imported (Section~\ref{sec:learmonth}). \\
+    STEREO/SWAVES level-2 spectra & Displayed below the CALLISTO spectrum on a shared time axis (Section~\ref{sec:swaves}). \\
+    Solar image FITS (SDO/AIA\index{SDO/AIA}, SDO/HMI\index{SDO/HMI}, SOHO/EIT\index{SOHO/EIT}, SOHO/LASCO\index{SOHO/LASCO}, STEREO/SECCHI, GOES/SUVI\index{GOES/SUVI}) & Displayed, processed and measured in Solar Image Analysis (Part~V). \\
+    Helioviewer\index{Helioviewer} JPEG2000 images & Near-real-time previews and the coronagraph images used for GCS fitting (Part~VI). \\
+    Synoptic magnetograms (GONG, HMI, ADAPT) & Boundary condition for PFSS modeling (Chapter~\ref{ch:pfss}). \\
+    GOES XRS and SGPS, Kyoto Dst, GFZ Kp, SOHO/LASCO CME catalog & Context viewers and overlays (Chapter~\ref{ch:solar-events}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Workflow overview}
+
+Figure~\ref{fig:workflow} shows how the main components relate to each other. Data enter
+the main window from local files, the downloaders or a saved project; they are processed
+in the sidebar; analysis windows take the processed spectrum as input; and every stage can
+be saved in a project or exported. The context and imaging tools can be synchronized to
+the time window of the loaded spectrum.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{tikzpicture}[
+      font=\sffamily\footnotesize,
+      box/.style={draw=accent, fill=accent!6, rounded corners=2pt, align=center,
+                  minimum height=9mm, text width=27mm, inner sep=3pt},
+      ctx/.style={box, draw=solar, fill=solar!8},
+      arr/.style={-latex, accent, line width=0.7pt},
+      node distance=5mm and 7mm]
+    \node[box] (src) {Local FITS files\\ Downloaders\\ Projects};
+    \node[box, right=of src] (load) {Open and combine\\ (Ch.~\ref{ch:opening})};
+    \node[box, right=of load] (proc) {Background, thresholds,\\ RFI cleaning (Ch.~\ref{ch:sidebar}, \ref{ch:processing})};
+    \node[box, below=of proc] (iso) {Burst isolation,\\ maximum intensities};
+    \node[box, left=of iso] (an) {Burst Analyzer:\\ drift and shock};
+    \node[box, left=of an] (bs) {Band-splitting:\\ magnetic field};
+    \node[box, below=of an] (out) {Projects, figures,\\ FITS, reports (Ch.~\ref{ch:projects})};
+    \node[ctx, below=of bs] (ctx) {Solar-event viewers,\\ SunPy Explorer};
+    \node[ctx, below=of iso] (img) {Solar Image Analysis,\\ GCS CME Fitting};
+    \draw[arr] (src) -- (load);
+    \draw[arr] (load) -- (proc);
+    \draw[arr] (proc) -- (iso);
+    \draw[arr] (iso) -- (an);
+    \draw[arr] (an) -- (bs);
+    \draw[arr] (an) -- (out);
+    \draw[arr, solar, dashed] (proc.east) -| ++(4mm,-30mm) |- (img.east)
+      node[pos=0.25, right, text=solar!80!black, align=left] {time\\window};
+    \draw[arr, solar, dashed] (ctx) -- (out);
+  \end{tikzpicture}
+  \caption{Relationship between the main components of the \appname{}. Solid arrows show
+    the radio-analysis chain; dashed arrows show context and imaging tools that use the
+    time window of the loaded spectrum.}
+  \label{fig:workflow}
+\end{figure}
+
+\section{What is new in version \appversion}
+
+Version~\appversion{} adds or substantially extends the following features, all of which
+are described in this guide:
+\begin{itemize}
+  \item automatic ridge tracking in the Maximum Intensities window
+    (Section~\ref{sec:ridge-tracking});
+  \item a selectable power-law time origin~$t_0$ and five coronal density models with a
+    side-by-side comparison in the Burst Analyzer (Section~\ref{sec:analyzer});
+  \item drag-and-drop opening and lists of recent files and projects
+    (Section~\ref{sec:opening-files});
+  \item the \gui{Timeline} panel for extending a spectrum with adjacent observations
+    (Section~\ref{sec:timeline}) and a linear or logarithmic frequency axis
+    (Section~\ref{sec:axis});
+  \item separate background-subtraction controls that always start from the raw data
+    (Section~\ref{sec:background});
+  \item the \gui{Burst List}\index{FITS Downloader!Burst List} catalog tab and unified time~\(\times\)~frequency combination in
+    the downloader (Chapter~\ref{ch:downloader});
+  \item PFSS coronal-field modeling, calibration-level selection, differential-rotation
+    compensation, circle fitting and higher-order kinematics in Solar Image Analysis
+    (Part~V);
+  \item multi-view GCS flux-rope and shock fitting with staged refinement, movies and
+    fitting reports\index{GCS!fitting report} (Part~VI).
+\end{itemize}
+
+\section{Citing the software}
+\label{sec:citing}
+\index{citation}
+
+If you use the \appname{} in your research, please cite \textcite{liyanage2026}. The
+citation and a BibTeX entry can be copied from the application with the
+\gui{Cite this Software}\index{Cite this Software} button (Section~\ref{sec:cite-dialog}). The BibTeX entry is:
+
+\begin{tcolorbox}[enhanced, colback=black!3, colframe=rulegray, boxrule=0.5pt, arc=1pt,
+  fontupper=\ttfamily\footnotesize, left=6pt, right=6pt]
+@article\{liyanage2026ecallistofitsanalyzersoftware,\\
+\hspace*{1.5em}title=\{e-CALLISTO FITS analyzer: a software framework for CALLISTO solar radio data\},\\
+\hspace*{1.5em}author=\{Liyanage, G L S S and Adassuriya, J and Jayaratne, K P S C and Monstein, C and Manoharan, P K\},\\
+\hspace*{1.5em}journal=\{RAS Techniques and Instruments\},\\
+\hspace*{1.5em}volume=\{5\}, pages=\{rzag056\}, year=\{2026\},\\
+\hspace*{1.5em}doi=\{10.1093/rasti/rzag056\}\\
+\}
+\end{tcolorbox}
+
+When you publish results that depend on archive data retrieved through the application,
+acknowledge the corresponding data providers as well (Appendix~\ref{app:data-sources}).

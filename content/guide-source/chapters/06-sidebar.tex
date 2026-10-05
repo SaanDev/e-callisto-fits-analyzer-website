@@ -1,0 +1,203 @@
+%% Chapter 6 -----------------------------------------------------------------
+\chapter{The Sidebar Panels}
+\label{ch:sidebar}
+\index{sidebar}
+
+The sidebar on the left of the main window groups the controls used most often while
+working on a spectrum. It contains eight sections, from top to bottom:
+\gui{Timeline}, \gui{Background Subtraction}, \gui{Noise Clipping Thresholds}, \gui{Units},
+\gui{Axis}, \gui{Graph Properties}, \gui{Analysis Summary} and \gui{Ruler Measurement}.
+Each section is a card with a clickable header that collapses or expands it; the state of
+every card is remembered between sessions. The whole sidebar can be hidden with the arrow
+handle on the left edge of the plot.
+
+\section{Timeline}
+\label{sec:timeline}
+\index{timeline}
+
+A loaded dataset knows which station, focus codes and observation times it came from. The
+\gui{Timeline} panel (Figure~\ref{fig:timeline}) lists them and extends or trims the
+dataset in place, without returning to the downloader.
+
+\screenshot[0.45\linewidth]{main-window/timeline}{The \gui{Timeline} panel.}{fig:timeline}{Timeline panel with two observations.}
+
+\begin{description}
+  \item[◀ Prev / Next ▶] Fetch the observation before the first, or after the last, and
+    time-combine it into the spectrum (\kbd{Ctrl+Shift+Left} and \kbd{Ctrl+Shift+Right},
+    also in the \menu{Edit} menu).
+  \item[Step selector (\(\times\)1, \(\times\)2, \(\times\)4, \(\times\)8)] The number of
+    observations added per click.
+  \item[Observation list] One row per observation, giving its start time and focus code(s).
+  \item[Trim Start / Trim End] Remove the earliest or the latest observation. Trimming down
+    to a single observation returns to a plain single-file load.
+  \item[Status line] The station, the covered time range and the number of observations,
+    for example \gui{BIR · 08:00–08:15 · 2 observations}. When a direction is unavailable
+    the panel says why, for example the end of the archive day or a timestamp that supplies
+    only part of the focus-code set.
+\end{description}
+
+Adjacent observations are looked for first among the loaded file's neighbors on disk, and
+only then in the e-CALLISTO archive, so a set that has already been downloaded extends
+without network access. Day listings are cached during the session. With
+\menu{Edit > Prefetch Adjacent Observations}\index{timeline!prefetch} ticked (the default), neighboring files are
+downloaded in the background so that the next step is instant; untick it to avoid
+unrequested archive traffic.
+
+Extending and trimming preserve your work:
+\begin{itemize}
+  \item annotations, the ruler measurement and drift picks are kept, and their time
+    coordinates shift with the axis when an earlier observation is prepended;
+  \item the active background subtraction and RFI cleaning are recalculated over the
+    longer array rather than returning the view to the raw data;
+  \item the display thresholds are kept;
+  \item every extension or trim is a single undo\index{undo} step (\kbd{Ctrl+Z}), restoring the arrays,
+    the source list and the annotations together.
+\end{itemize}
+After an extension or trim the plot is rescaled to show the full spectrum.
+
+\section{Background Subtraction}
+\label{sec:background}
+\index{background subtraction}
+
+The receiver background varies strongly from channel to channel, producing horizontal
+stripes in a raw spectrum. The \gui{Background Subtraction} panel
+(Figure~\ref{fig:bg-sub}) removes it.
+
+\screenshot[0.45\linewidth]{main-window/bg_sub}{The \gui{Background Subtraction} panel.}{fig:bg-sub}{Background Subtraction panel.}
+
+Choose a \gui{Method} and click \gui{Subtract Background}\index{background subtraction!Subtract Background}. The background is computed for
+each frequency channel over the whole observation time:
+\begin{description}
+  \item[Mean] subtracts the mean of each frequency channel; the result stays in the raw
+    intensity unit (Digits).
+  \item[Median] subtracts the median of each frequency channel; the result stays in
+    Digits. The median is less affected by bursts and RFI than the mean.
+  \item[Median (dB)] subtracts the median of each channel and converts the result to
+    decibels above that background, following the CALLISTO Plotutil\index{Plotutil} recipe used by the
+    batch processor. This method is recommended for analysis.
+\end{description}
+
+The status line below the button names the method in use, for example
+\gui{Applied: Median (dB)}\index{background subtraction!Median (dB)}. The subtraction is always computed from the raw data, so
+choosing another method and clicking again replaces the previous result rather than
+stacking on it. Re-applying the subtraction also clears any RFI cleaning or isolated burst
+that was derived from the previous result. While a Median (dB) result is shown, the
+intensity unit is locked to dB because the data are already in decibels.
+\menu{Edit > Reset to Raw} removes the subtraction.
+
+\section{Noise Clipping Thresholds}
+\label{sec:thresholds}
+\index{noise clipping thresholds}\index{display thresholds}
+
+The \gui{Noise Clipping Thresholds} panel (Figure~\ref{fig:noise-clipping}) sets the
+limits of the color scale.
+
+\screenshot[0.45\linewidth]{main-window/noise_clipping}{The \gui{Noise Clipping Thresholds} panel.}{fig:noise-clipping}{Noise Clipping Thresholds panel.}
+
+\begin{description}
+  \item[Lower Threshold / Upper Threshold] High-resolution sliders for the lower and upper
+    limits of the color scale (Vmin and Vmax). The display updates live while you drag;
+    no Apply button is needed. The value card beside each label shows the limit. When the
+    intensity is shown in Digits, a second line gives the corresponding dB value.
+  \item[Logarithmic Threshold Scale] Makes the sliders logarithmic for finer control near
+    zero.
+\end{description}
+
+The thresholds change the contrast only; the data are never clipped or modified. With
+both sliders at zero the color scale spans the whole data range. Limits chosen on the raw
+data are reset when you subtract the background, because they would saturate the new
+scale. \menu{Processing > Presets > Raw FITS Percentile (5-98\%)}\index{presets!Raw FITS Percentile} sets the limits from the
+distribution of the data on show (Section~\ref{sec:presets}).
+
+\section{Units}
+\label{sec:units}
+\index{units}
+
+The \gui{Units} panel (Figure~\ref{fig:units}) selects the units of the intensity and time
+axes.
+
+\screenshot[0.45\linewidth]{main-window/units}{The \gui{Units} panel.}{fig:units}{Units panel.}
+
+\begin{description}
+  \item[Intensity: Digits / dB] \gui{Digits} shows raw CALLISTO ADC values as stored in
+    the file. \gui{dB} converts them with the CALLISTO receiver scale (see the glossary
+    entry \emph{Digit}).
+  \item[Time: Seconds / UT] \gui{Seconds} measures time from the start of the loaded data;
+    \gui{UT} shows Universal Time. UT requires the observation start time
+    (\texttt{TIME-OBS}\index{TIME-OBS keyword}) in the FITS header.
+\end{description}
+Switching units does not modify or lose data; it only changes the axis labels, the
+color-bar label and the cursor readout.
+
+\section{Axis}
+\label{sec:axis}
+\index{frequency axis!logarithmic}
+
+The \gui{Axis} panel (Figure~\ref{fig:axis}) switches the frequency axis between
+\gui{Linear}\index{height--time fit!order} (proportional to MHz) and \gui{Log} (proportional to \(\log_{10}\) MHz).
+
+\screenshot[0.45\linewidth]{main-window/axis}{The \gui{Axis} panel.}{fig:axis}{Axis panel.}
+
+A logarithmic axis spreads out the decametric end of the band, where Type~II and
+Type~III bursts spend most of their drift, and places a fundamental--harmonic pair at a
+constant separation. Ticks are anchored to the decades and labeled in MHz (for example 20,
+30, 40, 50, 60, 70, 80 across a 20--80~MHz band), thinning as the span widens. Both
+renderers support the logarithmic axis, and annotations, the ruler, light-curve picks and
+drift points behave identically in both scales because their coordinates remain in MHz.
+The choice is remembered between sessions. The STEREO/SWAVES panel always uses its own
+logarithmic axis (Section~\ref{sec:swaves}).
+
+\section{Graph Properties}
+\label{sec:graph-properties}
+\index{graph properties}\index{color map}
+
+The \gui{Graph Properties} panel (Figure~\ref{fig:graph-properties}) controls the
+appearance of the plot. It becomes active once a file is loaded. The settings apply to
+the on-screen plot and to exported figures and reports.
+
+\screenshot[0.45\linewidth]{main-window/graph_properties}{The \gui{Graph Properties} panel.}{fig:graph-properties}{Graph Properties panel.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Controls of the \gui{Graph Properties} panel.}
+  \label{tab:graph-properties}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.16\linewidth}P{0.24\linewidth}L@{}}
+    \toprule
+    \thead{Group} & \thead{Control} & \thead{Function} \\
+    \midrule
+    Appearance & Colormap & \gui{Custom} (blue--red--yellow), \gui{viridis}, \gui{plasma}, \gui{inferno}, \gui{magma}, \gui{cividis}, \gui{turbo}, \gui{RdYlBu}, \gui{jet}, \gui{cubehelix} or \gui{bone\_r}. \\
+               & Font family\index{graph properties!font} & Typeface of all plot text; \gui{Default} or any installed font. \\
+    Text & Graph title & A custom title; leave empty for the default title. \\
+         & Remove Titles & Hide the plot title. \\
+    Font sizes & Tick labels (px) & 6--60~px (default 11). \\
+               & Axis labels (px) & 6--60~px (default 12). \\
+               & Title (px) & 6--80~px (default 14). \\
+    Text style & Title, Axis labels, Tick labels & \gui{Bold} and \gui{Italic} for each text element. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Analysis Summary}
+\label{sec:analysis-summary}
+\index{analysis summary}
+
+The \gui{Analysis Summary} panel (Figure~\ref{fig:analysis-summary}) is a read-only summary
+of the current analysis session: the fitted equation, \(R^2\), the fold number\index{fold number} and the
+average shock speed and height from the Burst Analyzer (Section~\ref{sec:analyzer}). It
+also reports when a saved session has been restored. Before any analysis it reads
+\gui{No analysis session loaded.}
+
+\screenshot[0.45\linewidth]{main-window/analysis_summary}{The \gui{Analysis Summary} panel.}{fig:analysis-summary}{Analysis Summary panel.}
+
+\section{Ruler Measurement}
+\label{sec:ruler-panel}
+\index{ruler}
+
+The \gui{Ruler Measurement} panel (Figure~\ref{fig:ruler-panel}) shows the result of the
+ruler tool, started with \menu{Analysis > Ruler Measurement}
+(Section~\ref{sec:ruler}): the two points \gui{P1} and \gui{P2} (time and frequency), the
+\gui{Duration}, the \gui{Frequency drift} and the \gui{Slope} in MHz/s. \gui{Copy} copies
+the readout to the clipboard and \gui{Clear} removes the measurement.
+
+\screenshot[0.45\linewidth]{main-window/ruler_measurements}{The \gui{Ruler Measurement} panel.}{fig:ruler-panel}{Ruler Measurement panel.}

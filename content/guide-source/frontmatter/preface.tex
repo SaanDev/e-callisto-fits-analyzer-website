@@ -1,0 +1,89 @@
+%% Preface -------------------------------------------------------------------
+\chapter{Preface}
+
+The \appname{} began as a tool for looking at the solar radio dynamic spectra recorded by
+the e-CALLISTO network and for measuring the drift of Type~II bursts. Over successive
+releases it has grown into a framework that also retrieves archive data from several
+radio instruments, places a radio event in its wider solar and geophysical context,
+analyzes solar images from space-borne observatories, and reconstructs coronal mass
+ejections in three dimensions. This guide describes all of that functionality as it
+exists in version~\appversion.
+
+\section*{About this guide}
+
+This is a \emph{user guide}: a reference to what each window, menu, panel and control does,
+what it expects as input, what it produces, and which limits apply. It is not a tutorial
+and does not teach solar radio physics or image analysis. Where an operation consists of
+several steps, the steps are given as a short numbered procedure; otherwise each feature
+is described in the place where you meet it in the interface. Short \emph{Background}
+boxes summarize the models behind computed quantities so that results can be interpreted
+and reported correctly; the full set of equations is collected in
+Appendix~\ref{app:formulas}.
+
+The guide is written for observers, students and researchers who work with e-CALLISTO
+data and related space-weather observations. No programming knowledge is required.
+
+\section*{How this guide is organized}
+
+\begin{description}
+  \item[Part I, Getting Started] introduces the software, explains installation on
+    Windows, macOS and Linux, tours the main window, and describes the help, update,
+    citation and bug-report tools.
+  \item[Part II, Working with Dynamic Spectra] covers opening and combining FITS files, the
+    sidebar processing panels, display, RFI cleaning, annotation and measurement tools,
+    the Type~II drift and shock analysis, band-splitting analysis, projects and export.
+  \item[Part III, Radio Data Access] describes the e-CALLISTO FITS Downloader, the
+    Multi-Station Comparison workspace, and the Learmonth and STEREO/SWAVES loaders.
+  \item[Part IV, Solar-Event Context] describes the GOES X-ray, GOES proton, Dst, Kp and
+    SOHO/LASCO CME catalog viewers, and the SunPy Multi-Mission Explorer.
+  \item[Part V, Solar Image Analysis] covers the multi-mission imaging workspace: data
+    retrieval, display and processing, measurement and CME kinematics, and potential-field
+    source-surface modeling.
+  \item[Part VI, Three-Dimensional CME Reconstruction] describes the GCS CME Fitting window
+    for flux-rope and shock reconstruction from several coronagraph viewpoints.
+  \item[The appendices] list keyboard shortcuts, file formats and outputs, data sources,
+    models and formulas, and troubleshooting advice, followed by a glossary, the
+    bibliography and an index.
+\end{description}
+
+\section*{Conventions}
+
+Table~\ref{tab:conventions} lists the typographic conventions used throughout the guide.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Typographic conventions used in this guide.}
+  \label{tab:conventions}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.34\linewidth}L@{}}
+    \toprule
+    \thead{Example} & \thead{Meaning} \\
+    \midrule
+    \menu{File > Export As > Export Figure} & A command reached through a menu and its submenus. \\
+    \gui{Subtract Background} & A button, field, check box, tab, panel or window as labeled in the interface. \\
+    \kbd{Ctrl+S} & A keyboard shortcut. On macOS, \kbd{Ctrl} in a shortcut corresponds to the Command key \kbd{Cmd}. \\
+    \file{project.efaproj} & A file name, file extension or folder. \\
+    \callout{3} & A numbered callout in a screenshot, explained in the accompanying table. \\
+    \textsf{\textbf{\textcolor{accent}{Note}}}, \textsf{\textbf{\textcolor{tipc}{Tip}}}, \textsf{\textbf{\textcolor{cautionc}{Caution}}} & Boxes with additional detail, a quicker way of doing something, or a warning about lost work or results that need care. \textsf{\textbf{\textcolor{scic}{Background}}} boxes summarize the model behind a computed quantity. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The screenshots were taken with the macOS version of the software in the light theme.
+On Windows and Linux the window frames, fonts and menu placement follow the conventions
+of the operating system, and in the dark theme the colors differ, but the controls and
+their behavior are identical on all platforms.
+
+\section*{Acknowledgments}
+
+The \appname{} relies on data from the e-CALLISTO network and its archive, and on the many
+public archives listed in Appendix~\ref{app:data-sources}. It is built on open-source
+scientific software, including Qt for Python (PySide6), NumPy, SciPy, Matplotlib,
+PyQtGraph, Astropy \parencite{astropy2022}, SunPy \parencite{sunpy2020}, aiapy
+\parencite{barnes2020}, sunkit-magex \parencite{stansby2020} and reproject. Their authors and
+maintainers are gratefully acknowledged.
+
+\begin{flushright}
+  \textit{Sahan S Liyanage}\\
+  \textit{Colombo, October 2026}
+\end{flushright}

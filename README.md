@@ -29,16 +29,18 @@ Visitors choose a public display name. Profiles, discussions, replies, and posti
 
 ## Content and releases
 
-- `releases-verified.json`: public GitHub release metadata checked 2 October 2026. Downloads are direct links to the real release assets; installers are not copied into this website.
-- Windows and Linux v3.0.0: x64/amd64. macOS v3.0.0: Apple silicon arm64. Windows v3.1.0 beta is labeled separately.
+- `releases-verified.json`: v3.1.0 download URLs use the owner's requested version substitution for the drafted GitHub release. Sizes and SHA-256 values come from the supplied local installers. Links become available when the owner publishes the GitHub draft; installers are not copied into this website.
+- Windows and Linux v3.1.0: x64/amd64. macOS v3.1.0: Apple silicon arm64, macOS 15 or newer.
 - `public/logo.png` and `public/screenshots/`: assets copied from the software project.
 - `public/showcase/`: optimized copies of the supplied radio, solar imaging, and GCS screenshots and example movies. The 4096px AIA movie is served at 1080px (4.7 MB); the GCS movie is 1.4 MB. Original media in the parent `assets/` folder is preserved. Videos load on demand and include download links.
-- The homepage distinguishes the two main tools and nests image analysis and GCS fitting within Solar Image Analyzer. `/tools/solar-imaging` and `/tools/gcs-fitting` provide dedicated workflow guides. PFSS and GCS examples are labeled for v3.1.0 beta.
-- `public/docs/`: full guide, architecture notes, and release notes copied from the software project. The website guide summarizes v3.1.0 beta documentation and distinguishes beta functions.
-- `lib/tutorials.ts`: three original written walkthroughs based on that documentation.
+- The homepage distinguishes the two main tools and nests image analysis and GCS fitting within Solar Image Analyzer. `/tools/solar-imaging` and `/tools/gcs-fitting` provide dedicated workflow guides for v3.1.0.
+- `content/guide-source/` preserves the author's supplied LaTeX text. `scripts/build-handbook.py --pandoc PATH` generates `content/handbook.json`: 21 chapters, five appendices, front matter, glossary, bibliography and index. The web edition retains text, equations, tables and references; figures link to the illustrated PDF, respecting the requested screenshot-free web guide.
+- `scripts/prepare-release.py` reads the supplied local v3.1.0 installers and original 174-page PDF. It writes release metadata and splits the original PDF into assets below the hosting size limit. `components/guide-pdf.tsx` reassembles and checks its SHA-256 before download or reading. `content/guide-pdf.json` records provenance; the PDF bytes remain unchanged.
+- `public/docs/` also retains earlier Markdown documentation and architecture notes as legacy reference material. Current guide links use `/guide` and `/guide/pdf`.
+- `lib/tutorials.ts`: three written walkthroughs. The tutorials page announces that video tutorials are coming soon.
 - `lib/citation.ts`: recommended paper citation and BibTeX from the project documentation.
 
-Release metadata is a verified snapshot. Update it when publishing new installers. No automated refresh is configured.
+Release metadata is a snapshot with per-release verification notes. Update it when publishing new installers. No automated refresh is configured.
 
 ## Checks
 

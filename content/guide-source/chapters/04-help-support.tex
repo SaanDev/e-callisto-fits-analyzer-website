@@ -1,0 +1,89 @@
+%% Chapter 4 -----------------------------------------------------------------
+\chapter{Help, Updates and Support}
+\label{ch:help}
+
+This chapter describes the built-in user guide, the citation dialog, the update check, the
+bug-report tool and the version information.
+
+\section{The built-in user guide}
+\label{sec:in-app-guide}
+\index{user guide!built-in}
+
+\menu{Help > User Guide} (\kbd{F1}) opens a condensed version of this guide in a separate
+window (Figure~\ref{fig:in-app-guide}). The guide follows the application theme and offers:
+\begin{itemize}
+  \item a linked table of contents and cross-references between sections;
+  \item \gui{Home} and \gui{Back} buttons for navigation;
+  \item a \gui{Find in guide...} field with \gui{Find Next}; and
+  \item \gui{Close}.
+\end{itemize}
+The GCS CME Fitting window has its own help, opened with \kbd{F1} in that window
+(Section~\ref{sec:gcs-menus}).
+
+\screenshot[0.7\linewidth]{dialogs/user_guide_dialog}{The built-in user guide window.}{fig:in-app-guide}{The \emph{e-CALLISTO FITS Analyzer User Guide} window opened with F1, showing the table of contents, the Home/Back buttons and the Find field.}
+
+\section{Citing the software}
+\label{sec:cite-dialog}
+\index{citation!dialog}
+
+The \gui{Cite this Software}\index{Cite this Software} button at the right end of the toolbar opens the citation
+dialog (Figure~\ref{fig:cite-dialog}). It shows the recommended citation and a BibTeX
+entry, with \gui{Copy Citation} and \gui{Copy BibTeX}\index{citation!BibTeX} buttons that place the text on the
+clipboard. The citation is reproduced in Section~\ref{sec:citing}.
+
+\screenshot[0.62\linewidth]{dialogs/citation_dialog}{The \gui{Cite this Software} dialog.}{fig:cite-dialog}{The Cite this Software dialog with the Citation and BibTeX boxes and the Copy Citation, Copy BibTeX and Close buttons.}
+
+\section{Checking for updates}
+\label{sec:updates}
+\index{updates}
+
+The application checks GitHub for a newer release shortly after it starts and shows the
+result in the status bar (\gui{Updates: checking...}, \gui{Updates: up to date}, or a
+notice that a new version is available). \menu{About > Check for Updates...}\index{updates!check} repeats the
+check on demand:
+\begin{itemize}
+  \item if a newer version exists, the dialog shows the current and latest version numbers
+    with a summary of the release notes, and offers to download the installer for your
+    platform to a folder you choose;
+  \item if you are up to date, the dialog confirms the installed version;
+  \item if the check fails, for example without a network connection, an error message
+    explains why.
+\end{itemize}
+Install the downloaded package as described in Chapter~\ref{ch:installation}.
+
+\section{Reporting a bug}
+\label{sec:bug-report}
+\index{bug report}\index{diagnostics bundle}
+
+\menu{About > Report a Bug...} opens the bug-report dialog
+(Figure~\ref{fig:bug-report}). It contains:
+\begin{description}[style=nextline]
+  \item[Bug Title] a short summary, for example \emph{Crash when exporting PNG}.
+  \item[What happened / Steps to reproduce / Expected behavior] a free-text description,
+    pre-filled with a template.
+  \item[Generate Diagnostics...] creates a ZIP bundle with a summary of the current session
+    (loaded file, plot type, units, color map, combination state and project path),
+    environment information (application version, operating system and Python version),
+    the operation log, the processing and RFI settings, and a structured provenance
+    summary of the loaded data. The path of the bundle is
+    shown below the text.
+  \item[Copy Issue Text] copies a formatted issue description, including the environment
+    summary, to the clipboard.
+  \item[Open GitHub Issue] opens a pre-filled issue draft on the project's GitHub page in
+    your web browser, where you can attach the diagnostics bundle before submitting.
+\end{description}
+
+\screenshot[0.62\linewidth]{dialogs/bug_report_dialog}{The \gui{Report a Bug} dialog.}{fig:bug-report}{The Report a Bug dialog with a title and description filled in, after Generate Diagnostics has created a bundle (its path shown below the text box).}
+
+\begin{note}
+  Nothing is sent automatically. The issue is created only when you submit it on GitHub.
+  Review the diagnostics bundle before attaching it if your file names or paths are
+  confidential.
+\end{note}
+
+\section{About}
+\label{sec:about}
+
+\menu{About > About} shows the version number, the developer and the affiliation. The
+Solar Image Analysis and Maximum Intensities windows have their own \menu{About} menus with
+information about those tools.

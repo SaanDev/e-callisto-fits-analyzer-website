@@ -1,0 +1,133 @@
+%% ===========================================================================
+%%  e-CALLISTO FITS Analyzer --- User Guide (version 3.1.0)
+%%  Sahan S Liyanage, Astronomical and Space Science Unit,
+%%  University of Colombo, Sri Lanka
+%%
+%%  Overleaf: Menu -> Compiler: pdfLaTeX (default). Biber and MakeIndex run
+%%  automatically. Main document: main.tex.
+%% ===========================================================================
+\documentclass[
+  paper=a4,
+  fontsize=11pt,
+  twoside=true,
+  open=right,
+  BCOR=8mm,
+  DIV=11,
+  headinclude=false,
+  footinclude=false,
+  parskip=half-,
+  numbers=noenddot,
+  toc=bibliography,
+  toc=index,
+  listof=totoc,
+  chapterprefix=false,
+  headings=big
+]{scrbook}
+
+\usepackage{ecallisto-handbook}
+
+% Bibliography --------------------------------------------------------------
+\usepackage[backend=biber, style=authoryear-comp, maxcitenames=2,
+  maxbibnames=6, uniquelist=false, uniquename=false, dashed=false,
+  sorting=nyt, giveninits=true, doi=true, url=true, isbn=false]{biblatex}
+\addbibresource{references.bib}
+\DeclareFieldFormat[article,inproceedings]{title}{#1}
+\renewcommand*{\bibfont}{\small}
+
+% Index ---------------------------------------------------------------------
+\usepackage{imakeidx}
+\makeindex[intoc, columns=2, title=Index]
+\indexsetup{level=\chapter*, toclevel=chapter, firstpagestyle=plain}
+
+% Faster drafts: compile only selected chapters by uncommenting and editing
+% the line below (front matter and back matter are always typeset).
+% \includeonly{chapters/16-solar-window,chapters/17-solar-processing}
+
+\begin{document}
+
+% ===========================================================================
+\frontmatter
+% ===========================================================================
+\input{frontmatter/titlepage}
+\input{frontmatter/copyright}
+\input{frontmatter/preface}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ===========================================================================
+\mainmatter
+% ===========================================================================
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+What the software does, how to install it, and a tour of the main window,
+its menus and the built-in help.\end{minipage}\end{center}}
+\part{Getting Started}
+\include{chapters/01-introduction}
+\include{chapters/02-installation}
+\include{chapters/03-main-window}
+\include{chapters/04-help-support}
+
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+Loading, combining, processing and measuring CALLISTO dynamic spectra, the
+Type~II analysis tools, and saving and exporting your work.\end{minipage}\end{center}}
+\part{Working with Dynamic Spectra}
+\include{chapters/05-opening-data}
+\include{chapters/06-sidebar}
+\include{chapters/07-processing-tools}
+\include{chapters/08-type-ii}
+\include{chapters/09-band-splitting}
+\include{chapters/10-projects-export}
+
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+Retrieving radio data from the e-CALLISTO archive, comparing stations, and
+working with Learmonth and STEREO/SWAVES spectra.\end{minipage}\end{center}}
+\part{Radio Data Access}
+\include{chapters/11-downloader}
+\include{chapters/12-comparison}
+\include{chapters/13-other-radio}
+
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+X-ray, particle, geomagnetic and CME catalog context for a radio event, and
+the SunPy Multi-Mission Explorer.\end{minipage}\end{center}}
+\part{Solar-Event Context}
+\include{chapters/14-solar-events}
+\include{chapters/15-sunpy-explorer}
+
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+The multi-mission imaging workspace: obtaining and displaying solar images,
+measuring eruptions, and modeling the coronal magnetic field.\end{minipage}\end{center}}
+\part{Solar Image Analysis}
+\include{chapters/16-solar-window}
+\include{chapters/17-solar-processing}
+\include{chapters/18-solar-measurements}
+\include{chapters/19-pfss}
+
+\setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
+Multi-viewpoint reconstruction of coronal mass ejections and their shocks
+with the Graduated Cylindrical Shell and spheroid/ellipsoid
+models.\end{minipage}\end{center}}
+\part{Three-Dimensional CME Reconstruction}
+\include{chapters/20-gcs-window}
+\include{chapters/21-gcs-fitting}
+
+% ===========================================================================
+\appendix
+% ===========================================================================
+\addpart{Appendices}
+\include{backmatter/a-shortcuts}
+\include{backmatter/b-file-formats}
+\include{backmatter/c-data-sources}
+\include{backmatter/d-formulas}
+\include{backmatter/e-troubleshooting}
+
+% ===========================================================================
+\backmatter
+% ===========================================================================
+\include{backmatter/glossary}
+
+\printbibliography[heading=bibintoc, title=Bibliography]
+
+\printindex
+
+\end{document}

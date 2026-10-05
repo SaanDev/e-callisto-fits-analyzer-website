@@ -1,0 +1,116 @@
+%% Appendix D ----------------------------------------------------------------
+\chapter{Models and Formulas}
+\label{app:formulas}
+\index{formulas}
+
+This appendix collects the relations used to compute the quantities reported by the
+application. Heights \(r\) are heliocentric distances in solar radii (\(R_\odot = 696\,340\)~km),
+electron densities \(n_e\) are in cm\(^{-3}\) and frequencies \(f\) in MHz.
+
+\section{Intensity scales}
+
+\begin{description}
+  \item[CALLISTO digits to dB] the CALLISTO receiver's logarithmic detector maps 2500~mV onto
+    256 digits with a slope of 25.4~mV/dB, so that
+    \(\Delta I_\mathrm{dB} = \Delta I_\mathrm{digits}\times 2500/(256\times25.4)\approx
+    0.384\)~dB per digit. The Plotutil median-dB recipe used by \gui{Median (dB)} and the
+    batch processor uses \(2500/(255\times25.4)\).
+  \item[ARTEMIS-IV] \(4096\) ADC counts over a 70~dB range: 58.51 counts per dB.
+  \item[GOES flare class] from the peak 0.1--0.8~nm flux \(F\): A for \(F<10^{-7}\), B for
+    \(10^{-7}\le F<10^{-6}\), C for \(10^{-6}\le F<10^{-5}\), M for \(10^{-5}\le F<10^{-4}\) and
+    X for \(F\ge10^{-4}\)~W\,m\(^{-2}\); the number is \(F\) divided by the lower limit of the class (\(10^{-8}\) for A up to \(10^{-4}\) for X), for example M2.5 for \(F = 2.5\times10^{-5}\)~W\,m\(^{-2}\).
+\end{description}
+
+\section{Radio burst analysis}
+
+\paragraph{Plasma frequency.} The fundamental emission frequency is the local plasma frequency
+\begin{equation}
+  f_p = 8.98\times10^{-3}\sqrt{n_e}\quad\text{MHz},
+\end{equation}
+so \(n_e = (f/8.98\times10^{-3})^2\). For harmonic emission \(f = 2f_p\); the application divides
+the observed frequencies and drift rates by two before computing heights and speeds.
+
+\paragraph{Coronal density models.} Each model is multiplied by the fold number \(N\)
+(\(n_e \to N\,n_e\)).
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Coronal electron-density models.}
+  \label{tab:density-formulas}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.22\linewidth}L@{}}
+    \toprule
+    \thead{Model} & \thead{\(n_e(r)\) in cm\(^{-3}\)} \\
+    \midrule
+    Newkirk & \(4.2\times10^{4}\times10^{4.32/r}\) \\
+    Saito & \(1.36\times10^{6}\,r^{-2.14} + 1.68\times10^{8}\,r^{-6.13}\) \\
+    Leblanc & \(3.3\times10^{5}\,r^{-2} + 4.1\times10^{6}\,r^{-4} + 8.0\times10^{7}\,r^{-6}\) \\
+    Baumbach--Allen & \(10^{8}\left(2.99\,r^{-16} + 1.55\,r^{-6} + 0.036\,r^{-1.5}\right)\) \\
+    Mann & \(5.14\times10^{9}\exp\!\left[13.83\left(1/r - 1\right)\right]\) \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+For the Newkirk model the emission height has the closed form
+\begin{equation}
+  r = \frac{4.32\,\ln 10}{\ln\!\left[n_e/(N\times4.2\times10^{4})\right]}.
+\end{equation}
+For the other models the height is found numerically between \(1\,R_\odot\) and 215~\(R_\odot\)
+(1~AU); frequencies outside this range have no height.
+
+\paragraph{Power-law backbone and drift rate.}
+\begin{equation}
+  f(t) = a\,(t-t_0)^{-b},\qquad
+  \frac{\mathrm{d}f}{\mathrm{d}t} = -a\,b\,(t-t_0)^{-b-1}.
+\end{equation}
+The goodness of fit is reported as \(R^2 = 1 - \sum(f_i-\hat f_i)^2/\sum(f_i-\bar f)^2\) and
+\(\mathrm{RMSE} = \sqrt{\overline{(f_i-\hat f_i)^2}}\).
+
+\paragraph{Shock speed.}
+\begin{equation}
+  v = R_\odot\left|\frac{\mathrm{d}f}{\mathrm{d}t}\right|\left|\frac{\mathrm{d}r}{\mathrm{d}f}\right|,
+  \qquad \frac{\mathrm{d}r}{\mathrm{d}f} = \frac{2\,n_e}{f\,\left|\mathrm{d}n_e/\mathrm{d}r\right|}.
+\end{equation}
+The \emph{initial} values are evaluated at the starting frequency, the 90th percentile of the
+fitted frequencies; the \emph{average} values are means along the backbone with their standard
+errors.
+
+\paragraph{Band splitting} \parencite{vrsnak2002}.
+\begin{gather}
+  X = \left(\frac{f_u}{f_l}\right)^2,\qquad
+  M_A = \sqrt{\frac{X\,(X+5)}{2\,(4-X)}},\qquad
+  V_A = \frac{V_s}{M_A},\\
+  B = V_A\sqrt{\mu_0\,m_p\,n_e}\quad(\text{SI units; reported in gauss}).
+\end{gather}
+
+\section{Image measurements}
+
+\paragraph{Circle fit.} For a sphere of fitted radius \(r\) resting on the solar surface, the
+height of its top is \(h = 1\,R_\odot + 2r\).
+
+\paragraph{Height--time fits.}
+\begin{align}
+  \text{linear:}\quad & h = h_0 + v\,t,\\
+  \text{quadratic:}\quad & h = h_0 + v_0\,t + \tfrac12 a\,t^2,\\
+  \text{cubic:}\quad & h = h_0 + v_0\,t + \tfrac12 a_0\,t^2 + \tfrac16 j\,t^3.
+\end{align}
+Uncertainties are propagated from the covariance of the fitted coefficients.
+
+\section{Three-dimensional CME models}
+
+\paragraph{GCS} \parencite{thernisien2006,thernisien2011}. Parameters: Stonyhurst longitude and
+latitude of the propagation direction, tilt, leading-edge height \(h\), half-angle \(\alpha\) and
+aspect ratio \(\kappa\). Intrinsic widths:
+\begin{equation}
+  w_\text{face-on} = 2\left[\alpha + \arcsin\kappa\right],\qquad
+  w_\text{edge-on} = 2\arcsin\kappa.
+\end{equation}
+
+\paragraph{Shock spheroid and ellipsoid} \parencite{kouloumvakos2022}. With the radial semi-axis
+\(a\) and lateral semi-axes \(b\) and \(c\):
+\begin{equation}
+  h = r_\text{center} + a,\qquad \kappa = \frac{b}{h - 1\,R_\odot},\qquad
+  \varepsilon = \begin{cases} +\sqrt{1-(b/a)^2} & a > b,\\ -\sqrt{1-(a/b)^2} & a < b,\end{cases}
+  \qquad \alpha = \frac{b}{c}.
+\end{equation}
+A spheroid has \(c = b\) (\(\alpha = 1\), no tilt).

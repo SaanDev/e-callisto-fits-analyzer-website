@@ -1,0 +1,232 @@
+%% Chapter 21 ----------------------------------------------------------------
+\chapter{Fitting the Flux Rope and the Shock}
+\label{ch:gcs-fitting}
+
+This chapter describes the models of the GCS CME Fitting window, how they are aligned and
+refined against the observed fronts, how fits are recorded over time to build kinematics, and
+how results are exported.
+
+\section{The Model card}
+
+The \gui{Model} card (Figure~\ref{fig:gcs-model-card}) shows the parameters of one model at a
+time. Choose the model with \gui{Edit} on the card's title row:
+\begin{description}
+  \item[GCS flux rope] the Graduated Cylindrical Shell, fitted to the CME ejecta.
+  \item[Shock] a spheroid or ellipsoid, fitted to the shock the CME drives --- its faint outer
+    envelope (Section~\ref{sec:shock-fitting}).
+\end{description}
+Both models are drawn in every panel (the shell in orange and the shock in sky blue by
+default); the edited model is the one that the handles, clicks, \gui{Refine fit}\index{GCS!refine fit},
+\gui{Commit} and the Kinematics card act on.
+
+\screenshot[0.45\linewidth]{gcs/gcs_model_card}{The \gui{Model} card with the GCS parameters.}{fig:gcs-model-card}{The Model card in GCS flux rope mode: the six sliders with numeric entry (Lon, Lat, Tilt, Height, α, κ), the derived-geometry readout, Refine fit and Commit GCS, and the Pick front points, wireframe, Undo point and Clear points controls.}
+
+\section{GCS parameters}
+\label{sec:gcs-parameters}
+\index{GCS!parameters}
+
+Six sliders, each with a numeric entry, control the shell (Table~\ref{tab:gcs-params}).
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Parameters of the GCS flux-rope model.}
+  \label{tab:gcs-params}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.12\linewidth}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Slider} & \thead{Range} & \thead{Meaning} \\
+    \midrule
+    Lon & \(-180^\circ\) to \(180^\circ\) & Stonyhurst longitude of the direction of propagation. \\
+    Lat & \(-89^\circ\) to \(89^\circ\) & Stonyhurst latitude of the direction of propagation. \\
+    Tilt & \(-90^\circ\) to \(90^\circ\) & Rotation of the shell about the propagation direction. \\
+    Height & 1.05--30~\(R_\odot\) & Distance of the leading edge (apex) from Sun center --- not the altitude above the surface. \\
+    \(\alpha\) & \(1^\circ\)--\(80^\circ\) & Half-angle between the legs of the shell. \\
+    \(\kappa\) & 0.05--0.95 & Aspect ratio, controlling the thickness of the shell. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Set the direction, tilt, \(\alpha\) and \(\kappa\) before fine-tuning the height. The apex can
+also be dragged in any panel: moving it around the Sun turns the direction, and moving it
+outwards or inwards changes the height. The readout below the sliders gives the derived leg
+height, apex cross-section radius, center distance, and the intrinsic face-on and edge-on
+widths.
+
+\begin{background}[Background: GCS geometry]
+  The GCS is a hollow croissant: two conical legs joined by a curved front with a circular
+  cross-section that grows with distance from the Sun \parencite{thernisien2006,thernisien2011}.
+  The face-on width is \(2[\alpha + \arcsin\kappa]\) and the edge-on width \(2\arcsin\kappa\);
+  both include the shell thickness and differ from the apparent width in a coronagraph image.
+  Because the height is the leading edge, it feeds the height--time fit directly. GCS is a
+  flux-rope model, not a shock model.
+\end{background}
+
+\section{Clicking the front}
+\label{sec:front-points}
+
+With \gui{Pick front points}\index{GCS!front points} ticked, left-click points along the same front in two or more
+views. Points are drawn in each panel and are used by \gui{Refine fit}:
+\begin{itemize}
+  \item a right-click removes that panel's last point;
+  \item \gui{Undo point} (\kbd{Ctrl+Z}) removes the point clicked last in any panel;
+  \item \gui{Clear points} removes all of the edited model's points on the displayed images;
+  \item untick \gui{Pick front points} to navigate without adding points.
+\end{itemize}
+The \gui{GCS wireframe} and \gui{Shock wireframe} options hide a model temporarily so that the
+observed front can be inspected. Each model keeps its own front points.
+
+\section{Refining the fit}
+\label{sec:refine}
+\index{GCS!refinement}
+
+\gui{Refine fit} (\kbd{Ctrl+R}) makes a local least-squares adjustment of the edited model
+through the clicked points. It refines a fit; it cannot find one from scratch, because
+longitude, \(\alpha\) and \(\kappa\) are poorly conditioned in GCS, so first align the shell
+roughly with the CME by eye. The refinement fits as many parameters as the points support
+(Table~\ref{tab:refine-stages}); the status bar names the parameters fitted and how many more
+points would free the next one.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Staged refinement of the GCS model.}
+  \label{tab:refine-stages}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.38\linewidth}L@{}}
+    \toprule
+    \thead{Front points} & \thead{Parameters fitted} \\
+    \midrule
+    2 & Height \\
+    4, in two separated views & Height, longitude, latitude \\
+    5 & \ldots and tilt \\
+    6 & \ldots and \(\alpha\) \\
+    7 & All six parameters (adding \(\kappa\)) \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The status bar also reports the views taking part, their angular separations and the number
+of points. Only images within the \gui{Max time offset}\index{GCS!max time offset} of the shared time take part. With a
+single view, or with no pair of views between 20° and 160° apart, the direction cannot be
+constrained and is held fixed; empty, nearly coincident and nearly opposite viewpoints do not
+constrain the direction independently. Formal errors are shown when the local solution is
+reliable, are withheld otherwise, and become invalid when the model or the observations
+change.
+
+\section{Recording fits}
+\label{sec:gcs-recording}
+
+\gui{Commit GCS}\index{GCS!commit} (\kbd{Ctrl+Return}) records the current fit at the shared time, together with
+the images it was made from and their observation details. Step to later times and repeat to
+build a height--time series. One combination of images cannot be recorded at two different
+times, so repeated images never count as independent height measurements.
+
+When stepping, dragging the time slider or playing, the recorded shells\index{GCS!recorded shells} are drawn: each fit on
+its own images, interpolated between recorded times (a display, not a fit) and held before the
+first and after the last record. A model with nothing recorded keeps its slider values, so
+commit before stepping away. \menu{Fit > Restore recorded model at current time} and
+\menu{Delete recorded fit at current time} revisit or remove a record; \menu{Fit > Reset model
+parameters} resets the edited model.
+
+Moving the event range to a different event sets the recorded fits aside. They return when you
+come back to that event, and the JSON export includes them.
+
+\section{Kinematics}
+\label{sec:gcs-kinematics}
+\index{GCS!kinematics}
+
+The \gui{Kinematics} card (Figure~\ref{fig:gcs-kinematics}) lists the recorded fits of the
+edited model beside a height--time graph. For the GCS model the table shows \gui{Time (UT)},
+\gui{t (s)}, \gui{Apex (R☉)}, \gui{Lon (°)}, \gui{Lat (°)} and \gui{α (°)}; for the shock,
+\(\kappa\) replaces \(\alpha\).
+
+\screenshot{gcs/gcs_kinematics}{A GCS fit with three recorded times; the \gui{Kinematics} card (right) lists the recorded fits beside their height--time graph and linear fit.}{fig:gcs-kinematics}{The Kinematics · GCS card with several recorded fits in the table, the height–time graph with a quadratic fit and error bars, and the Fit, Fit height–time, Clear fits and Export controls.}
+
+\begin{itemize}
+  \item Double-click a row to go back to its time and restore its model.
+  \item Choose a \gui{Linear}\index{height--time fit!order}, \gui{Quadratic} or \gui{Cubic} fit and click
+    \gui{Fit height–time}\index{GCS!kinematics}. A fit of degree \(n\) needs \(n+1\) recorded times, and \(n+2\)
+    before errors can be estimated (Section~\ref{sec:tracking-panel}).
+  \item \gui{Clear fits} removes the recorded fits of the edited model.
+  \item \gui{Export} saves the table as CSV or the graph as a figure.
+\end{itemize}
+The heights are de-projected under the model assumptions, so the speeds are model-dependent
+radial speeds rather than plane-of-sky speeds.
+
+\section{Fitting the shock}
+\label{sec:shock-fitting}
+\index{shock model}\index{spheroid}\index{ellipsoid}
+
+Choose \gui{Edit: Shock} to fit the shock with a \gui{Spheroid} or an \gui{Ellipsoid}
+(Figure~\ref{fig:gcs-shock}). The parameters follow PyThea\index{PyThea}'s conventions exactly
+(Table~\ref{tab:shock-model-params}).
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Parameters of the shock model.}
+  \label{tab:shock-model-params}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.13\linewidth}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Slider} & \thead{Range} & \thead{Meaning} \\
+    \midrule
+    Lon, Lat & as for GCS & Stonyhurst direction of the shock center and apex. \\
+    Height & 1.05--30~\(R_\odot\) & Heliocentric distance of the apex (center distance plus the radial semi-axis \(a\)). \\
+    \(\kappa\) & 0.05--2.0 & Self-similar constant \(\kappa = b/(h - 1\,R_\odot)\): the lateral size for a given apex height. \\
+    \(\varepsilon\) & \(-0.99\) to \(0.99\) & Signed eccentricity: positive stretches the shock radially (\(a > b\)), negative flattens it (\(a < b\)). \\
+    Tilt & \(-90^\circ\) to \(90^\circ\) & Ellipsoid only: rotation about the radial axis; at 0 the \(b\) axis is parallel to the solar equator. \\
+    \(\alpha\) (b/c) & 0.5--1.5 & Ellipsoid only: ratio of the two lateral semi-axes. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\screenshot{gcs/gcs_shock_fit}{Shock and flux-rope models in three viewpoints.}{fig:gcs-shock}{The three viewpoints with both the GCS shell (orange) and the shock spheroid (sky blue) drawn, Edit: Shock selected, and shock front points clicked on the outer envelope.}
+
+The derived readout gives the center distance and the semi-axes, under PyThea's names. Click the
+shock front and use \gui{Refine fit}: the model's exactly computed projected outline is pulled
+through the points in every view, with its own sequence of height, direction and shape
+parameters. Record shock fits with \gui{Commit Shock}\index{shock model!commit}. The shock keeps its own front points,
+recorded fits, kinematics and CSV file. With fewer than three views, \(\varepsilon\) and the tilt
+are weakly constrained and an ellipsoid's shape parameters trade off against each other, so
+prefer a spheroid.
+
+\section{Exporting results}
+\label{sec:gcs-export}
+\index{GCS!export}
+
+Images and graphs are drawn again from the data rather than copied from the screen, always on
+a white page whatever the application theme; graphs follow the OriginPro style. Figures can be
+saved as PNG, PDF, EPS, SVG, TIFF or JPG.
+\begin{description}
+  \item[Export analysis JSON…] (\kbd{Ctrl+Shift+S}) the current, recorded and set-aside
+    parameters of both models, with the clicked points, image times, offsets and observer
+    geometry. The file (schema version~2) has a \texttt{shock} section beside the GCS keys. It
+    is an analysis export, not a PyThea session file.
+  \item[Export recorded fits CSV…] the recorded series of the edited model
+    (\file{cme_gcs_fit.csv} or \file{cme_shock_fit.csv}).
+  \item[Export height–time graph…] the recorded apex heights with error bars and the chosen
+    fit, titled with the model and fit, with the speed and acceleration in the legend.
+  \item[Save viewpoint snapshot…] the three views as shown, with arcsecond axes, the
+    wireframes, the solar limb, the front points and a note of where each drawn shell comes
+    from. With the banners hidden, only each panel's name is printed above it.
+  \item[Export movie (GIF/MP4)…] every time step as playback shows it, recorded shells
+    included, at the playback speed. MP4 needs the bundled FFmpeg; a GIF is offered when it is
+    unavailable.
+  \item[Export fitting report (PDF)…] the viewpoints and their separations, the model at the
+    current time, every recorded fit drawn on the images it was made from with its parameters
+    and observation details, each model's linear, quadratic and cubic height--time fits (each
+    with a titled graph and all its parameters, then compared), and the method, its limits and
+    references (Figure~\ref{fig:gcs-report}).
+\end{description}
+Stepping through time for a movie or a report leaves the window as it was: the time shown, the
+working models, their formal errors and the front points are restored afterwards.
+
+\screenshot[0.55\linewidth]{gcs/gcs_report_page}{A page of the GCS fitting report.}{fig:gcs-report}{A representative page of the exported PDF fitting report showing a recorded fit drawn on its three images with the parameter table.}
+
+\begin{caution}[Scientific limits]
+  GCS models the flux rope, not the shock. Formal fit errors leave out the uncertainty from
+  identifying the front, non-simultaneous images, image preparation and the assumed geometry,
+  and a small residual does not make a fit unique or accurate \parencite{verbeke2023}. Helioviewer\index{Helioviewer}
+  JPEG2000 images are display products: suitable for fitting shapes, not for calibrated
+  intensity measurements. \menu{Help > Fitting workflow and scientific limits…} (\kbd{F1})
+  summarizes the procedure and these limits.
+\end{caution}

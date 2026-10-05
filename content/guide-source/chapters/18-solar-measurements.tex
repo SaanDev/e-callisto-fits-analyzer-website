@@ -1,0 +1,129 @@
+%% Chapter 18 ----------------------------------------------------------------
+\chapter{Measurements and CME Kinematics}
+\label{ch:solar-measurements}
+\index{measurement tools}\index{CME kinematics}
+
+The Measure toolbar above the image provides click-driven tools for distances, intensity
+profiles, region statistics and CME tracking. The CME tracking panel to the right of the
+image collects the measurements of a sequence and fits their kinematics.
+
+\section{Enabling the tools}
+
+Tick \gui{Measurements}\index{measurement tools!enabling} in the Measure toolbar to enable the tools; the CME tracking panel
+becomes available at the same time. One tool is active at a time. A right-click or \kbd{Esc}
+cancels a pick in progress without leaving the tool. Results are shown in the status line and
+appended to the Details drawer\index{Solar Image Analysis!Details drawer}. \gui{Pan / Zoom}\index{Solar Image Analysis!pan and zoom}, at the right of the toolbar, enables
+dragging and scroll-wheel zooming of the image; the zoom is kept while the movie plays, and
+unticking it returns to the full frame.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Tools of the Measure toolbar.}
+  \label{tab:measure-tools}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.17\linewidth}L@{}}
+    \toprule
+    \thead{Tool} & \thead{What it does} \\
+    \midrule
+    \gui{Ruler}\index{measurement tools!ruler} & Two clicks give the plane-of-sky distance in arcseconds, \(R_\odot\) and Mm, and the position angle (measured from north toward east). \\
+    \gui{Profile}\index{measurement tools!profile} & Two clicks plot the intensity along the cut, for example across a loop, a filament or a CME front, in the \gui{Intensity Profile} window. \\
+    \gui{Region Stats}\index{measurement tools!region statistics} & Summarizes the crop rectangle: pixel count, mean, median, minimum, maximum, standard deviation and intensity-weighted centroid (arcsec). Enable \gui{Rectangle crop}\index{crop!rectangle} first to choose the region. \\
+    \gui{Track CME}\index{Track CME} & One click per frame on the leading edge of a CME. The height is its distance from disk center. Best for limb events. \\
+    \gui{Circle Fit}\index{circle fit} & Three or more clicks along a circular front per frame. Best for eruptions near disk center. \\
+    \gui{Clear} & Resets every measurement: picks, circles, table and overlays. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The 3-D reconstruction of CMEs from several viewpoints is performed in the separate GCS CME
+Fitting window (Part~VI), opened from \menu{Analysis > GCS CME Fitting…}.
+
+\section{Tracking a CME}
+\label{sec:track-cme}
+\index{Track CME}
+
+\gui{Track CME} measures a height--time profile with one click per frame
+(Figure~\ref{fig:track-cme}).
+\begin{steps}
+  \item Go to the first frame in which the CME front is visible.
+  \item Select \gui{Track CME} and click the leading edge. The pick is added to the tracking
+    table and, with \gui{Auto-advance frame after each pick}\index{Track CME!auto-advance} ticked (the default), the next
+    frame is shown.
+  \item Repeat on each frame, then choose the fit order and click \gui{Fit Height–Time}\index{height--time fit}.
+\end{steps}
+The height is the plane-of-sky distance of the clicked point from Sun center in \(R_\odot\);
+the position angle (PA) is recorded with it. The tool works on any imager --- EUVI, AIA,
+SUVI, COR, LASCO and HI. Clicking again on a frame replaces its pick.
+
+\screenshot{solar/track_cme}{CME tracking with the height--time graph in the tracking panel.}{fig:track-cme}{A LASCO C2 running-difference frame with leading-edge picks, and the CME tracking panel showing the table, the height–time plot with a quadratic fit, and the speed/acceleration text.}
+
+\section{Fitting a circle to a CME front}
+\label{sec:circle-fit}
+\index{circle fit}
+
+For eruptions near disk center the front expands as a growing dome rather than moving
+outwards from the limb, and a single leading-edge click has no well-defined origin. \gui{Circle
+Fit} models the CME as a uniformly expanding sphere resting on the solar surface
+(Figure~\ref{fig:circle-fit}).
+\begin{steps}
+  \item Select \gui{Circle Fit} and click three or more points along the visible front. The
+    least-squares circle is drawn from the third click and tightens with each further point.
+  \item Click \gui{Commit Circle}\index{circle fit!commit} (\kbd{Ctrl+Return}). The frame's result is added to the table
+    and the next frame is shown.
+  \item Repeat on each frame, then click \gui{Fit Height–Time}.
+\end{steps}
+Each row gives the height \(h = 1\,R_\odot + 2r\), where \(r\) is the fitted radius (the
+sphere's top is one diameter above the surface), the radius in \(R_\odot\), the position angle
+of the center and the number of points. The fit residual, the center and the leading-edge
+distance from disk center appear in the row's tooltip. Re-committing a frame replaces its
+entry.
+\begin{itemize}
+  \item Click a wide arc. A short arc is fitted, but it constrains the radius very weakly, and
+    the panel warns when the arc spans less than about 30°.
+  \item \gui{Lock centre}\index{circle fit!lock center} freezes the center at its current fitted value so that later frames
+    fit the radius alone. Use it once the dome has stopped drifting.
+\end{itemize}
+The fit uses Taubin\index{circle fit!Taubin method}'s method \parencite{taubin1991}, which is not biased toward small radii on
+partial arcs, and works in helioprojective arcseconds so that the front remains a circle when
+the plate scale differs between the axes.
+
+\screenshot{solar/circle_fit}{Circle fitting of an on-disk CME front.}{fig:circle-fit}{An AIA or EUVI difference image of a disk-center eruption with clicked points and the fitted circle, and the tracking panel showing circle-fit rows, the Lock centre and Commit Circle controls.}
+
+\section{The CME tracking panel}
+\label{sec:tracking-panel}
+\index{tracking panel}
+
+The tracking panel shows the measurements of the active tool:
+\begin{description}
+  \item[Table] for \gui{Track CME}: \gui{Time (UT)}, \gui{t (s)} since the first pick,
+    \gui{Height (R☉)} and \gui{PA (°)}; for \gui{Circle Fit}: additionally \gui{Radius (R☉)}
+    and the number of points \gui{N}.
+  \item[Height--time graph] the measured heights against time, with the live fit.
+  \item[Fit] the polynomial order: \gui{Linear}\index{height--time fit!order}, \gui{Quadratic} or \gui{Cubic}. Changing it
+    refits the points already in the graph.
+  \item[Fit Height–Time] fits the points and reports the speed and acceleration below the
+    graph.
+  \item[Clear Picks / Clear Circles] removes the measurements of the active tool.
+  \item[Export] \gui{Table as CSV…}, or \gui{Graph (PNG, PDF, EPS, SVG, TIFF, JPG)…} drawn in
+    light mode and the OriginPro style.
+\end{description}
+
+\begin{background}[Background: height--time fits]
+  \begin{description}
+    \item[Linear] \(h = h_0 + v t\): one plane-of-sky speed for the whole track. The
+      acceleration is taken from a companion quadratic fit, as in the CDAW\index{CDAW} CME catalog.
+    \item[Quadratic] \(h = h_0 + v_0 t + \tfrac12 a t^2\): constant acceleration, with the
+      speed reported at the first and last frame.
+    \item[Cubic] adds a constant jerk, with the speed and acceleration reported at both ends.
+  \end{description}
+  Every value carries a \(1\sigma\) uncertainty propagated from the fit covariance, so the
+  correlations between the polynomial terms are included. A fit of degree \(n\) needs \(n+1\)
+  points, and \(n+2\) before an uncertainty can be estimated; with fewer points the value is
+  shown without an error rather than with a misleading zero. Heights from \gui{Track CME} are
+  plane-of-sky distances, so the derived speeds generally underestimate the true radial
+  speed; \gui{Circle Fit} heights rely on the assumption of a sphere expanding from the
+  surface.
+\end{background}
+
+The measurements --- picks, circles, the lock state and the fit order --- are saved in
+\file{.ecsolar}\index{ecsolar@.ecsolar file} sessions (Section~\ref{sec:solar-sessions}).

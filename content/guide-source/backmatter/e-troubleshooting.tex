@@ -1,0 +1,98 @@
+%% Appendix E ----------------------------------------------------------------
+\chapter{Troubleshooting}
+\label{app:troubleshooting}
+\index{troubleshooting}
+
+\newcommand{\problem}[1]{\par\medskip\noindent{\sffamily\bfseries\color{accentdark}#1}\par\nobreak\smallskip}
+
+\section{Main window}
+
+\problem{Buttons and menu items are grayed out.}
+Most analysis controls, and the \gui{Graph Properties} panel, are enabled only after a file is
+loaded. \gui{Isolate Burst} additionally requires background subtraction.
+
+\problem{Rectangle zoom does nothing.}
+Click \gui{Lock zooming and panning} first, then \gui{Rectangular Zooming}, and drag a
+rectangle. Each activation allows one rectangle.
+
+\problem{Drift-rate picking does not stop.}
+Right-click or double-click to finish the series of points.
+
+\problem{Selected files cannot be combined.}
+The message names the reason --- for example non-consecutive timestamps, mixed stations or an
+incomplete time~\(\times\)~focus-code grid. Check the rules in Table~\ref{tab:combine-rules}.
+
+\problem{The UT time axis is unavailable.}
+UT display, UT display ranges and UT alignment in the Multi-Station Comparison need the
+\texttt{TIME-OBS} keyword in the FITS header. Use seconds instead.
+
+\problem{The thresholds were reset after background subtraction.}
+Limits chosen on raw data would saturate the background-subtracted scale and are therefore
+reset. Set them again, or apply a preset.
+
+\problem{The application closed unexpectedly.}
+Restart it and accept the offer to recover the autosave snapshot, or use \menu{File > Recover
+Last Session...}.
+
+\problem{A save fails on Windows.}
+The proposed folder may not be writable (for example inside \file{C:\\Program Files}); choose
+another folder when asked.
+
+\section{Downloads and archives}
+
+\problem{The station list is empty or a station is missing.}
+Station lists contain only stations with data on the selected UTC days. Check the date and the
+network connection.
+
+\problem{A listed burst has no FITS files.}
+Catalog detections do not guarantee that matching files are archived. Increase
+\gui{Extra time}, or search another station.
+
+\problem{Recent SOHO/LASCO or SOHO/EIT data cannot be found.}
+The calibrated archives lag real time by many months. Use \gui{Find Latest} to locate the newest
+archived data, or \gui{Live Preview (Helioviewer)} for recent quicklook images.
+
+\problem{JSOC downloads, binned frames or cutouts are refused.}
+Enter a JSOC notify e-mail registered at
+\url{https://jsoc.stanford.edu/ajax/register_email.html} in the \gui{Data Source} card. Binned
+and cutout frame sizes require the JSOC source.
+
+\problem{The disk is filling up.}
+Empty the caches with the \gui{Clear Cache} buttons of the e-CALLISTO Downloader and the SunPy
+Explorer, or with \menu{Data > Reset All (clear cache \& defaults)} in Solar Image Analysis.
+
+\section{Solar Image Analysis and GCS fitting}
+
+\problem{The PFSS card is disabled.}
+When running from source, install the \texttt{sunkit-magex} package; the card shows the command.
+
+\problem{Clicked PFSS seeds or the crop rectangle do not respond.}
+These interactions need the \gui{PyQtGraph} renderer (\gui{Display \& Crop} card).
+
+\problem{A GCS panel reports that it has no data.}
+The STEREO-B archive ends on 27~September~2014. Switch that panel to another channel.
+
+\problem{GCS refinement does not change the direction.}
+The direction is constrained only by at least four points in two views separated by
+20°--160°. Add points in a second, well-separated view.
+
+\problem{MP4 export is not offered.}
+MP4 export needs FFmpeg, which is bundled with the installers. If it is unavailable, save a GIF
+instead.
+
+\section{Installation}
+
+\problem{macOS reports that the application cannot be verified.}
+Open \menu{System Settings > Privacy \& Security} and click \gui{Open Anyway}, or Control-click
+the application and choose \gui{Open}.
+
+\problem{The application does not start on Linux.}
+Install the package with \texttt{apt}, which also installs the required Qt/OpenGL libraries
+(\texttt{libgl1}, \texttt{libegl1}, \texttt{libxkbcommon-x11-0}, \texttt{libxcb-cursor0}).
+
+\problem{Qt reports ``DLL load failed'' when running from source on Windows.}
+Rebuild the virtual environment with \file{packaging/windows/repair_windows_venv.ps1}.
+
+\medskip
+If a problem persists, report it with \menu{About > Report a Bug...}
+(Section~\ref{sec:bug-report}).

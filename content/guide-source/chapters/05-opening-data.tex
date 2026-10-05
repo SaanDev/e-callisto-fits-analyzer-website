@@ -1,0 +1,170 @@
+%% Chapter 5 -----------------------------------------------------------------
+\chapter{Opening and Combining Data}
+\label{ch:opening}
+
+This chapter describes the file types the main window reads, the ways of opening them,
+and the rules and options for combining several files into one dynamic spectrum.
+
+\section{Supported files}
+\index{FITS file!supported formats}
+
+The main window reads CALLISTO dynamic spectra in FITS format, compressed or
+uncompressed:
+\begin{itemize}
+  \item uncompressed files: \file{.fit}, \file{.fits};
+  \item gzip-compressed files: \file{.fit.gz}, \file{.fits.gz}.
+\end{itemize}
+Upper-case suffixes such as \file{.FITS} are accepted. Combination relies on the standard
+CALLISTO file name, \file{STATION_YYYYMMDD_HHMMSS_FC}, from which the station, start time
+and focus code are read. Files converted from the Learmonth spectrograph
+(Section~\ref{sec:learmonth}) follow the same conventions.
+
+\subsection{ARTEMIS-IV files}
+\label{sec:artemis}
+\index{ARTEMIS-IV}
+
+FITS files from the ARTEMIS-IV radio spectrograph (Thermopylae, Greece) in its
+\texttt{ARTLOOK} format are recognized automatically. On loading:
+\begin{itemize}
+  \item the hours-based UT time axis is converted to the internal time axis;
+  \item intensities are labeled and scaled as ADC counts, with the instrument's
+    conversion of 58.51~counts per dB used for the dB scale; and
+  \item the observation opens background subtracted, because the receiver's channel gains
+    span more than an order of magnitude.
+\end{itemize}
+
+\section{Opening files}
+\label{sec:opening-files}
+\index{opening files}
+
+Use any of the following:
+\begin{itemize}
+  \item \menu{File > Open}, the \gui{Open / Load}\index{toolbar!Open / Load} toolbar tool, or \kbd{Ctrl+O};
+  \item drag the files onto the main window;
+  \item \menu{File > Recent Files}\index{recent files} (Section~\ref{sec:recent-files});
+  \item the \gui{Import} button of a downloader (Chapters~\ref{ch:downloader}
+    and~\ref{ch:other-radio}).
+\end{itemize}
+
+When one file is selected, it is displayed at once. When several files are selected, the
+application determines whether they can be combined in time, in frequency, or in both
+(Section~\ref{sec:combine-rules}) and, if so, combines them into a single spectrum. If the
+selection cannot be combined, a message explains why
+(Figure~\ref{fig:combine-error}). If the current work has unsaved project changes, you are
+asked whether to save them first.
+
+After loading, the analysis controls and the \gui{Graph Properties} panel become active,
+and the sidebar's \gui{Timeline} panel lists the observations that make up the dataset.
+
+\subsection{Recent files}
+\label{sec:recent-files}
+\index{recent files}
+
+\menu{File > Recent Files} lists the last ten FITS selections. A combined set is a single
+entry, combined again when reopened; hovering over an entry shows its files. An entry
+whose files have been moved or deleted is removed from the list with a message.
+\gui{Clear Recent Files} empties the list.
+
+\section{Combining files}
+\label{sec:combine-rules}
+\index{combining files}
+
+CALLISTO observations are fragmented in time (15-minute files) and often in frequency
+(several receivers or focus codes). The application can merge them along either axis or
+both. The rules are summarized in Table~\ref{tab:combine-rules}.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Requirements for combining FITS files.}
+  \label{tab:combine-rules}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Combination} & \thead{Requirements} \\
+    \midrule
+    Time & Same station and focus code; consecutive observations whose start times are 750--1050~s apart (normally 15~minutes). Sequences may continue across UTC midnight. \\
+    Frequency & Same station, date and observation start time; distinct focus codes; identical time axes. Bands may be separated by a gap or may overlap (Section~\ref{sec:gap-overlap}). \\
+    Time~\(\times\)~frequency & A complete grid of at least two consecutive timestamps and at least two focus codes, with the same set of focus codes at every timestamp. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+A selection that contains extra files is searched for a combinable subset; for example,
+selecting a whole day of files together with one stray file still finds the grid within
+it. All files of one combined dataset must come from the same station.
+
+For a time~\(\times\)~frequency grid, the bands are first combined at each timestamp with
+one shared gap and overlap policy; the application checks that every result has the same
+frequency grid, and then joins the results in time order. Incomplete grids, duplicate
+timestamp and focus-code pairs, non-consecutive timestamps and incompatible axes are
+rejected with a detailed message.
+
+\screenshot[0.62\linewidth]{downloader/time_combine_err}{Error message for files that cannot be combined.}{fig:combine-error}{Warning that names the offending timestamps.}
+
+Combined datasets keep their provenance: exported FITS files, projects and reports record
+the original list of source files and the combination method (\texttt{time},
+\texttt{frequency} or \texttt{time\_frequency}).
+
+\subsection{Frequency gaps and overlaps}
+\label{sec:gap-overlap}
+\index{frequency gap}\index{frequency overlap}
+
+When the selected bands leave a gap between them, or overlap, the \gui{Frequency Combine
+Options} dialog asks how to handle it before the combined spectrum is imported
+(Figures~\ref{fig:gap-options} and~\ref{fig:overlap-options}). The detected gap or overlap
+range is shown at the top of the dialog. The chosen option is stored in the metadata of the
+combined dataset.
+
+\screenshot[0.62\linewidth]{downloader/freq_combine_gap_options}{Gap handling in the \gui{Frequency Combine Options} dialog.}{fig:gap-options}{Frequency Combine Options dialog for a gap.}
+
+\begin{description}
+  \item[Interpolated background fill] fills the gap with background values interpolated
+    between the edges of the two bands.
+  \item[Gray-hatched blank gap] leaves the gap without data and displays it as a
+    gray-hatched region, so that it is clearly distinguished from observed data.
+  \item[Average edge background fill] fills the gap with the average background level of
+    the band edges on either side.
+  \item[Zero fill] fills the gap with zeros.
+\end{description}
+
+\screenshot[0.62\linewidth]{downloader/freq_combine_overlap_options}{Overlap handling with a connection frequency.}{fig:overlap-options}{Frequency Combine Options dialog for an overlap.}
+
+\begin{description}
+  \item[Split at connection frequency] uses the lower band below the
+    \gui{Connection frequency}\index{frequency overlap!connection frequency} and the higher band above it. The connection frequency is
+    proposed automatically and can be edited.
+  \item[Use lower-frequency file] keeps the data of the lower-frequency file in the
+    overlapping region. The file name is shown in the option when there is a single overlap.
+  \item[Use higher-frequency file] keeps the data of the higher-frequency file in the
+    overlapping region.
+  \item[Reject overlap] cancels the combination.
+\end{description}
+
+\section{The Combine FITS Files dialog}
+\label{sec:combine-dialog}
+
+\menu{File > Combine FITS Files...} opens a dialog for selecting, validating and previewing
+a combination before it is imported (Figure~\ref{fig:combine-dialog}).
+
+\begin{steps}
+  \item Click \gui{Select FITS Files} and choose the files. The dialog inspects them and
+    reports whether they form a valid time, frequency or time~\(\times\)~frequency
+    combination.
+  \item For a frequency combination, choose the gap and overlap handling and, if needed,
+    the connection frequency in the \gui{Frequency Combine Options} group. In this dialog
+    the overlap choices are labeled \gui{Keep low band in overlap} and \gui{Keep high
+    band in overlap}.
+  \item Click \gui{Combine and Preview}\index{Combine FITS Files dialog} to see the combined spectrum in the dialog.
+  \item Click \gui{Import to Analyzer} to load the result into the main window.
+\end{steps}
+
+\screenshot[0.6\linewidth]{dialogs/combine_fits_dialog}{The \gui{Combine FITS Files} dialog.}{fig:combine-dialog}{The Combine FITS Files dialog after Select FITS Files and Combine and Preview, showing the gap/overlap options group and the combined preview image.}
+
+\section{Viewing the FITS header}
+\label{sec:fits-header}
+\index{FITS header}
+
+\menu{View > View FITS Header} shows the primary header of the loaded file
+(Figure~\ref{fig:fits-header}). \gui{Save as .txt} writes the header to a text file.
+
+\screenshot[0.62\linewidth]{dialogs/fits_header_viewer}{The FITS header viewer.}{fig:fits-header}{The FITS header viewer for a loaded CALLISTO file, showing the header cards and the Save as .txt and Close buttons.}

@@ -1,0 +1,185 @@
+%% Chapter 20 ----------------------------------------------------------------
+\chapter{The GCS CME Fitting Window}
+\label{ch:gcs-window}
+\index{GCS CME Fitting}\index{Graduated Cylindrical Shell}
+
+A single coronagraph view cannot separate a CME's direction from its size: a wide CME aimed
+at the observer and a narrow one crossing the sky can look alike. Two well-separated views
+break that ambiguity, and a third over-constrains it. The GCS CME Fitting window reconstructs
+a CME in three dimensions by fitting one Graduated Cylindrical Shell (GCS) model
+\parencite{thernisien2006,thernisien2011} to up to three coronagraph viewpoints at once, and
+optionally a spheroid or ellipsoid to the shock the CME drives
+\parencite{kouloumvakos2019,kwon2014}. The parameters follow the conventions of PyThea\index{PyThea}
+\parencite{kouloumvakos2022}, so results can be compared directly.
+
+This chapter describes the window and how images are loaded and viewed. Fitting, recording
+and exporting are described in Chapter~\ref{ch:gcs-fitting}.
+
+\section{Opening the window}
+
+Open the window with \menu{Analysis > GCS CME Fitting…} in the main window or in Solar Image
+Analysis. The window downloads its own images, so nothing needs to be loaded first:
+\begin{itemize}
+  \item from the main window, the visible time range of the spectrum becomes the event range;
+  \item from Solar Image Analysis, the event range is centered on the displayed frame, one hour
+    either side.
+\end{itemize}
+Choosing the menu item again reuses the open window and passes it the new time.
+
+\section{Window layout}
+
+The window is divided into the regions numbered in Figure~\ref{fig:gcs-window} and described
+in Table~\ref{tab:gcs-regions}.
+
+\screenshot{gcs/gcs_window_overview}{The GCS CME Fitting window in the equal layout.}{fig:gcs-window}{GCS CME Fitting window with three viewpoints loaded (STEREO-B or another channel, LASCO C2, STEREO-A COR2) in running difference, the GCS wireframe drawn, and the four control cards below. Add numbered callouts: 1 menu bar, 2 toolbar, 3 viewpoint panels A, B and C, 4 Event \& channels card, 5 Model card, 6 Display card, 7 Kinematics card, 8 status bar.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Regions of the GCS CME Fitting window.}
+  \label{tab:gcs-regions}
+  \small
+  \begin{tabularx}{\linewidth}{@{}cP{0.22\linewidth}L@{}}
+    \toprule
+    \thead{No.} & \thead{Region} & \thead{Description} \\
+    \midrule
+    \callout{1} & Menu bar & \menu{File}, \menu{Event}, \menu{View}, \menu{Fit} and \menu{Help} (Section~\ref{sec:gcs-menus}). \\
+    \callout{2} & Toolbar & Playback, the shared time, image mode, layout and overlay toggles (Section~\ref{sec:gcs-toolbar}). \\
+    \callout{3} & Viewpoint panels & Panels A, B and C, each showing one channel's image nearest the shared time, with the models drawn on it. \\
+    \callout{4} & Event \& channels card & Event range, frame cap, time-offset limit and the three channels (Section~\ref{sec:gcs-event-card}). \\
+    \callout{5} & Model card & The edited model, its parameters, front-point controls, \gui{Refine fit}\index{GCS!refine fit} and \gui{Commit} (Chapter~\ref{ch:gcs-fitting}). \\
+    \callout{6} & Display card & Wireframe colors and style, and each image's color map and contrast (Section~\ref{sec:gcs-display-card}). \\
+    \callout{7} & Kinematics card & Recorded fits, height--time graph and fit (Section~\ref{sec:gcs-kinematics}). \\
+    \callout{8} & Status bar & Messages, including the views taking part in a fit and their separations, and the helioprojective position under the cursor. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Toolbar}
+\label{sec:gcs-toolbar}
+
+\begin{description}
+  \item[Playback] first frame (\kbd{Home}), previous (\kbd{←}), play and pause (\kbd{Space}),
+    next (\kbd{→}), and the playback speed (1--30~fps; default 4~fps). With fits recorded, the
+    model follows them during playback.
+  \item[Time slider and time label] step through the event. Every panel shows its own image
+    nearest the selected UTC time, which is displayed beside the slider.
+  \item[View] \gui{Raw} (the images as downloaded), \gui{Running diff}\index{GCS!image modes} (each image minus the
+    previous one; selected whenever images load) or \gui{Base diff} (each image minus the first
+    of the sequence).
+  \item[Layout] \gui{Equal}\index{GCS!layout} shows three equal images with the cards beneath (\kbd{0});
+    \gui{A}, \gui{B} or \gui{C} enlarges that panel, stacks the other two beside it and moves
+    the cards to the right (\kbd{1}--\kbd{3}).
+  \item[Solar limb, Axes, Banner] outline the photosphere in every image (on by default; the
+    reference against which a CME's height is judged), show arcsecond axes around each image,
+    and show the information banner across the top of each image (\kbd{B}).
+\end{description}
+The keys apply while an image has keyboard focus.
+
+\section{Loading the viewpoints}
+\label{sec:gcs-event-card}
+
+The \gui{Event \& channels (UTC)} card (Figure~\ref{fig:gcs-event-card}) defines what is
+loaded.
+
+\screenshot[0.5\linewidth]{gcs/gcs_event_card}{The \gui{Event \& channels} card.}{fig:gcs-event-card}{The Event \& channels (UTC) card with the event range, the frame cap, Load all, Max time offset, and the three channel rows A, B and C with their source, frame count, Load button and time range.}
+
+\begin{description}
+  \item[Event] the UTC start and end of the event, up to three days. Changing them sets every
+    channel's range; each channel's range can then be adjusted on its own.
+  \item[\(\leq\) frames] the maximum number of images per channel (2--200; default 60). A longer
+    sequence is thinned evenly across the event rather than cut short.
+  \item[Load all] (\kbd{Ctrl+L}) loads every channel. Each channel also has its own \gui{Load}
+    button and a frame count. \menu{Event > Cancel downloads} stops a slow load.
+  \item[Max time offset] the largest difference between an image's time and the shared time
+    for the image to take part in a fit (0--60~min; default 5~min). Models are still drawn on
+    the other panels for comparison. Use a smaller value for a fast-evolving CME; the default is
+    a workflow choice, not an accuracy guarantee.
+  \item[A, B, C] the channel of each panel and its time range.
+\end{description}
+
+The available channels are listed in Table~\ref{tab:gcs-channels}. By default panels~A, B and
+C show STEREO-B COR2, SOHO LASCO C2 and STEREO-A\index{STEREO} COR2, left to right. Channels without data
+for the event date are grayed out. The STEREO-B archive ends on 27~September~2014, so for later
+events panel~A reports that it has no data; only SOHO and STEREO-A then remain as vantage
+points, and another channel in panel~A (LASCO~C3 or COR1-A) adds an image but not a new viewing
+direction.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Coronagraph channels available for GCS fitting.}
+  \label{tab:gcs-channels}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.3\linewidth}L@{}}
+    \toprule
+    \thead{Channel} & \thead{Available} \\
+    \midrule
+    SOHO LASCO C2 & from 21~February 1997 \\
+    SOHO LASCO C3 & from 20~February 1997 \\
+    STEREO-A COR1 & from 4~December 2006 \\
+    STEREO-A COR2 & from 29~December 2006 \\
+    STEREO-B COR1 & 12~December 2006 to 27~September 2014 \\
+    STEREO-B COR2 & 10~January 2007 to 27~September 2014 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The images are Helioviewer\index{Helioviewer} JPEG2000 files, so loading needs network access; downloaded images
+are cached and reused. Changing a channel's source or range discards its loaded images and any
+pending results. A 15-minute e-CALLISTO file spans only one or two coronagraph images (about
+one every 15~minutes for COR2 and every 12~minutes for LASCO~C2), so widen the range to follow a
+CME.
+
+\section{Reading the images}
+
+The banner across each image gives the instrument, the actual observation time, its offset
+from the shared time and the difference reference. In running difference\index{running difference} the first image of
+each channel is differenced against the archive image just before the range, and is shown raw
+only when no earlier image exists. Clicked front points belong to the image on which they were
+clicked and return when that image is shown again.
+
+\section{The Display card}
+\label{sec:gcs-display-card}
+
+\begin{description}
+  \item[Wireframe] \gui{GCS…} and \gui{Shock…} choose the colors of the two models (orange
+    and sky blue by default); \gui{Width} (0.5--8~px), \gui{Opacity} (10--100\%) and
+    \gui{Density} (mesh density, 1--8) set the wireframe style.
+  \item[Image A, B, C] select a panel, then set its \gui{Colormap} and contrast sliders. Every
+    load resets the color map to gray.
+\end{description}
+
+\section{Menus}
+\label{sec:gcs-menus}
+
+\begin{xltabular}{\linewidth}{@{}P{0.42\linewidth} L P{0.15\linewidth}@{}}
+  \caption{Menus of the GCS CME Fitting window.}\label{tab:gcs-menus}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut} \\ \midrule\endhead
+  \menu{File > Export analysis JSON…}\index{GCS!JSON export} & Parameters, points and provenance of both models. & \kbd{Ctrl+Shift+S} \\
+  \menu{File > Export recorded fits CSV…} & Recorded series of the edited model. & \\
+  \menu{File > Export height–time graph…} & Height--time graph with the chosen fit. & \\
+  \menu{File > Save viewpoint snapshot…}\index{GCS!viewpoint snapshot} & The three views as shown. & \\
+  \menu{File > Export movie (GIF/MP4)…} & Movie of the event with recorded shells\index{GCS!recorded shells}. & \\
+  \menu{File > Export fitting report (PDF)…}\index{GCS!fitting report} & Complete fitting report. & \\
+  \menu{File > Close window} & Close the window. & \kbd{Ctrl+W} \\
+  \menu{Event > Load all channels}\index{GCS!loading} & Load every channel. & \kbd{Ctrl+L} \\
+  \menu{Event > Cancel downloads} & Stop running loads. & \\
+  \menu{Event > Apply event range to all channels} & Reset every channel to the event range. & \\
+  \menu{Event > Go to UTC time…} & Jump to the image nearest a typed time. & \kbd{Ctrl+G} \\
+  \menu{Event > First / Previous / Next / Last frame}, \menu{Play / pause} & Navigation and playback. & \kbd{Space} \\
+  \menu{View > Raw / Running difference / Base difference} & Image mode. & \\
+  \menu{View > Equal viewpoints / Focus A / Focus B / Focus C} & Layout. & \kbd{0}--\kbd{3} \\
+  \menu{View > GCS wireframe / Shock wireframe / Solar limb / Arcsecond axes / Image banners} & Overlay toggles. & \kbd{B} \\
+  \menu{View > Reset image zoom}, \menu{Fit layout to window} & Restore the zoom and the panel sizes. & \\
+  \menu{Fit > Edit GCS flux rope / Edit shock} & Choose the model to edit. & \\
+  \menu{Fit > Pick front points}\index{GCS!front points} & Toggle point picking. & \\
+  \menu{Fit > Undo last front point} & Remove the last point clicked in any panel. & \kbd{Ctrl+Z} \\
+  \menu{Fit > Clear current front points} & Remove the edited model's points. & \\
+  \menu{Fit > Refine current model} & Least-squares refinement. & \kbd{Ctrl+R} \\
+  \menu{Fit > Record fit at current time} & Commit the fit. & \kbd{Ctrl+Return} \\
+  \menu{Fit > Restore / Delete recorded fit at current time} & Revisit or remove a recorded fit. & \\
+  \menu{Fit > Reset model parameters} & Reset the edited model. & \\
+  \menu{Fit > Fit recorded heights over time} & Kinematic fit. & \\
+  \menu{Help > Fitting workflow and scientific limits…} & Summary of the procedure and its limits. & \kbd{F1} \\
+  \bottomrule
+\end{xltabular}

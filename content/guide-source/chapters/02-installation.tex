@@ -1,0 +1,121 @@
+%% Chapter 2 -----------------------------------------------------------------
+\chapter{Installation and Startup}
+\label{ch:installation}
+\index{installation}
+
+Native installers are available for Windows, macOS and Linux. Each bundles the
+application with everything it needs to run, including the Python runtime and all
+scientific libraries, so no separate Python installation is required. Installers can be
+downloaded from the official e-CALLISTO software page,
+\url{https://www.e-callisto.org/Software/Callisto-Software.html}, or from the project's
+GitHub releases page, \url{https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases}.
+
+\section{System requirements}
+\label{sec:requirements}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{System requirements for version \appversion.}
+  \label{tab:requirements}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.24\linewidth}L@{}}
+    \toprule
+    \thead{Item} & \thead{Requirement} \\
+    \midrule
+    Windows & 64-bit Windows able to run x64 applications. Installation needs administrator approval. \\
+    macOS & macOS~15 (Sequoia) or later on a Mac with Apple silicon (arm64). \\
+    Linux & Debian, Ubuntu or a derivative on 64-bit x86 (\texttt{amd64}), with the Qt/OpenGL runtime libraries \texttt{libgl1}, \texttt{libegl1}, \texttt{libxkbcommon-x11-0} and \texttt{libxcb-cursor0} (installed automatically by \texttt{apt}). \\
+    Disk space & About 3~GB for the application, plus space for the download caches. Solar image sequences can occupy several gigabytes. \\
+    Display & 1280~\(\times\)~800 pixels or larger. A resolution of at least 1440~\(\times\)~900 is recommended for the Solar Image Analysis and GCS CME Fitting windows. \\
+    Network & Required for the downloaders, archive searches, context viewers, update checks and bug reports. Local files, saved projects and cached downloads can be analyzed offline. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Installing on Windows}
+\index{installation!Windows}
+
+\begin{steps}
+  \item Download the installer, \file{e-CALLISTO_FITS_Analyzer_v3.1.0_Setup.exe}.
+  \item Run the installer and approve the Windows administrator prompt.
+  \item Follow the installation steps. The installer can optionally create a desktop
+    shortcut.
+  \item Start the application from the Start menu or the desktop shortcut.
+\end{steps}
+
+\begin{note}
+  If a save location chosen by the application is not writable --- for example a folder
+  inside \file{C:\\Program Files} --- the application asks you to choose another folder.
+\end{note}
+
+\section{Installing on macOS}
+\index{installation!macOS}
+
+\begin{steps}
+  \item Download the disk image (\file{.dmg}) for Apple silicon (arm64).
+  \item Open the disk image and drag the application to the \file{Applications} folder.
+  \item Eject the disk image and start the application from \file{Applications} or
+    Launchpad.
+\end{steps}
+
+\begin{note}
+  If macOS reports on first launch that the application cannot be opened because its
+  developer cannot be verified, open \menu{System Settings > Privacy \& Security} and
+  click \gui{Open Anyway}\index{installation!macOS security prompt} for the \appname{}, or Control-click the application in Finder
+  and choose \gui{Open}. This is needed only once.
+\end{note}
+
+\section{Installing on Linux}
+\index{installation!Linux}
+
+Download the Debian package and install it from a terminal in the download folder:
+\begin{center}
+  \texttt{sudo apt install ./e-callisto-fits-analyzer\_<version>\_amd64.deb}
+\end{center}
+The package installs a desktop entry, so the application appears in the desktop
+environment's application menu. Using \texttt{apt} rather than \texttt{dpkg} also installs
+any missing runtime libraries.
+
+\section{Running from source}
+\label{sec:from-source}
+\index{installation!from source}
+
+The source code is openly available at
+\url{https://github.com/SaanDev/e-Callisto_FITS_Analyzer}. Running from source is intended
+for developers and for platforms without an installer. With Python~3.12 or newer:
+\begin{steps}
+  \item Clone or download the repository and create a virtual environment in it.
+  \item Install the pinned dependencies with \texttt{python scripts/install\_requirements.py}.
+  \item Start the application with \texttt{python src/main.py}.
+\end{steps}
+On Windows, if Qt reports \texttt{DLL load failed} at start-up, the script
+\file{packaging/windows/repair_windows_venv.ps1} rebuilds the virtual environment with the
+supported Python version.
+
+\section{Starting the application}
+\label{sec:first-launch}
+
+When the application starts it shows a splash screen and then opens the main window
+(Chapter~\ref{ch:main-window}) with an empty plotting area. Shortly after start-up it
+checks GitHub for a newer release and reports the result on the right of the status bar,
+for example \gui{Updates: up to date} (Section~\ref{sec:updates}).
+
+If the previous session ended unexpectedly while it had unsaved work, the application
+offers to recover the latest autosave snapshot (Section~\ref{sec:autosave}).
+
+The application remembers your preferences between sessions, including the theme and
+rendering mode, which sidebar sections are expanded, the frequency-axis scale, the recent
+files and projects, processing and display-range presets, and the JSOC\index{JSOC} e-mail address used
+by Solar Image Analysis.
+
+\section{Updating and uninstalling}
+
+Use \menu{About > Check for Updates...}\index{updates!check} to look for a newer version; if one exists, the
+installer can be downloaded from within the application (Section~\ref{sec:updates}).
+Installing a new version over an existing one keeps your preferences.
+
+To uninstall, use \menu{Settings > Apps} on Windows, move the application from
+\file{Applications} to the Trash on macOS, or run
+\texttt{sudo apt remove e-callisto-fits-analyzer} on Linux. Downloaded data remain in the
+cache folders; empty them first with the \gui{Clear Cache}\index{cache!clearing} buttons of the downloaders if
+you want to reclaim the space.

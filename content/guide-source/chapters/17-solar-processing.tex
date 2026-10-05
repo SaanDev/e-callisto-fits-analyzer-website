@@ -1,0 +1,253 @@
+%% Chapter 17 ----------------------------------------------------------------
+\chapter{Image Display and Processing}
+\label{ch:solar-processing}
+
+This chapter describes the tools of Solar Image Analysis that display, enhance, combine and
+export image sequences once they are loaded (Chapter~\ref{ch:solar-window}).
+
+\section{The Analysis card}
+\label{sec:solar-analysis-card}
+
+The \gui{Analysis} card (Figure~\ref{fig:solar-cards}a) shows a summary of the loaded data and
+the main display modes and analysis tools.
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}[b]{0.47\linewidth}\centering
+    \includegraphics[width=\linewidth]{figures/solar/solar_analysis_cards.png}\par\smallskip
+    {\small (a) \gui{Analysis} card}
+  \end{minipage}\hfill
+  \begin{minipage}[b]{0.47\linewidth}\centering
+    \includegraphics[width=\linewidth]{figures/solar/solar_display_cards.png}\par\smallskip
+    {\small (b) \gui{Display \& Crop} card}
+  \end{minipage}
+  \caption{The \gui{Analysis} and \gui{Display \& Crop} cards of Solar Image Analysis.}
+  \label{fig:solar-cards}
+\end{figure}
+
+\begin{description}
+  \item[Plot Frames] displays the loaded sequence as plain frames.
+  \item[Running Diff] displays each frame minus the previous one, which makes moving and
+    changing features stand out.
+  \item[Base Diff] displays each frame minus the first, showing the total change since the
+    start --- useful for eruptions, coronal dimmings and EUV waves.
+  \item[Composite] builds an RGB tri-color image from the first three AIA frames or, when a
+    magnetogram overlay has been loaded, draws HMI polarity contours on the current AIA frame
+    (red positive, blue negative).
+  \item[Mag Overlay…] loads an HMI magnetogram FITS file for the composite; the box beside it
+    sets the contour level (10--2000~G; default 100~G).
+  \item[Light Curve] plots the mean intensity of a region against time
+    (Section~\ref{sec:region-lightcurve}).
+  \item[Active Regions], \gui{NOAA/HEK Labels}\index{active regions!NOAA labels} detect and label active regions
+    (Section~\ref{sec:active-regions}).
+  \item[Compare Viewpoint…] compares the frame with a second observer
+    (Section~\ref{sec:compare-viewpoint}).
+  \item[Reset Frames] restores the frames as downloaded, discarding crops, processing
+    levels, derotation, composites and detected regions.
+\end{description}
+\gui{Composite}\index{composite image}, \gui{Mag Overlay…}\index{magnetogram overlay}, \gui{Active Regions} and \gui{NOAA/HEK Labels} are
+available only for disk imagers and magnetographs. The difference modes also determine the
+content of exported movies (Section~\ref{sec:solar-movies}).
+
+\section{Display and cropping}
+\label{sec:display-crop}
+\index{display!solar images}\index{crop}
+
+The \gui{Display \& Crop} card (Figure~\ref{fig:solar-cards}b) controls the appearance of the image:
+\begin{description}
+  \item[Renderer] \gui{PyQtGraph}\index{PyQtGraph} (default; fast, and required for clicked PFSS seeds and the
+    interactive crop rectangle) or \gui{Matplotlib}\index{Matplotlib}.
+  \item[Colormap] instrument color maps (for example \texttt{sdoaia193}, \texttt{hmimag},
+    \texttt{soholasco2}, \texttt{stereocor2}, \texttt{euvi195}, \texttt{goes-rsuvi171}) and
+    general ones (\texttt{inferno}, \texttt{magma}, \texttt{plasma}, \texttt{viridis},
+    \texttt{cividis}, \texttt{gray}, \texttt{RdBu\_r}, \texttt{hot}). A suitable map is
+    chosen automatically for each observable.
+  \item[Scale] \gui{linear} or \gui{log}.
+  \item[Clip low, Clip high] the lower and upper percentiles mapped to the ends of the color
+    scale (defaults 1\% and 99.9\%); dragging gives a live preview.
+  \item[Solar Limb] draws the photospheric limb.
+  \item[Coordinate Grid, Grid frame] overlays a graticule of meridians and parallels in the
+    selected frame --- Heliocentric Inertial (HCI, the default), Stonyhurst or Carrington. The
+    same frame is used for the heliographic coordinates of the cursor readout.
+  \item[Colorbar, Region Overlays] show the color bar and the detected active regions.
+\end{description}
+
+\procedure{Cropping}
+Under \gui{Crop (arcsec)}, enter \gui{X min / max} and \gui{Y min / max} in arcseconds from
+disk center, or tick \gui{Rectangle crop}\index{crop!rectangle} to drag a rectangle on the image that fills in
+the fields. \gui{Apply Crop} crops all loaded frames to the rectangle. Cropping is done
+locally after the files are loaded. \gui{Export Cropped FITS}\index{crop!export FITS} saves the cropped frames as
+FITS files with updated coordinate metadata.
+
+The crop rectangle also defines the region used by \gui{Region Stats}\index{measurement tools!region statistics}, the light curve, the
+derotation and the \gui{Current crop} PFSS seeding.
+
+\section{Solar derotation}
+\label{sec:derotation}
+\index{derotation}\index{differential rotation}
+
+Over a sequence of several hours, a fixed rectangle slowly drifts onto neighboring
+surface because of solar differential rotation. The \gui{Solar Derotation} card keeps a
+selected region on the same piece of the Sun:
+\begin{description}
+  \item[Derotate selected area] enables derotation of the crop region.
+  \item[Mode] \gui{Track region (no resampling)}\index{derotation!track mode} moves the cut-out window with the rotation
+    and keeps the original pixel values, so it is the mode for photometry and light curves.
+    \gui{Reproject to reference time}\index{derotation!reproject mode} resamples every frame onto the reference time's grid,
+    which corrects foreshortening and gives all frames one coordinate system, making
+    differencing meaningful, at the cost of interpolating the data.
+  \item[Reference] \gui{First frame}, \gui{Current frame} or \gui{Specific frame...} (with its
+    number): the frame from which the region is read and to whose time every other frame is
+    rotated.
+  \item[Padding] the extra margin cut around the region before reprojecting (0--600~arcsec;
+    default 60~arcsec), so that the interpolation has data up to the edge. Reproject mode only.
+  \item[Apply Derotation, Reset to Full Frames] apply the derotation, or discard the cut-out
+    and restore the full frames at the current processing level.
+\end{description}
+The status line reports whether derotation is active.
+
+\section{Region light curve}
+\label{sec:region-lightcurve}
+\index{light curve!EUV}
+
+\gui{Light Curve} plots the mean intensity of the crop region (or of the whole frame if
+\gui{Rectangle crop} is off), converted to DN/s using the exposure time, against time
+(Figure~\ref{fig:region-lightcurve}). The time of peak intensity is marked and, when a
+spectrum is loaded in the main window, its time window is shaded so that the EUV brightening
+can be timed against the radio burst. At least two frames are needed.
+
+\screenshot[0.72\linewidth]{solar/region_light_curve}{The \gui{Region Light Curve} window.}{fig:region-lightcurve}{The Region Light Curve window for an AIA flare region, showing the DN/s curve, the EUV peak marker and the shaded radio burst window.}
+
+\section{Active regions}
+\label{sec:active-regions}
+\index{active regions}
+
+The \gui{Active Regions} card detects bright regions in the current frame and lists them:
+\begin{description}
+  \item[Threshold] the intensity percentile above which pixels count as bright (50--100;
+    default 98).
+  \item[Min px] the minimum area of a region in pixels (default 12).
+  \item[Region table] one row per region with \gui{ID}, \gui{Label}, \gui{NOAA} number,
+    \gui{Centroid}, \gui{Area}, \gui{Peak} intensity and \gui{Source}.
+\end{description}
+Click \gui{Active Regions} in the \gui{Analysis} card to run the detection, and
+\gui{NOAA/HEK Labels} to fetch the NOAA active-region numbers from the Heliophysics Event
+Knowledge base (HEK) and attach them to the detected regions; the status line reports whether
+metadata are loaded. Detected regions are drawn on the image when \gui{Region Overlays}\index{active regions!overlays} is
+ticked. \gui{Export Regions CSV} saves the table with centroids, bounding boxes and
+intensities. Detection works on local files; the labels need network access.
+
+\section{Comparing viewpoints}
+\label{sec:compare-viewpoint}
+\index{Compare Viewpoint}
+
+\gui{Compare Viewpoint…} opens a window that compares the current frame (viewpoint~A) with a
+second observable (viewpoint~B) taken near the same time --- for example a STEREO image
+against the Earth view.
+\begin{steps}
+  \item Choose the \gui{Second viewpoint} observable and the search window (\gui{±}, 1--720~min;
+    default 30~min).
+  \item Click \gui{Fetch Viewpoint B}. Viewpoint~B is downloaded, reprojected onto the
+    coordinate frame of A, and shown beside it.
+  \item Tick \gui{Blink}\index{Compare Viewpoint!blink} to alternate between the two images in place.
+\end{steps}
+The \gui{Observer separation}\index{Compare Viewpoint!observer separation} line gives the angle between the two observers.
+
+\section{Coronagraph tools}
+\label{sec:nrgf}
+\index{NRGF}
+
+For coronagraph data the \gui{Coronagraph Tools} card offers \gui{NRGF radial filter}\index{NRGF}, the
+normalizing-radial-graded filter \parencite{morgan2006}. It flattens the steep radial fall-off
+of coronal brightness so that faint CME fronts become visible at all heights. It applies to
+the plain frame view; difference images already remove the background.
+
+\section{Overlay layers}
+\label{sec:overlay-layers}
+\index{overlay layers}\index{coronagraph composite}
+
+A CME is never fully visible in one instrument: the eruption starts on the disk (AIA, EIT,
+EUVI), crosses the low corona (LASCO~C2, COR1) and expands into the outer corona (LASCO~C3,
+COR2), and each coronagraph is blind inside its occulter. For coronagraph views the
+\gui{Overlay Layers} card blends several instruments into one continuous image from the disk
+to the outer corona.
+
+\begin{description}
+  \item[Add, Remove] choose an observable and add it to the layer list, or remove the
+    selected layer. Layers are painted widest field of view first. Untick a layer to leave it
+    out without losing its settings.
+  \item[Per-layer settings] for the selected layer: \gui{Colormap}, \gui{Scale} (log or
+    linear), \gui{Opacity}, \gui{Midtones}\index{overlay layers!midtones} (gamma; 50 suits most solar images), and the
+    \gui{Inner} and \gui{Outer} edges of its field of view in \(R_\odot\). Pixels inside the
+    inner edge stay transparent so that the layer below shows through.
+  \item[Time match] how far from each loaded frame's time a layer frame may be taken
+    (1--720~min; default 30~min). Widen it for slow cadences or patchy archives.
+  \item[Build Composite] downloads each layer's matching frames, reprojects them onto the
+    loaded series and blends them, in the background with a progress bar. The result replaces
+    the view and works with the measurement tools, plot export and movie export.
+  \item[Clear] drops the composite and restores the originally loaded frames.
+\end{description}
+
+\begin{note}
+  Each layer is color-mapped before blending, because EUV disk images and the white-light
+  corona differ by orders of magnitude. Coronagraph layers are reprojected under a
+  spherical-screen assumption, flagged as approximate in the build notes: cross-observer
+  coronagraph overlays are morphological context, not photometry. SOHO/LASCO\index{SOHO/LASCO} files carry no
+  observer position, so an Earth-based observer is assumed (accurate to about 1\%).
+\end{note}
+
+\section{Heliospheric imager J-maps}
+\label{sec:jmap}
+\index{J-map}\index{heliospheric imager}
+
+For STEREO HI1 and HI2 data the \gui{Heliospheric Imager (J-map)} card builds a
+time--elongation map \parencite{sheeley1999}:
+\begin{description}
+  \item[Background] \gui{Median background} removes the static F-corona and star field with
+    the per-pixel temporal median; \gui{Previous frame} uses a running difference\index{running difference}.
+  \item[PA] the position angle of the slit, counter-clockwise from the image \(+x\) axis
+    (90° points up; default 90°). Set it along the CME direction.
+  \item[Build J-map] stacks the slit profiles of all frames into the \gui{HI J-map} window
+    (elongation in degrees against frame index). An outward-moving CME appears as a slanted
+    bright track.
+\end{description}
+
+\section{HMI vector magnetic field}
+\label{sec:hmi-vector}
+\index{HMI!vector field}
+
+For SDO/HMI\index{SDO/HMI} data the \gui{Magnetic Vector Field (HMI)} card overlays the measured
+photospheric vector field:
+\begin{description}
+  \item[Load Vector FITS…] loads the \texttt{hmi.B\_720s} field, inclination and azimuth
+    segments of each time step from disk (with the optional disambiguation segment, applied
+    automatically).
+  \item[Download Vector (JSOC)] downloads \texttt{hmi.B\_720s} for the query time window
+    through JSOC\index{JSOC}; this needs the registered JSOC e-mail. Each 720-s time step is four segments
+    of about 50~MB. If no HMI image is loaded, the derived vertical-field (\(B_z\))
+    magnetogram is plotted with the vectors.
+  \item[Show vector field] overlays the field on the HMI frame. The transverse component is
+    drawn as \gui{Arrows} (length proportional to strength) and/or \gui{Streamlines}\index{HMI!streamlines}, and
+    \gui{|B| layer} tints the image by total field strength. Arrows are red where the vertical
+    field points toward the observer (\(+B_z\)) and blue where it points away.
+  \item[Spacing, Threshold] the arrow grid spacing (16--512 detector pixels; default 64) and
+    the minimum transverse field drawn (50--2000~G; default 200~G). The transverse noise floor
+    of \texttt{hmi.B\_720s} is about 100~G.
+\end{description}
+
+\section{Movies and still images}
+\label{sec:solar-movies}
+\index{movie export}
+
+\begin{description}
+  \item[Movie Export card] choose the \gui{Content} (\gui{Frames}, \gui{Running Difference}
+    or \gui{Base Difference}\index{base difference}) and the \gui{Format} (\gui{MP4} or \gui{GIF}), and click
+    \gui{Build Movie…}\index{movie export}. Movies use the playback speed set under the viewer and the current
+    color map, scale, clipping and crop.
+  \item[Export MP4] in the header bar makes a one-click MP4 of the loaded sequence with the
+    current display settings.
+  \item[Export Plot] saves the current frame, with its overlays, as an image.
+  \item[Export Cropped FITS] saves the cropped frames as FITS files.
+  \item[Export Regions CSV] saves the active-region table.
+\end{description}
+The same exports are available from the \menu{Export} and \menu{Movie} menus.

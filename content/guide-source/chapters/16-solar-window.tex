@@ -1,0 +1,267 @@
+%% Chapter 16 ----------------------------------------------------------------
+\chapter{The Solar Image Analysis Window}
+\label{ch:solar-window}
+\index{Solar Image Analysis}
+
+Solar Image Analysis is a multi-mission imaging workspace for extreme-ultraviolet (EUV)
+disk images, magnetograms, coronagraph images and heliospheric images. It retrieves image
+sequences from the solar archives or reads local FITS files, displays and processes them,
+measures eruptions and their kinematics, and models the coronal magnetic field\index{magnetic field}. Open it with
+\menu{Analysis > Solar Image Analysis} in the main window.
+
+This chapter describes the window, its menus and sessions, and how image data are obtained.
+Display and processing are described in Chapter~\ref{ch:solar-processing}, measurements in
+Chapter~\ref{ch:solar-measurements} and magnetic-field modeling in Chapter~\ref{ch:pfss}.
+
+\section{Supported observables}
+\label{sec:observables}
+\index{observable}
+
+Table~\ref{tab:observables} lists the observables that can be retrieved. Local FITS files
+from these and other solar instruments can be loaded as well.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Observables available in Solar Image Analysis.}
+  \label{tab:observables}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.25\linewidth}P{0.18\linewidth}L@{}}
+    \toprule
+    \thead{Instrument} & \thead{Class} & \thead{Observables} \\
+    \midrule
+    SDO/AIA\index{SDO/AIA} \parencite{lemen2012} & EUV/UV disk & 94, 131, 171, 193, 211, 304, 335, 1600 and 1700~Å \\
+    SDO/HMI\index{SDO/HMI} \parencite{scherrer2012} & Magnetograph & Magnetogram, Continuum (Intensitygram), Dopplergram; vector field (Section~\ref{sec:hmi-vector}) \\
+    SOHO/EIT\index{SOHO/EIT} & EUV disk & 171, 195, 284 and 304~Å \\
+    SOHO/LASCO\index{SOHO/LASCO} \parencite{brueckner1995} & Coronagraph & C2, C3 \\
+    STEREO-A\index{STEREO}/B SECCHI \parencite{howard2008} & EUV disk, coronagraph, heliospheric imager & EUVI 171, 195, 284 and 304~Å; COR1, COR2; HI1, HI2 \\
+    GOES/SUVI\index{GOES/SUVI} & EUV disk & 94, 131, 171, 195, 284 and 304~Å \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The sidebar shows only the tool groups that apply to the instrument class of the loaded data
+(or, before loading, of the selected observable); see Table~\ref{tab:solar-cards}.
+
+\section{Window layout}
+\label{sec:solar-layout}
+
+The window is divided into the regions numbered in Figure~\ref{fig:solar-window} and
+described in Table~\ref{tab:solar-regions}.
+
+\screenshot{solar/solar_window_overview}{The Solar Image Analysis window with its regions numbered.}{fig:solar-window}{Solar Image Analysis window with an AIA 193 Å sequence loaded and Measurements enabled. Add numbered callouts: 1 menu bar, 2 sidebar cards, 3 sidebar handle, 4 coordinate readout and Export MP4, 5 Measure toolbar, 6 image canvas, 7 CME tracking panel, 8 playback bar, 9 Details drawer.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Regions of the Solar Image Analysis window.}
+  \label{tab:solar-regions}
+  \small
+  \begin{tabularx}{\linewidth}{@{}cP{0.22\linewidth}L@{}}
+    \toprule
+    \thead{No.} & \thead{Region} & \thead{Description} \\
+    \midrule
+    \callout{1} & Menu bar & \menu{Session}, \menu{Data}, \menu{Analysis}, \menu{Movie}, \menu{Export} and \menu{About} (Section~\ref{sec:solar-menus}). \\
+    \callout{2} & Sidebar & Collapsible cards that read from top to bottom as the workflow: get data, choose records, analyze, then display, export and instrument-specific tools. \\
+    \callout{3} & Sidebar handle & Hides or shows the sidebar. \\
+    \callout{4} & Header bar & Live cursor readout --- distance from Sun center in \(R_\odot\), position angle, heliographic coordinates on the disk, and pixel --- and the one-click \gui{Export MP4}\index{movie export!MP4} button. \\
+    \callout{5} & Measure toolbar & The \gui{Measurements}\index{measurement tools!enabling} switch, the \gui{Ruler}\index{measurement tools!ruler}, \gui{Profile}\index{measurement tools!profile}, \gui{Region Stats}\index{measurement tools!region statistics}, \gui{Track CME}\index{Track CME}, \gui{Circle Fit}\index{circle fit} and \gui{Clear} tools, and \gui{Pan / Zoom}\index{Solar Image Analysis!pan and zoom} (Chapter~\ref{ch:solar-measurements}). \\
+    \callout{6} & Image canvas & The current frame, titled with instrument, wavelength and time. \\
+    \callout{7} & CME tracking panel & Measurement table, live height--time graph and kinematic fit; active when \gui{Measurements} is ticked (Section~\ref{sec:tracking-panel}). \\
+    \callout{8} & Playback bar & Rewind, previous, play, pause and next buttons, the frame scrubber, the frame counter (\gui{Frame n / N}) and the \gui{Speed} in frames per second. \\
+    \callout{9} & Details drawer\index{Solar Image Analysis!Details drawer} & Results and warnings of every operation. Click \gui{Details} to collapse it; drag the divider above it to resize. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+The playback speed set in the playback bar is used for playback and for exported movies.
+While a sequence plays, or while a contrast slider is dragged, the canvas switches to a fast
+preview that subsamples the display; full resolution returns as soon as playback stops.
+Measurements, statistics and exports always use the full-resolution data.
+
+\subsection{Menus}
+\label{sec:solar-menus}
+
+\begin{xltabular}{\linewidth}{@{}P{0.38\linewidth} L@{}}
+  \caption{Menus of the Solar Image Analysis window.}\label{tab:solar-menus}\\
+  \toprule \thead{Command} & \thead{Function} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} \\ \midrule\endhead
+  \menu{Session > Open Session…} & Open an \file{.ecsolar}\index{ecsolar@.ecsolar file} session (Section~\ref{sec:solar-sessions}). \\
+  \menu{Session > Save Session} / \menu{Save Session As…} & Save the session (\kbd{Ctrl+S} / \kbd{Ctrl+Shift+S}). \\
+  \menu{Data > Fetch Archive Records} & Search the archive (\gui{Fetch Records}\index{Solar Image Analysis!Fetch Records}). \\
+  \menu{Data > Find Latest Available}\index{Solar Image Analysis!Find Latest} & Find the newest available data (\gui{Find Latest}). \\
+  \menu{Data > SOHO Live Preview (Helioviewer)}\index{Helioviewer} & Near-real-time SOHO quicklook images (Section~\ref{sec:live-preview}). \\
+  \menu{Data > Load Selected (to cache)}\index{Solar Image Analysis!Load Selected} & Download and load the ticked records. \\
+  \menu{Data > Save Selected to Disk…} & Download the ticked records to a folder. \\
+  \menu{Data > Upload FITS Files}\index{Solar Image Analysis!local files} & Load local FITS files. \\
+  \menu{Data > Use Analyzer Window} & Copy the time range of the main window's spectrum. \\
+  \menu{Data > Stop Download/Search} & Cancel the running operation. \\
+  \menu{Data > Reset All (clear cache \& defaults)} & Clear the cache and restore default settings. \\
+  \menu{Analysis > Plot Frames}, \menu{Running Difference}\index{running difference}, \menu{Composite} & Display modes (Section~\ref{sec:solar-analysis-card}). \\
+  \menu{Analysis > Identify Active Regions}, \menu{Fetch NOAA/HEK Labels}\index{active regions!NOAA labels} & Active-region tools (Section~\ref{sec:active-regions}). \\
+  \menu{Analysis > Compare Viewpoint…} & Compare with a second observer (Section~\ref{sec:compare-viewpoint}). \\
+  \menu{Analysis > GCS CME Fitting…} & Open GCS fitting at the time of the displayed frame (Chapter~\ref{ch:gcs-window}). \\
+  \menu{Analysis > Reset Loaded Frames} & Restore the frames as loaded. \\
+  \menu{Movie > Rewind}, \menu{Back}, \menu{Play}, \menu{Pause}, \menu{Forward} & Playback. \\
+  \menu{Movie > Build Movie}\index{movie export} & Export a movie (Section~\ref{sec:solar-movies}). \\
+  \menu{Export > Export Plot}, \menu{Export Cropped FITS}\index{crop!export FITS}, \menu{Export Regions CSV}, \menu{Export MP4} & Exports (Section~\ref{sec:solar-movies}). \\
+  \menu{About > About Solar Image Analysis…} & Version information. \\
+  \bottomrule
+\end{xltabular}
+
+\subsection{Sidebar cards}
+
+Table~\ref{tab:solar-cards} lists the sidebar cards in order, and the instrument classes for
+which each is shown.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Sidebar cards of Solar Image Analysis.}
+  \label{tab:solar-cards}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.3\linewidth}P{0.3\linewidth}L@{}}
+    \toprule
+    \thead{Card} & \thead{Shown for} & \thead{See} \\
+    \midrule
+    Data Source & all & Section~\ref{sec:data-source} \\
+    Archive Results & all & Section~\ref{sec:archive-results} \\
+    Analysis & all (disk tools for disk imagers and magnetographs only) & Section~\ref{sec:solar-analysis-card} \\
+    Processing Level & AIA and SUVI & Section~\ref{sec:processing-level} \\
+    Display \& Crop & all & Section~\ref{sec:display-crop} \\
+    Solar Derotation & all & Section~\ref{sec:derotation} \\
+    Movie Export & all & Section~\ref{sec:solar-movies} \\
+    Coronagraph Tools & coronagraphs & Section~\ref{sec:nrgf} \\
+    Overlay Layers & coronagraphs & Section~\ref{sec:overlay-layers} \\
+    Heliospheric Imager (J-map) & HI1, HI2 & Section~\ref{sec:jmap} \\
+    Magnetic Vector Field (HMI) & HMI & Section~\ref{sec:hmi-vector} \\
+    Potential Field (PFSS) & disk imagers, magnetographs, synoptic maps & Chapter~\ref{ch:pfss} \\
+    Active Regions & disk imagers, magnetographs & Section~\ref{sec:active-regions} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Obtaining image data}
+
+\subsection{The Data Source card}
+\label{sec:data-source}
+
+The \gui{Data Source} card (Figure~\ref{fig:solar-data-source}) defines what to retrieve and
+how.
+
+\screenshot[0.5\linewidth]{solar/solar_data_source}{The \gui{Data Source} card.}{fig:solar-data-source}{The Data Source card (Observable, Start/End, Cadence, Max records, Use Analyzer Time Window, Download options, buttons) above the Archive Results card with a list of records, some ticked.}
+
+\begin{description}
+  \item[Observable] the instrument and wavelength or product (Table~\ref{tab:observables}).
+  \item[Start (UTC), End (UTC)] the time range.
+  \item[Cadence (s)] the sampling interval between frames (0--3600~s; default 120~s).
+  \item[Max records] the maximum number of records to list (1--5000; default 120).
+  \item[Use Analyzer Time Window] copies the start and end times of the spectrum in the main
+    window, so that the images match the radio burst being studied.
+\end{description}
+
+\procedure{Download options (SDO)}
+\begin{description}
+  \item[Source] \gui{Auto (JSOC → VSO)}\index{VSO}\index{JSOC} tries the Joint Science Operations Center (JSOC)
+    first and falls back to the Virtual Solar Observatory (VSO); \gui{JSOC (fast)} returns
+    direct, compressed AIA files and is usually much faster; \gui{VSO (classic)} uses the
+    VSO only.
+  \item[JSOC notify e-mail] JSOC requires a one-time, free registration of an e-mail address
+    at \url{https://jsoc.stanford.edu/ajax/register_email.html}. The address is remembered.
+  \item[Frame size] \gui{Full disk (4096²)}, \gui{Binned ½ (2048²)}, \gui{Binned ¼ (1024²)}
+    or \gui{Cutout (region)}\index{Solar Image Analysis!cutout}. Binned and cutout frames are produced by JSOC, so only the
+    reduced data are transferred; they require the JSOC source and e-mail. For a cutout,
+    enter the \gui{Centre X″}, \gui{Centre Y″}, \gui{Width″} and \gui{Height″} in arcseconds
+    from disk center.
+  \item[High resolution AIA (best crop)] requests full-resolution AIA products. Files are
+    larger, but cropped views keep more detail.
+\end{description}
+An estimate of the download size is shown below the options when records are selected.
+
+\procedure{Actions}
+\begin{description}
+  \item[Fetch Records] searches the archive; the matching records appear in
+    \gui{Archive Results}. \gui{Stop} cancels a running search or download; files already
+    completed remain in the cache.
+  \item[Find Latest] scans the archive backwards to find the newest data actually available
+    for the observable. This is useful for SOHO/LASCO, whose calibrated archive can lag real
+    time by many months, and may take a minute or two.
+  \item[Upload FITS…] loads solar FITS files from disk without an archive search.
+  \item[Live Preview (Helioviewer)] shown for SOHO/LASCO and SOHO/EIT
+    (Section~\ref{sec:live-preview}).
+\end{description}
+
+\subsection{The Archive Results card}
+\label{sec:archive-results}
+
+The \gui{Archive Results} table lists the records found, with the columns \gui{Use},
+\gui{Start UTC}, \gui{Source}, \gui{Size} and \gui{File ID}. Tick records in the \gui{Use}
+column, or use \gui{Select All} and \gui{Deselect All}, then:
+\begin{itemize}
+  \item \gui{Load Selected} downloads the ticked records into the working cache and loads
+    them for analysis; or
+  \item \gui{Save to Disk…} downloads them to a folder you choose, for keeping.
+\end{itemize}
+The \gui{Analysis} card then summarizes what is loaded (instrument, number of frames and
+configuration).
+
+\begin{note}[SOHO data]
+  The archive serves two files for every SOHO/EIT observation, the calibrated Level~1 file
+  and the raw level-zero file. The window chooses one per observation: Level~1 where it
+  exists and the raw file otherwise. Level~1 processing runs about a year behind the raw
+  archive, so recent searches return raw frames and older ones calibrated frames; a window
+  that straddles the boundary loads as two configuration groups. The calibrated SOHO/LASCO
+  archive also lags real time. For a date beyond the newest archived data, the search falls
+  back to the nearest available data and says so. Use \gui{Live Preview} to see the most
+  recent SOHO images.
+\end{note}
+
+\subsection{Live Preview (Helioviewer)}
+\label{sec:live-preview}
+\index{Helioviewer}
+
+\gui{Live Preview (Helioviewer)} opens the \gui{SOHO/… Near-Real-Time Preview (Helioviewer)}
+window (Figure~\ref{fig:live-preview}) with the newest quicklook image of SOHO/LASCO C2 or C3
+or SOHO/EIT, usually updated within about an hour. These browse images are for situational
+awareness, not for analysis.
+
+\screenshot[0.5\linewidth]{solar/helioviewer_preview}{The SOHO near-real-time preview.}{fig:live-preview}{The SOHO/LASCO Near-Real-Time Preview (Helioviewer) window showing the latest C2 image, the Detector selector, the Latest Frame button, and the Movie (time range · step) group with playback controls.}
+
+\begin{description}
+  \item[Passband / Detector, Latest Frame] choose the EIT passband or LASCO detector, and
+    reload the newest image.
+  \item[Movie (time range · step)] set \gui{Start (UTC)}, \gui{End (UTC)}, \gui{Step}
+    (minutes) and \gui{Max frames}, then \gui{Build Movie} to fetch one frame per step and
+    play them with \gui{◀}, \gui{Play}, \gui{Pause}, \gui{▶} and an FPS setting.
+    \gui{Cancel} stops the fetch. The frame cap protects the Helioviewer service.
+  \item[Open in Browser] opens the view on the Helioviewer web site.
+\end{description}
+
+\subsection{Processing level}
+\label{sec:processing-level}
+\index{calibration level}
+
+Downloads always fetch the archive's base product. For instruments that publish more than
+one processing level, the \gui{Processing Level} card selects the level that is displayed and
+analyzed:
+\begin{description}
+  \item[SDO/AIA] \gui{Level 1 (as downloaded)}, the archive product; or
+    \gui{Level 1.5 (registered here)}\index{calibration level!AIA level 1.5}, computed locally with aiapy \parencite{barnes2020},
+    which applies the master pointing, rotates the image to solar north, rescales it to
+    0.6~arcsec per pixel and centers the Sun.
+  \item[GOES/SUVI] \gui{Level 1b (as downloaded)}, single calibrated exposures; or
+    \gui{Level 2 (archive composite)}, NOAA's high-dynamic-range composites, which are
+    downloaded separately when selected.
+\end{description}
+\gui{Apply Level}\index{calibration level!Apply Level} re-derives the loaded sequence at the selected level; any crop or
+derotation is re-applied afterwards. The status line reports the level in use. The card is
+hidden for instruments that offer only one level.
+
+\section{Sessions}
+\label{sec:solar-sessions}
+\index{session!solar}\index{ecsolar@.ecsolar file}
+
+A Solar Image Analysis session (\file{.ecsolar}) is a single file that reopens an analysis
+exactly where it was left. It embeds the original FITS frames, so it survives a cleared
+cache or a move to another computer (at the cost of a large file), together with the data
+source, the display, crop and playback state, the CME measurements (height--time picks,
+circle fits and fit order) and the PFSS settings. The PFSS solution itself is not stored; one
+click on \gui{Compute PFSS}\index{PFSS!compute} reproduces it. Sessions are opened and saved from the
+\menu{Session} menu (\kbd{Ctrl+S}, \kbd{Ctrl+Shift+S}).

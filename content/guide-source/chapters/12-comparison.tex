@@ -1,0 +1,81 @@
+%% Chapter 12 ----------------------------------------------------------------
+\chapter{Multi-Station Comparison}
+\label{ch:comparison}
+\index{Multi-Station Comparison}
+
+The Multi-Station Comparison workspace displays dynamic spectra from several stations in
+vertically stacked panels with a shared time axis, so that the same event can be compared
+across stations, receivers and frequency ranges (Figure~\ref{fig:comparison}). It is opened
+from \menu{View > Multi-Station Comparison...} or with the \gui{Compare} button of the
+downloader (Chapter~\ref{ch:downloader}).
+
+\screenshot{downloader/multi_station_comparison}{The Multi-Station Comparison workspace with four stations observing the same event.}{fig:comparison}{Multi-Station Comparison window.}
+
+The workspace follows the rendering mode of the application: in Modern mode the panels are
+hardware-accelerated when available, and in Classic mode they are drawn with Matplotlib\index{Matplotlib}.
+
+\section{Stations and files}
+
+The \gui{Stations / Files} group lists the loaded files as \emph{station -- date -- file
+name}. \gui{Add Files...} adds FITS files from disk, \gui{Remove} removes the selected entry
+and \gui{Clear} removes all entries. Files that can be combined are merged automatically
+before display: each station's files are combined in time, in frequency, or as a complete
+time~\(\times\)~focus-code grid (Section~\ref{sec:combine-rules}), so a mixed-station
+selection yields one panel per station. Hovering over an entry shows any warning raised
+while reading it.
+
+\section{Display controls}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Display controls of the Multi-Station Comparison.}
+  \label{tab:comparison-controls}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.15\linewidth}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Group} & \thead{Control} & \thead{Function} \\
+    \midrule
+    View & Time alignment\index{Multi-Station Comparison!time alignment} & \gui{UT clock} aligns the panels on Universal Time; \gui{Seconds from file start} aligns each panel on its own start. UT alignment requires \texttt{TIME-OBS}\index{TIME-OBS keyword} in every file; otherwise the workspace switches to seconds and says so. \\
+    Appearance & Units & \gui{Digits} or \gui{dB}. \\
+               & Colormap & Color map of all panels. \\
+               & Color scale\index{Multi-Station Comparison!color scale} & \gui{Shared scale} (one scale for all panels), \gui{Per-station auto scale}, or \gui{Manual scale} with \gui{Low} and \gui{High} limits. \\
+    Noise Reduction & Target & \gui{All panels} or one panel. \\
+                    & Method & \gui{None}, \gui{Mean background}, \gui{Median background}, \gui{Robust background} or \gui{Noise clipping}. \\
+                    & Colormap & Color map of the noise-reduced panels. \\
+                    & Thresholds & With \gui{Noise clipping}, \gui{Lower threshold} and \gui{Upper threshold} sliders and a \gui{Logarithmic Threshold Scale}\index{display thresholds!logarithmic scale} option, as in the main window. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Display range and view configurations}
+
+The \gui{Actions} group contains:
+\begin{description}
+  \item[Set Range...] enter a shared time and frequency range for all panels.
+  \item[Reset Range] return to the full range of the data.
+  \item[Load View Config...] apply a \file{.efaview.json}\index{efaview.json@.efaview.json file} view configuration
+    (Section~\ref{sec:view-config}). The visual settings are applied; when the files differ
+    in date, set UT bounds with \gui{Set Range...}.
+  \item[Export...] export the comparison (Section~\ref{sec:comparison-export}).
+\end{description}
+
+\section{Ruler measurement}
+
+In the \gui{Measurement} group, \gui{Start Ruler}\index{Multi-Station Comparison!ruler} activates a ruler: click two points in one
+panel to measure the duration, frequency drift and slope, shown under \gui{Readout}.
+\gui{Clear} removes the measurement.
+
+\section{Exporting a comparison}
+\label{sec:comparison-export}
+
+\gui{Export...} opens the \gui{Export Comparison} dialog (Figure~\ref{fig:comparison-export}):
+\begin{description}
+  \item[Visible View] exports the comparison exactly as it appears in the window.
+  \item[Grid / Table Layout] exports a compact publication-style matrix of all panels, with
+    a shared time axis, each station's native frequency range and a white background. Its
+    options are the number of \gui{Columns} (\gui{Auto} or a fixed number), an
+    \gui{Overall title}, and the \gui{Raster resolution} (DPI) for bitmap formats.
+\end{description}
+The figure can be saved as PNG, PDF, EPS, SVG or TIFF.
+
+\screenshot[0.5\linewidth]{dialogs/comparison_export_dialog}{The \gui{Export Comparison} dialog.}{fig:comparison-export}{The Export Comparison dialog with Grid / Table Layout selected, showing the Columns, Overall title and Raster resolution fields and the explanatory note.}

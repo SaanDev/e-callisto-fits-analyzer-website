@@ -1,0 +1,88 @@
+%% Chapter 13 ----------------------------------------------------------------
+\chapter{Learmonth and STEREO/SWAVES Data}
+\label{ch:other-radio}
+
+Besides the e-CALLISTO archive, the application reads data from two further radio
+instruments: the ground-based Learmonth Solar Radio Spectrograph in Western Australia, and
+the space-based STEREO/WAVES (SWAVES) radio receivers. Both are opened from
+\menu{Solar Events > Radio Bursts}.
+
+\section{Learmonth Solar Radio Spectrograph}
+\label{sec:learmonth}
+\index{Learmonth}
+
+The Learmonth Solar Radio Spectrograph, operated by the Australian Bureau of Meteorology,
+records daily archive files (\file{.srs}\index{srs@.srs file}) in two receiver bands. \menu{Solar Events > Radio
+Bursts > Learmonth} opens the \gui{Learmonth Solar Radio Browser}
+(Figure~\ref{fig:learmonth}), which converts selected parts of a daily file into FIT files
+for the main window.
+
+\screenshot[0.7\linewidth]{radio-sources/learmonth_browser}{The Learmonth Solar Radio Browser.}{fig:learmonth}{The Learmonth Solar Radio Browser after Show Available Data, with the Daily Raw File information, the list of available 15-minute chunks (one highlighted for the chosen time) and the Convert buttons.}
+
+\begin{description}
+  \item[Observation Parameters] choose the \gui{Date} and a \gui{Time}, then click
+    \gui{Show Available Data}. The daily file is read from the local cache when available
+    and downloaded otherwise. The chunk containing the chosen time is highlighted.
+  \item[Daily Raw File] information about the daily archive file. \gui{Download} saves
+    the raw \file{.srs} file to a folder you choose.
+  \item[Available 15-Minute Chunks] the time ranges into which the day is divided.
+    \gui{Select All} and \gui{Deselect All} change the selection.
+  \item[Convert to FIT] converts the selected chunks to CALLISTO-style FIT files in a folder
+    you choose.
+  \item[Convert and Import] converts the selected chunks and imports them into the main
+    window, combined in time when consecutive.
+\end{description}
+Converted files carry a standard FITS header with the frequency and time axes and the
+observatory position, so they can be processed and analyzed exactly like e-CALLISTO data.
+
+\section{STEREO/SWAVES}
+\label{sec:swaves}
+\index{STEREO/SWAVES}\index{SWAVES}
+
+SWAVES on the twin STEREO spacecraft \parencite{bougeret2008} records radio spectra from
+2.6~kHz to 16~MHz, directly below the CALLISTO band. A burst that drifts out of the
+ground-based range can therefore be followed into the interplanetary medium on the same
+figure. \menu{Solar Events > Radio Bursts > SWAVES} opens the \gui{STEREO/SWAVES Radio
+Spectrograph} dialog (Figure~\ref{fig:swaves-dialog}).
+
+\screenshot[0.55\linewidth]{radio-sources/swaves_dialog}{The STEREO/SWAVES dialog.}{fig:swaves-dialog}{The STEREO/SWAVES Radio Spectrograph dialog with the Observation Window (UTC) fields, the Use CALLISTO Window, Cancel and Download and Plot buttons, and the summary line.}
+
+\begin{description}
+  \item[Start date, Start time, Duration] the UTC window to load (0.1--24~h; default
+    4~h). The data are NASA/SPDF level-2 one-minute averages served as one file per UTC day;
+    a window that crosses midnight fetches and joins both days. The archive starts on
+    27~October~2006, and downloaded day files are cached and reused.
+  \item[Spacecraft] \gui{STEREO-A (Ahead)}\index{STEREO} or \gui{STEREO-B (Behind)}. STEREO-B is
+    unavailable for dates after 1~October~2014, when contact with the spacecraft was lost.
+  \item[Sync padding] extra time added on each side when the window is taken from the
+    CALLISTO spectrum (0--720~min; default 30~min). A Type~II or Type~III burst takes tens
+    of minutes to hours to drift from the corona into the SWAVES band, so an exact match
+    would cut off the part you want to see.
+  \item[Use CALLISTO Window] copies the time range of the loaded CALLISTO spectrum, widened
+    by the sync padding. \menu{Solar Events > Sync Current Time Window}\index{time synchronization} updates an open
+    SWAVES dialog in the same way.
+  \item[Download and Plot] loads the data; \gui{Cancel} stops a running load.
+\end{description}
+
+\subsection{The split view}
+\label{sec:swaves-split}
+
+Once SWAVES data are loaded, the plotting area of the main window splits into two panels:
+CALLISTO above and SWAVES below, on a shared time axis, so that panning or zooming either
+panel moves both (Figure~\ref{fig:swaves-split}). The CALLISTO interval is outlined on the
+SWAVES panel. The SWAVES frequency axis is always logarithmic and its intensity is in
+decibels above the instrument background, so the panel keeps its own color bar and color
+scaling while following the color map chosen in the sidebar. Loading SWAVES with no
+CALLISTO file open plots it across the whole area; it moves into the split view\index{STEREO/SWAVES!split view} as soon as a
+FITS file is loaded.
+
+\screenshot{radio-sources/swaves_split_view}{CALLISTO and STEREO/SWAVES spectra in the split view.}{fig:swaves-split}{Main window in split view: a CALLISTO spectrum with a Type II/III burst in the upper panel and the SWAVES spectrum below on the shared time axis, with the CALLISTO interval outlined.}
+
+\menu{Solar Events > SWAVES Panel}\index{STEREO/SWAVES!panel} hides and restores the panel without discarding the
+loaded data. The split view is included in exported figures, saved in and restored from
+projects without downloading the data again, and added to project reports.
+
+\begin{note}
+  The drawing, lasso, drift and measurement tools act on the CALLISTO panel only, and the
+  data-reduction controls of the sidebar do not apply to the SWAVES panel.
+\end{note}

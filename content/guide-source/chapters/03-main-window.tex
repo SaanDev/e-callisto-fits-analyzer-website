@@ -1,0 +1,271 @@
+%% Chapter 3 -----------------------------------------------------------------
+\chapter{The Main Window}
+\label{ch:main-window}
+\index{main window}
+
+The main window is where dynamic spectra are displayed, processed and measured, and from
+where every other tool is opened. This chapter describes its layout, toolbar, menus and
+status bar. The sidebar panels are described in Chapter~\ref{ch:sidebar}.
+
+\section{Layout}
+\label{sec:layout}
+
+The main window (Figure~\ref{fig:main-window}) consists of the regions listed in
+Table~\ref{tab:main-regions}.
+
+\screenshot{main-window/main_window}{Main window of the \appname{} before a file is loaded.}{fig:main-window}{Main window with the regions labeled.}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Regions of the main window.}
+  \label{tab:main-regions}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.24\linewidth}L@{}}
+    \toprule
+    \thead{Region} & \thead{Description} \\
+    \midrule
+    Menu bar & Access to every function, including those not on the toolbar (Section~\ref{sec:menus}). On macOS the menu bar is at the top of the screen. \\
+    Toolbar & Icon buttons for the most frequent actions (Section~\ref{sec:toolbar}). \\
+    \gui{Cite this Software}\index{Cite this Software} & Opens the citation dialog (Section~\ref{sec:cite-dialog}). \\
+    Sidebar & Collapsible panels for the timeline, background subtraction, display thresholds, units, axis scale, graph properties, the analysis summary and the ruler readout (Chapter~\ref{ch:sidebar}). \\
+    Main plotting area & The dynamic spectrum with its color bar. Interactive tools act here. \\
+    Status bar & Messages on the left; the update status and the live cursor readout on the right (Section~\ref{sec:status-bar}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+A narrow arrow handle on the left edge of the plotting area hides or shows the sidebar to
+give the plot more room. The divider between the sidebar and the plot can also be dragged.
+
+\section{Toolbar}
+\label{sec:toolbar}
+\index{toolbar}
+
+The toolbar (Figure~\ref{fig:toolbar}) contains 16 tools, described in
+Table~\ref{tab:toolbar}. Hovering over a tool shows its name. Tools that need loaded or
+processed data remain disabled until they can be used.
+
+\screenshot{main-window/toolbar}{The main toolbar with its tools numbered.}{fig:toolbar}{Toolbar with numbered callouts 1--16.}
+
+\begin{xltabular}{\linewidth}{@{}c P{0.28\linewidth} L P{0.14\linewidth}@{}}
+  \caption{Toolbar tools.}\label{tab:toolbar}\\
+  \toprule
+  \thead{No.} & \thead{Tool} & \thead{Function} & \thead{Shortcut} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \thead{No.} & \thead{Tool} & \thead{Function} & \thead{Shortcut} \\
+  \midrule
+  \endhead
+  \callout{1} & Open / Load & Load one or more CALLISTO FITS files from disk (Section~\ref{sec:opening-files}). & \kbd{Ctrl+O} \\
+  \callout{2} & Download & Open the e-CALLISTO FITS Downloader (Chapter~\ref{ch:downloader}). & \\
+  \callout{3} & Export & Export the displayed spectrum as a figure (Section~\ref{sec:export-figure}). & \kbd{Ctrl+E} \\
+  \callout{4} & Export as FITS & Export the processed spectrum as a FITS file (Section~\ref{sec:export-fits}). & \kbd{Ctrl+F} \\
+  \callout{5} & Save Project & Save the complete workspace as an \file{.efaproj}\index{efaproj@.efaproj file} project (Section~\ref{sec:projects}). & \kbd{Ctrl+S} \\
+  \callout{6} & Undo & Undo the last processing change. & \kbd{Ctrl+Z} \\
+  \callout{7} & Redo & Redo the last undone\index{undo} change. & \kbd{Ctrl+Shift+Z} \\
+  \callout{8} & Estimate Drift Rate & Estimate the drift rate from points clicked along a burst (Section~\ref{sec:drift}). & \\
+  \callout{9} & Isolate Burst & Draw a freehand mask around a burst (Section~\ref{sec:isolation}). & \\
+  \callout{10} & Plot Maximum Intensities & Open the Maximum Intensities window (Section~\ref{sec:max-intensities}). & \\
+  \callout{11} & Rectangular Zooming & Drag one rectangle to zoom into the plot. Available while navigation is locked (Section~\ref{sec:navigation}). & \\
+  \callout{12} & Lock zooming and panning & Disable scroll-wheel zooming and panning, freezing the view and enabling rectangle zoom. & \\
+  \callout{13} & Unlock zooming and panning & Re-enable scroll-wheel zooming and panning. & \\
+  \callout{14} & Reset Selection & Clear the isolated-burst selection and drift markers. & \\
+  \callout{15} & Reset to Raw & Discard all processing and show the raw spectrum. & \\
+  \callout{16} & Reset All & Clear the workspace: data, processing, selections and analysis overlays. & \\
+  \bottomrule
+\end{xltabular}
+
+\begin{caution}
+  \gui{Reset All}\index{Reset All} clears the whole workspace. Save a project first if you want to keep
+  the current state.
+\end{caution}
+
+\section{Plotting area and renderers}
+\label{sec:renderers}
+\index{renderer}\index{hardware acceleration}
+
+The plotting area shows the dynamic spectrum with frequency on the vertical axis, time on
+the horizontal axis and intensity as color. The plot title shows the source file name
+and the processing state, for example \gui{-Background Subtracted} or
+\gui{-Isolated Burst}.
+
+Two renderers are available and are selected with \menu{View > Mode}\index{renderer!Classic and Modern}:
+\begin{description}
+  \item[Modern]\index{renderer!Modern} uses a hardware-accelerated canvas (PyQtGraph\index{PyQtGraph}) for fast zooming and
+    panning of large or combined spectra. This is the default.
+  \item[Classic] uses Matplotlib\index{Matplotlib}.
+\end{description}
+\menu{Processing > Hardware Acceleration > Enable} switches the accelerated live canvas on
+or off. Both renderers support the same tools, annotations and overlays, and exported
+figures look the same whichever renderer is in use (Section~\ref{sec:export-figure}).
+
+\section{Menu bar}
+\label{sec:menus}
+\index{menus}
+
+Table~\ref{tab:menus} summarizes the menus of the main window. The tables that follow list
+every command, with its shortcut and the section where it is described.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Menus of the main window.}
+  \label{tab:menus}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.18\linewidth}L@{}}
+    \toprule
+    \thead{Menu} & \thead{Main functions} \\
+    \midrule
+    \menu{File} & Open and combine FITS files; recent files and projects; open, save and recover projects; project reports; figure, FITS, provenance and analysis-log export. \\
+    \menu{Edit} & Undo and redo; extend the timeline with adjacent observations; reset to raw data; reset the workspace. \\
+    \menu{Download} & Launch the e-CALLISTO FITS Downloader. \\
+    \menu{Solar Events} & CME catalog, GOES X-ray and proton flux, geomagnetic indices, SunPy Explorer, radio-burst downloaders, time-window synchronization, GOES overlay and the SWAVES panel. \\
+    \menu{View} & FITS header, display range and its presets, view configurations, Multi-Station Comparison, theme and rendering mode. \\
+    \menu{Analysis} & Solar Image Analysis, GCS CME Fitting, maximum intensities, Type~II band-splitting, light curves and the ruler. \\
+    \menu{Processing} & Hardware acceleration, RFI cleaning, annotations, presets, automatic outlier cleaning, restored analysis sessions and batch processing. \\
+    \menu{About} & Update check, bug report and version information. \\
+    \menu{Help} & The built-in user guide. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{File menu.}\label{tab:menu-file}\\
+  \toprule
+  \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\
+  \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\ \midrule\endhead
+  \menu{Open} & Load one file, or combine a compatible multi-file selection. & \kbd{Ctrl+O}, §\ref{sec:opening-files} \\
+  \menu{Recent Files} & Reopen one of the last ten FITS selections. & §\ref{sec:recent-files} \\
+  \menu{Combine FITS Files...} & Validate, preview and import time, frequency or time~\(\times\)~frequency combinations. & §\ref{sec:combine-dialog} \\
+  \menu{Open Project...} & Open a saved \file{.efaproj} project. & \kbd{Ctrl+Shift+O}, §\ref{sec:projects} \\
+  \menu{Recent Projects} & Reopen one of the last ten projects. & §\ref{sec:projects} \\
+  \menu{Save Project} & Save the workspace to the current project file. & \kbd{Ctrl+S} \\
+  \menu{Save Project As...} & Save the workspace to a new project file. & \kbd{Ctrl+Shift+S} \\
+  \menu{Recover Last Session...}\index{recovery!Recover Last Session} & Restore the most recent autosave snapshot. & §\ref{sec:autosave} \\
+  \menu{Generate Project Report...}\index{project report} & Create a PDF summary of the dataset and analysis. & §\ref{sec:project-report} \\
+  \menu{Export As > Export Figure}\index{export!figure} & Save the plot as an image or vector figure. & \kbd{Ctrl+E}, §\ref{sec:export-figure} \\
+  \menu{Export As > Export to FIT}\index{export!FITS} & Save the processed spectrum as a FITS file. & \kbd{Ctrl+F}, §\ref{sec:export-fits} \\
+  \menu{Export As > Export Provenance Report...}\index{provenance report} & Write Markdown and JSON provenance summaries. & §\ref{sec:provenance} \\
+  \menu{Export As > Export Analysis Log...}\index{analysis log} & Write CSV and text summaries of the fit and shock results. & §\ref{sec:provenance} \\
+  \bottomrule
+\end{xltabular}
+
+\begin{note}
+  The disabled \menu{File > Save As} entry in the main window is reserved; projects are
+  saved with \menu{Save Project} and \menu{Save Project As...}.
+\end{note}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{Edit menu.}\label{tab:menu-edit}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\ \midrule\endhead
+  \menu{Undo} & Undo the last processing or timeline change. & \kbd{Ctrl+Z} \\
+  \menu{Redo} & Redo the last undone change. & \kbd{Ctrl+Shift+Z} \\
+  \menu{Add Previous Observation} & Prepend the preceding 15-minute observation. & \kbd{Ctrl+Shift+Left}, §\ref{sec:timeline} \\
+  \menu{Add Next Observation} & Append the following observation. & \kbd{Ctrl+Shift+Right}, §\ref{sec:timeline} \\
+  \menu{Prefetch Adjacent Observations}\index{timeline!prefetch} & When ticked (default), download neighboring observations in the background so the next timeline step is instant. & §\ref{sec:timeline} \\
+  \menu{Reset to Raw} & Remove all processing and return to the loaded data. & \\
+  \menu{Reset All} & Clear processing, selections, analysis overlays and the loaded data. & \\
+  \bottomrule
+\end{xltabular}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{Download and Solar Events menus.}\label{tab:menu-solar-events}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endhead
+  \menu{Download > Launch FITS Downloader} & Open the e-CALLISTO FITS Downloader. & Ch.~\ref{ch:downloader} \\
+  \menu{Solar Events > CMEs > SOHO/LASCO CME Catalog}\index{SOHO/LASCO} & Daily CME lists, parameters and movies. & §\ref{sec:lasco-catalog} \\
+  \menu{Solar Events > Flares > GOES X-Ray Flux} & GOES XRS viewer and flare parameters. & §\ref{sec:goes-xrs} \\
+  \menu{Solar Events > Energetic Particles > GOES SEP Proton Flux} & GOES SGPS proton flux viewer. & §\ref{sec:goes-sep} \\
+  \menu{Solar Events > Geomagnetic > Kyoto Dst Index} & Dst index viewer. & §\ref{sec:dst} \\
+  \menu{Solar Events > Geomagnetic > GFZ Kp Index} & Kp index viewer. & §\ref{sec:kp} \\
+  \menu{Solar Events > Archives > SunPy Multi-Mission Explorer} & Multi-mission archive search and plotting. & Ch.~\ref{ch:sunpy} \\
+  \menu{Solar Events > Radio Bursts > e-CALLISTO} & The e-CALLISTO FITS Downloader. & Ch.~\ref{ch:downloader} \\
+  \menu{Solar Events > Radio Bursts > Learmonth} & Learmonth spectrograph browser. & §\ref{sec:learmonth} \\
+  \menu{Solar Events > Radio Bursts > SWAVES} & STEREO/SWAVES loader. & §\ref{sec:swaves} \\
+  \menu{Solar Events > Sync Current Time Window}\index{time synchronization} & Send the time range of the loaded spectrum to open context windows. & §\ref{sec:sync-time} \\
+  \menu{Solar Events > GOES Overlay > Short(XRS-A)}\index{GOES!overlay}, \menu{Long(XRS-B)} & Draw GOES X-ray curves on the spectrum. & §\ref{sec:goes-overlay} \\
+  \menu{Solar Events > SWAVES Panel}\index{STEREO/SWAVES!panel} & Show or hide the loaded SWAVES panel. & §\ref{sec:swaves} \\
+  \bottomrule
+\end{xltabular}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{View menu.}\label{tab:menu-view}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endhead
+  \menu{View FITS Header} & Show the primary header of the loaded file. & §\ref{sec:fits-header} \\
+  \menu{Set Display Range...}\index{display range!dialog} & Enter exact time and frequency limits. & §\ref{sec:display-range} \\
+  \menu{Save / Apply / Delete Display Range Preset...}\index{display range!presets} & Store and reuse named display ranges. & §\ref{sec:display-range} \\
+  \menu{Export View Config...}, \menu{Import View Config...} & Share display settings as \file{.efaview.json}\index{efaview.json@.efaview.json file}. & §\ref{sec:view-config} \\
+  \menu{Multi-Station Comparison...} & Open the comparison workspace. & Ch.~\ref{ch:comparison} \\
+  \menu{Theme > System / Light / Dark} & Choose the color theme. & §\ref{sec:themes} \\
+  \menu{Mode > Classic / Modern} & Choose the Matplotlib or hardware-accelerated renderer. & §\ref{sec:renderers} \\
+  \bottomrule
+\end{xltabular}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{Analysis menu.}\label{tab:menu-analysis}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{See} \\ \midrule\endhead
+  \menu{Solar Image Analysis} & Open the multi-mission imaging workspace. & Ch.~\ref{ch:solar-window} \\
+  \menu{GCS CME Fitting…} & Open the GCS window for the visible time range. & Ch.~\ref{ch:gcs-window} \\
+  \menu{Maximum Intensities > Open Maximum Intensities} & Extract the peak frequency of each time channel. & §\ref{sec:max-intensities} \\
+  \menu{Type II Band-splitting > Open Type II Band-splitting} & Open the band-splitting analyzer. & Ch.~\ref{ch:band-splitting} \\
+  \menu{Plot Light Curves > Enter frequency} & Plot a light curve at a typed frequency. & §\ref{sec:light-curves} \\
+  \menu{Plot Light Curves > Click on a frequency}\index{light curve!click mode} & Toggle click mode for light curves. & §\ref{sec:light-curves} \\
+  \menu{Plot Light Curves > Settings...} & Light-curve appearance. & §\ref{sec:light-curves} \\
+  \menu{Plot Light Curves > Clear light curve(s)} & Remove all light curves. & §\ref{sec:light-curves} \\
+  \menu{Ruler Measurement} & Measure duration, frequency change and slope between two points. & §\ref{sec:ruler} \\
+  \menu{Clear Ruler Measurement} & Remove the ruler. & §\ref{sec:ruler} \\
+  \bottomrule
+\end{xltabular}
+
+\begin{xltabular}{\linewidth}{@{}P{0.36\linewidth} L P{0.17\linewidth}@{}}
+  \caption{Processing, About and Help menus.}\label{tab:menu-processing}\\
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\ \midrule\endfirsthead
+  \toprule \thead{Command} & \thead{Function} & \thead{Shortcut, see} \\ \midrule\endhead
+  \menu{Processing > Hardware Acceleration > Enable} & Toggle the accelerated live canvas. & §\ref{sec:renderers} \\
+  \menu{Processing > RFI Cleaning > Open RFI Panel / Apply RFI / Reset RFI} & RFI cleaning pipeline. & §\ref{sec:rfi} \\
+  \menu{Processing > Annotations > …} & Polygon, line and text annotations. & §\ref{sec:annotations} \\
+  \menu{Processing > Presets > …} & Processing presets and the default preset. & §\ref{sec:presets} \\
+  \menu{Processing > Maximum Intensity > Auto-Clean Isolated Burst Outliers}\index{outlier removal!automatic} & Remove outliers automatically when maxima are taken from an isolated burst. & §\ref{sec:outliers} \\
+  \menu{Processing > Analysis Session > Open Restored Analysis}\index{restored analysis session} & Reopen the analysis windows of a restored session. & §\ref{sec:restored-analysis} \\
+  \menu{Processing > Batch Processing > Open Batch Processor} & Export many files with consistent settings. & §\ref{sec:batch} \\
+  \menu{About > Check for Updates...}\index{updates!check} & Look for a newer release. & §\ref{sec:updates} \\
+  \menu{About > Report a Bug...} & Prepare a bug report with diagnostics. & §\ref{sec:bug-report} \\
+  \menu{About > About} & Version and author information. & §\ref{sec:about} \\
+  \menu{Help > User Guide} & Open the built-in user guide. & \kbd{F1}, §\ref{sec:in-app-guide} \\
+  \bottomrule
+\end{xltabular}
+
+\section{Status bar}
+\label{sec:status-bar}
+\index{status bar}\index{cursor readout}
+
+The left part of the status bar shows messages from the current operation, for example
+the result of a drift-rate estimate or a reminder of how to finish a tool. The right part
+shows:
+\begin{itemize}
+  \item the update status, for example \gui{Updates: up to date}; and
+  \item the live cursor readout \gui{t = … | f = … MHz | I = …}, giving the time,
+    frequency and intensity (in the selected units) under the mouse pointer.
+\end{itemize}
+The readout allows quick quantitative inspection of the spectrum without clicking.
+
+\section{Themes}
+\label{sec:themes}
+\index{theme}
+
+\menu{View > Theme}\index{theme} selects \gui{System} (follow the operating system), \gui{Light} or
+\gui{Dark}. The theme applies to all windows of the application and to on-screen plots.
+Exported figures and PDF reports are always drawn on a white page, whichever theme is in
+use.
+
+\section{Drag and drop}
+\index{drag and drop}
+
+FITS files and \file{.efaproj} projects can be dropped anywhere on the main window,
+including the plot. A single FITS file opens on its own; several are combined exactly as
+with \menu{File > Open}; a project file opens the project. Other file types are refused.
+If the current work has unsaved changes, you are asked whether to save them first.

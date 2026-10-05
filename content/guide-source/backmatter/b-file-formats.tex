@@ -1,0 +1,86 @@
+%% Appendix B ----------------------------------------------------------------
+\chapter{File Formats and Outputs}
+\label{app:file-formats}
+\index{file formats}
+
+\section{Files read and written by the application}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{File types of the \appname{}.}
+  \label{tab:file-types}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}L@{}}
+    \toprule
+    \thead{Extension} & \thead{Meaning} \\
+    \midrule
+    \file{.fit}, \file{.fits}, \file{.fit.gz}, \file{.fits.gz} & Radio spectra in the main window, and solar images in Solar Image Analysis. Upper-case suffixes are accepted. \\
+    \file{.efaproj} & Complete analyzer project: data, processing, view and analysis session (Section~\ref{sec:projects}). \\
+    \file{.efaview.json} & Portable view configuration: display range, units, thresholds, color map and graph styling (Section~\ref{sec:view-config}). \\
+    \file{.ecsolar} & Solar Image Analysis session with embedded FITS frames (Section~\ref{sec:solar-sessions}). \\
+    \file{.srs} & Learmonth spectrograph daily archive file (Section~\ref{sec:learmonth}). \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Exported FITS files}
+\label{sec:fits-structure}
+
+A FITS file written with \menu{File > Export As > Export to FIT} has the structure of a
+standard CALLISTO file:
+\begin{description}
+  \item[Primary HDU] the two-dimensional spectrum (frequency~\(\times\)~time) with the chosen
+    \texttt{BITPIX}, and the original header updated with the keywords in
+    Table~\ref{tab:fits-keywords}.
+  \item[\texttt{AXIS} extension] a binary table with one row and the columns
+    \texttt{FREQUENCY} (MHz) and \texttt{TIME} (s).
+\end{description}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Header keywords added or updated on FITS export.}
+  \label{tab:fits-keywords}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Keyword} & \thead{Content} \\
+    \midrule
+    \texttt{HISTORY} & ``Exported by e-CALLISTO FITS Analyzer'', the plot type, the units shown, and the source file (or the first and last source of a combined dataset). \\
+    \texttt{COMBINED} & \texttt{T} for a combined dataset, \texttt{F} otherwise. \\
+    \texttt{COMBMETH} & Combination method: \texttt{time}, \texttt{frequency} or \texttt{time\_frequency}. \\
+    \texttt{NFILES} & Number of source files of a combined dataset. \\
+    \texttt{BUNIT} & Intensity unit of the data. \\
+    \texttt{DATAMIN}, \texttt{DATAMAX} & Minimum and maximum data values. \\
+    \texttt{BSCALE}, \texttt{BZERO} & Scaling for integer data. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\section{Summary of outputs}
+
+\begin{xltabular}{\linewidth}{@{}P{0.33\linewidth} P{0.24\linewidth} L@{}}
+  \caption{Outputs produced by the application.}\label{tab:outputs}\\
+  \toprule \thead{Output} & \thead{Format} & \thead{Produced by} \\ \midrule\endfirsthead
+  \toprule \thead{Output} & \thead{Format} & \thead{Produced by} \\ \midrule\endhead
+  Spectrum figure & PNG, PDF, EPS, SVG, TIFF, JPG & \menu{File > Export As > Export Figure} \\
+  Processed spectrum & FITS & \menu{File > Export As > Export to FIT} \\
+  Provenance report & Markdown and JSON & \menu{File > Export As > Export Provenance Report...} \\
+  Analysis log & CSV and TXT & \menu{File > Export As > Export Analysis Log...} \\
+  Project report & PDF & \menu{File > Generate Project Report...} \\
+  Batch images & PNG (300~dpi) & Batch processor \\
+  Maximum-intensity points & CSV (time channel, time, frequency) & Maximum Intensities, \menu{File > Save As} \\
+  Analyzer results & Excel \file{.xlsx} (Table~\ref{tab:excel-columns}) & Burst Analyzer, \gui{Save Data} \\
+  Analysis graphs & PNG, PDF, EPS, SVG, TIFF, JPG & Maximum Intensities, Analyzer, band-splitting \\
+  Spectral overview & PNG, PDF, EPS, SVG, TIFF & Downloader, \gui{Spectral Overview} \\
+  Station comparison & PNG, PDF, EPS, SVG, TIFF & Multi-Station Comparison \\
+  Learmonth conversion & FIT & Learmonth browser \\
+  GOES, SEP, Dst, Kp data & PNG and CSV & Solar-event viewers \\
+  SunPy plots and statistics & PNG, PDF, SVG, TIFF, JPG; CSV & SunPy Explorer \\
+  Solar images & PNG; cropped FITS; MP4, GIF & Solar Image Analysis \\
+  Active regions & CSV & Solar Image Analysis \\
+  CME tracking & CSV; PNG, PDF, EPS, SVG, TIFF, JPG & Solar Image Analysis tracking panel \\
+  PFSS diagnostics & PNG, PDF, SVG & PFSS diagnostics window \\
+  GCS analysis & JSON; CSV; figures; GIF, MP4; PDF report & GCS CME Fitting \\
+  Diagnostics bundle & ZIP & \menu{About > Report a Bug...} \\
+  \bottomrule
+\end{xltabular}

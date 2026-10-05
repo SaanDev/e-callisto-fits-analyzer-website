@@ -1,5 +1,47 @@
 [
   {
+    "tag": "v3.1.0(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v3.1.0_Setup.exe",
+        "size": 272725386,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.0%28Windows%29/e-CALLISTO_FITS_Analyzer_v3.1.0_Setup.exe",
+        "digest": "sha256:3620934fd275e302e4d162b9ade9e46643eaaa8a12b8c4e888639fa9d713b8fb"
+      }
+    ],
+    "verification": "Size and SHA-256 from owner-supplied files, 2026-10-05. URLs updated to v3.1.0 as instructed by the release owner; GitHub releases are drafted."
+  },
+  {
+    "tag": "v3.1.0(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0(MacOS)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.1.0_macOS_arm64.dmg",
+        "size": 882935006,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.0%28MacOS%29/e-callisto-fits-analyzer_3.1.0_macOS_arm64.dmg",
+        "digest": "sha256:aae90305f3d6a73c45c48d8192c7037caaa8c44685cf9c4e56950c0ec5b39858"
+      }
+    ],
+    "verification": "Size and SHA-256 from owner-supplied files, 2026-10-05. URLs updated to v3.1.0 as instructed by the release owner; GitHub releases are drafted."
+  },
+  {
+    "tag": "v3.1.0(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.1.0_amd64.deb",
+        "size": 422342838,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.0%28Linux%29/e-callisto-fits-analyzer_3.1.0_amd64.deb",
+        "digest": "sha256:3bf3c602aead1c820a08a48e86c1386c477802bff3126ad4b87e6340b5459473"
+      }
+    ],
+    "verification": "Size and SHA-256 from owner-supplied files, 2026-10-05. URLs updated to v3.1.0 as instructed by the release owner; GitHub releases are drafted."
+  },
+  {
     "tag": "v3.1.0-beta(Windows)",
     "prerelease": true,
     "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0-beta(Windows)",

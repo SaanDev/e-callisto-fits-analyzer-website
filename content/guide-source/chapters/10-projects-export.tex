@@ -1,0 +1,168 @@
+%% Chapter 10 ----------------------------------------------------------------
+\chapter{Projects, Reports and Export}
+\label{ch:projects}
+
+This chapter describes how the state of an analysis is saved and recovered, and how
+figures, processed data, reports and batches of files are exported.
+
+\section{Projects}
+\label{sec:projects}
+\index{project}\index{efaproj@.efaproj file}
+
+A project file (\file{.efaproj}\index{efaproj@.efaproj file}) stores the complete state of the analyzer so that work can
+be resumed exactly where it was left. A project contains:
+\begin{itemize}
+  \item the loaded or combined data, with the list of source files and the combination
+    method;
+  \item the processing state: background subtraction, RFI cleaning, isolated burst;
+  \item the view: display range, thresholds, units, axis scale, color map and graph
+    properties;
+  \item annotations, light curves and their settings, and a loaded STEREO/SWAVES panel
+    (restored without downloading it again);
+  \item the active processing preset, the operation log and the last time-window
+    synchronization;
+  \item the analysis session: maximum-intensity points, the fundamental/harmonic choice,
+    the Analyzer's fit, density model, fold and \(t_0\), and band-splitting points and fits.
+\end{itemize}
+
+Projects are managed from the \menu{File} menu:
+\begin{description}
+  \item[Save Project] (\kbd{Ctrl+S}, or the toolbar tool) saves to the current project
+    file, asking for a name the first time.
+  \item[Save Project As...] (\kbd{Ctrl+Shift+S}) saves to a new file.
+  \item[Open Project...] (\kbd{Ctrl+Shift+O}) opens a project. A project file can also be
+    dropped onto the main window.
+  \item[Recent Projects]\index{recent projects} lists the last ten projects opened or saved;
+    \gui{Clear Recent Projects} empties the list, and an entry whose file is missing is
+    removed with a message.
+\end{description}
+Before a project is opened, or new data are loaded, you are asked whether to save unsaved
+changes.
+
+\subsection{Restored analysis sessions}
+\label{sec:restored-analysis}
+
+When a project with an analysis session is opened, the \gui{Analysis Summary} panel reports
+that the session has been restored. \menu{Processing > Analysis Session > Open Restored
+Analysis} reopens the windows that were open when the project was saved --- the Maximum
+Intensities window, the Burst Analyzer and the Type~II Band-splitting window --- with their
+points, fits and settings.
+
+\section{Autosave and recovery}
+\label{sec:autosave}
+\index{autosave}\index{recovery}
+
+While data are loaded and there are unsaved changes, the application writes a recovery
+snapshot every three minutes. The ten most recent snapshots are kept. If the application
+did not close normally, it offers to recover the latest snapshot at the next start.
+\menu{File > Recover Last Session...}\index{recovery!Recover Last Session} restores the most recent snapshot at any time.
+
+\section{Exporting figures}
+\label{sec:export-figure}
+\index{export!figure}\index{OriginPro style}
+
+\menu{File > Export As > Export Figure}\index{export!figure} (\kbd{Ctrl+E}, or the \gui{Export} toolbar tool)
+saves the main plot as a PNG, PDF, EPS, SVG, TIFF or JPG file. Whatever renderer and theme
+are on screen, the exported figure is drawn as a publication-style (``OriginPro-style'')
+graph in light mode:
+\begin{itemize}
+  \item Arial type, a closed black frame with inward major and minor ticks on all four
+    sides, a framed color scale, and time ticks on whole UT minutes;
+  \item the current zoom, color map, display range, linear or logarithmic frequency axis,
+    and the titles and font sizes from \gui{Graph Properties};
+  \item every visible overlay: light curves, annotations, the GOES X-ray overlay, the ruler
+    measurement and the STEREO/SWAVES panel.
+\end{itemize}
+The plot on screen keeps its own look. On Windows, if the proposed folder is not writable
+(for example inside \file{C:\\Program Files}), you are asked to choose another folder.
+
+The Maximum Intensities window, the Burst Analyzer, the band-splitting window, the
+Multi-Station Comparison and the Solar Image Analysis tracking panel export their graphs in
+the same style.
+
+\section{Exporting FITS files}
+\label{sec:export-fits}
+\index{export!FITS}
+
+\menu{File > Export As > Export to FIT}\index{export!FITS} (\kbd{Ctrl+F}, or the \gui{Export as FITS} toolbar
+tool) writes the spectrum on show as a new FITS file, for downstream analysis or machine
+learning. The processed data are exported if processing has been applied, and the raw data
+otherwise; combined datasets are exported as one file.
+
+Before saving, choose the data type (\texttt{BITPIX}\index{BITPIX keyword}): \gui{Auto} (the recommended type is
+shown), \gui{8 (unsigned byte)}, \gui{16 (signed int16)} or \gui{32 (signed int32)}.
+Integer types are offered because some FITS viewers cannot read 64-bit floating-point data.
+The exported file keeps the original header, updated with:
+\begin{itemize}
+  \item \texttt{HISTORY} records naming the application, the plot type, the intensity
+    units and the source file(s);
+  \item \texttt{COMBINED}, \texttt{COMBMETH} (combination method) and \texttt{NFILES} for
+    combined data;
+  \item \texttt{BUNIT}, \texttt{DATAMIN} and \texttt{DATAMAX};
+\end{itemize}
+and an \texttt{AXIS} binary-table extension with the \texttt{FREQUENCY} and \texttt{TIME}
+columns, as in standard CALLISTO files (see Appendix~\ref{app:file-formats}).
+
+\section{Provenance reports and analysis logs}
+\label{sec:provenance}
+\index{provenance report}\index{analysis log}
+
+For reproducibility, two structured reports can be exported from \menu{File > Export As}:
+\begin{description}
+  \item[Export Provenance Report...] writes a Markdown (\file{.md}) and a JSON
+    (\file{.json}) summary with the sections \emph{App}, \emph{Data Source},
+    \emph{Processing}, \emph{RFI}, \emph{Annotations}, \emph{Time Sync} and
+    \emph{Operation Log}.
+  \item[Export Analysis Log...] writes \file{<name>_analysis_log.csv} and
+    \file{<name>_analysis_log.txt} with the Analyzer's fit parameters and the derived shock
+    quantities.
+\end{description}
+These reports are suitable for laboratory notebooks, collaboration hand-overs and the
+preparation of papers.
+
+\section{Project report PDF}
+\label{sec:project-report}
+\index{project report}
+
+\menu{File > Generate Project Report...}\index{project report} creates a consolidated PDF of the current project
+or loaded dataset. A progress dialog is shown while the report is built. The report
+contains the sections listed below; sections without content are omitted.
+\begin{itemize}
+  \item \emph{Data Source} and \emph{Selected FITS Header};
+  \item \emph{Processing}, and \emph{RFI, Annotations, and Light Curves};
+  \item \emph{Analysis Summary} and \emph{Type II Results}, including the fit equation (with
+    \(t_0\) when it is not the file start), the density model, and band-splitting output;
+  \item \emph{Figures}: the raw and background-subtracted spectra, light curves with the
+    spectrum, the maximum-intensity fit, the Type~II band-splitting plots, the
+    STEREO/SWAVES split view\index{STEREO/SWAVES!split view}, and any available GOES X-ray, GOES proton, Dst and Kp context
+    plots;
+  \item \emph{Full FITS Header Appendix}.
+\end{itemize}
+Every graph in the report is drawn in the same style as \gui{Export Figure}, on a white page
+even in the dark theme.
+
+\section{Batch processing}
+\label{sec:batch}
+\index{batch processing}
+
+\menu{Processing > Batch Processing > Open Batch Processor} opens the \gui{Batch FIT
+Processing} dialog (Figure~\ref{fig:batch}), which renders every FIT file in a folder as a
+PNG image with consistent settings.
+
+\screenshot[0.62\linewidth]{dialogs/batch_processing_dialog}{The \gui{Batch FIT Processing} dialog.}{fig:batch}{The Batch FIT Processing dialog with input and output folders selected, the Output Type, Processing Options and Aligned View groups, and the status line.}
+
+\begin{description}
+  \item[Input Folder, Output Folder] the folder of FIT files to process and the folder for
+    the PNG images (one per input file, at 300~dpi; existing names are not overwritten).
+  \item[Output Type] \gui{Raw} or \gui{Background Subtracted}.
+  \item[Processing Options] the \gui{Background Method} (\gui{Mean}, \gui{Median} or
+    \gui{Plotutil Median (dB)}\index{Plotutil}\index{background subtraction!Median (dB)}) and the \gui{Colormap}. Plotutil Median (dB) converts digits
+    to dB with the CALLISTO scale before subtracting the median, and defaults to a display
+    range of \(-1\) to 8~dB.
+  \item[Aligned View] \gui{Use current display range} and \gui{Use current visual settings}
+    apply the main window's display range and appearance; \gui{Load View Config...} applies
+    a saved \file{.efaview.json}\index{efaview.json@.efaview.json file} file instead. These options give many station spectra
+    identical time and frequency axes.
+  \item[Start, Cancel, Close] start the run, cancel it after the current file, or close the
+    dialog. A summary is shown when the run finishes, including any files that failed.
+\end{description}
