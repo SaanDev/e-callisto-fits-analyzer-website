@@ -36,11 +36,18 @@ yarn-error.log*
 
 # typescript
 next-env.d.ts
+*.tsbuildinfo
+
+# Leftovers from the previous ChatGPT Sites / Cloudflare toolchain
 /dist/
 /.wrangler/
-# Checkout-local execution profile and tool state; never publish them.
+/.vinext/
 /.sites-runtime/
 /.agents/
 /.codex/
 /outputs/
 /work/
+
+# Local tool state
+/.claude/
+/.tools/

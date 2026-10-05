@@ -12,7 +12,14 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".sites-runtime/**",
+    ".tools/**",
+    "dist/**",
   ]),
+  {
+    // Static export: images are pre-optimized WebP files served as-is.
+    rules: { "@next/next/no-img-element": "off" },
+  },
   {
     files: ["components/ui/**/*.{ts,tsx}", "hooks/use-mobile.ts"],
     rules: {

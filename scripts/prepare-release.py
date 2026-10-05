@@ -1,27 +1,31 @@
-"""Package the owner-supplied v3.1.0 installers and original PDF metadata."""
-import hashlib,json
+"""Record release metadata for new installers and publish the user guide PDF.
+
+Usage: python scripts/prepare-release.py <folder with installers and PDF> <new version> <previous version>
+Example: python scripts/prepare-release.py "C:/Users/CALLISTO/Downloads/v3.1.0/v3.1.0" 3.1.0 3.0.0
+
+Copies the previous release records, substitutes the version, and reads sizes
+and SHA-256 digests from the local installers. The PDF is copied to
+public/docs unchanged; update guidePdf in lib/site.ts if its name changes.
+"""
+import hashlib, json, shutil, sys
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1]
-SOURCE=Path(r'C:\Users\CALLISTO\Downloads\v3.1.0\v3.1.0')
-releases=json.loads((ROOT/'releases-verified.json').read_text(encoding='utf-8-sig'))
-new=[]
+
+ROOT = Path(__file__).resolve().parents[1]
+source, new_version, old_version = Path(sys.argv[1]), sys.argv[2], sys.argv[3]
+releases = json.loads((ROOT / 'releases-verified.json').read_text(encoding='utf-8-sig'))
+records = []
 for old in releases:
-    if not old['tag'].startswith('v3.0.0('): continue
-    record=json.loads(json.dumps(old).replace('3.0.0','3.1.0'))
+    if not old['tag'].startswith(f'v{old_version}('): continue
+    record = json.loads(json.dumps(old).replace(old_version, new_version))
     for asset in record['assets']:
-        file=SOURCE/asset['name']
-        asset['size']=file.stat().st_size
-        asset['digest']='sha256:'+hashlib.file_digest(file.open('rb'),'sha256').hexdigest()
-    record['verification']='Size and SHA-256 from owner-supplied files, 2026-10-05. URLs updated to v3.1.0 as instructed by the release owner; GitHub releases are drafted.'
-    new.append(record)
-(ROOT/'releases-verified.json').write_text(json.dumps(new+[r for r in releases if not r['tag'].startswith('v3.1.0(')],indent=2)+'\n',encoding='utf-8')
-pdf=SOURCE/'e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf'
-data=pdf.read_bytes();size=12*1024*1024
-folder=ROOT/'public/docs/handbook-v3.1.0';folder.mkdir(parents=True,exist_ok=True)
-parts=[]
-for i,start in enumerate(range(0,len(data),size)):
-    name=f'part-{i+1}.bin';part=data[start:start+size];(folder/name).write_bytes(part)
-    parts.append(dict(url=f'/docs/handbook-v3.1.0/{name}',size=len(part)))
-manifest=dict(filename=pdf.name,size=len(data),pages=174,sha256=hashlib.sha256(data).hexdigest(),parts=parts)
-(ROOT/'content/guide-pdf.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
-print('Prepared three platform records and the original PDF; SHA-256:',manifest['sha256'])
+        file = source / asset['name']
+        asset['size'] = file.stat().st_size
+        asset['digest'] = 'sha256:' + hashlib.file_digest(file.open('rb'), 'sha256').hexdigest()
+    record['verification'] = 'Size and SHA-256 from the release installers.'
+    records.append(record)
+rest = [r for r in releases if not r['tag'].startswith(f'v{new_version}(')]
+(ROOT / 'releases-verified.json').write_text(json.dumps(records + rest, indent=2) + '\n', encoding='utf-8')
+for pdf in source.glob('*User_Guide*.pdf'):
+    shutil.copy2(pdf, ROOT / 'public/docs' / pdf.name)
+    print('Copied', pdf.name, hashlib.sha256(pdf.read_bytes()).hexdigest())
+print(f'Recorded {len(records)} v{new_version} platform releases.')

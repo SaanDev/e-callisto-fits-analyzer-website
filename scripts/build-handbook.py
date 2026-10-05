@@ -1,6 +1,9 @@
-"""Convert the author's supplied LaTeX into the screenshot-free web handbook.
+"""Convert the author's supplied LaTeX into the illustrated web handbook.
 
-Usage: python scripts/build-handbook.py --pandoc /path/to/pandoc
+Usage: python scripts/build-handbook.py --pandoc /path/to/pandoc [--figures /path/to/LaTeX/figures]
+
+--figures converts the book's PNG screenshots to WebP in public/guide/figures
+(requires Pillow). Without it, the WebP files already in that folder are used.
 The original PDF is distributed separately, without modification.
 """
 import argparse, html, json, re, subprocess
@@ -8,9 +11,58 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'content/guide-source'
+FIGURES = ROOT / 'public/guide/figures'
+FIGURE_WIDTH = 1600
 parser = argparse.ArgumentParser()
 parser.add_argument('--pandoc', required=True)
+parser.add_argument('--figures', help='LaTeX figures folder to convert to WebP')
 args = parser.parse_args()
+
+def convert_figures(source):
+    from PIL import Image
+    for png in sorted(Path(source).rglob('*.png')):
+        target = FIGURES / png.relative_to(source).with_suffix('.webp')
+        target.parent.mkdir(parents=True, exist_ok=True)
+        image = Image.open(png)
+        if image.mode not in ('RGB', 'RGBA'): image = image.convert('RGBA')
+        if image.mode == 'RGBA':
+            flat = Image.new('RGB', image.size, (255, 255, 255)); flat.paste(image, mask=image.split()[3]); image = flat
+        if image.width > FIGURE_WIDTH:
+            image = image.resize((FIGURE_WIDTH, round(image.height * FIGURE_WIDTH / image.width)), Image.LANCZOS)
+        image.save(target, 'WEBP', quality=84, method=6)
+
+def webp_size(path):
+    """Width and height of a WebP file, read from its header (stdlib only)."""
+    data = path.read_bytes()[:30]
+    kind = data[12:16]
+    if kind == b'VP8 ':
+        return int.from_bytes(data[26:28], 'little') & 0x3fff, int.from_bytes(data[28:30], 'little') & 0x3fff
+    if kind == b'VP8L':
+        bits = int.from_bytes(data[21:25], 'little')
+        return (bits & 0x3fff) + 1, ((bits >> 14) & 0x3fff) + 1
+    if kind == b'VP8X':
+        return int.from_bytes(data[24:27], 'little') + 1, int.from_bytes(data[27:30], 'little') + 1
+    raise ValueError(f'Unsupported WebP: {path}')
+
+if args.figures: convert_figures(args.figures)
+
+# TikZ drawings cannot be converted by Pandoc; they are redrawn in HTML and
+# inserted into the figure with the matching id.
+def flow_box(text, arrows=(), kind=''):
+    marks = ''.join(f'<i class="arrow {a}" aria-hidden="true"></i>' for a in arrows)
+    return f'<div class="flow-box{" " + kind if kind else ""}"><span>{text}</span>{marks}</div>'
+DIAGRAMS = {
+    'fig:workflow': '<div class="flow-diagram">'
+        + '<div class="flow-row">' + flow_box('Local FITS files<br>Downloaders<br>Projects', ['right'])
+        + flow_box('Open and combine<br><a href="/guide/opening-data/">Chapter 5</a>', ['right'])
+        + flow_box('Background, thresholds,<br>RFI cleaning (<a href="/guide/sidebar/">Ch. 6</a>, <a href="/guide/processing-tools/">7</a>)', ['down']) + '</div>'
+        + '<div class="flow-row">' + flow_box('Band-splitting:<br>magnetic field')
+        + flow_box('Burst Analyzer:<br>drift and shock', ['left', 'down'])
+        + flow_box('Burst isolation,<br>maximum intensities', ['left']) + '</div>'
+        + '<div class="flow-row">' + flow_box('Solar-event viewers,<br>SunPy Explorer', ['right'], 'context')
+        + flow_box('Projects, figures,<br>FITS, reports (<a href="/guide/projects-export/">Ch. 10</a>)')
+        + flow_box('Solar Image Analysis,<br>GCS CME Fitting', [], 'context') + '</div></div>',
+}
 
 def group(text, start):
     while start < len(text) and text[start].isspace(): start += 1
@@ -23,18 +75,20 @@ def group(text, start):
         i += 1
     return text[start+1:i-1], i
 
-def macro(text, name, count, replacement):
+def macro(text, name, count, replacement, optional=False):
+    """Replace \\name[opt]{arg}...; with optional=True the [opt] text is passed first."""
     pattern = re.compile(r'\\' + name + r'(?![A-Za-z])')
     pos = 0
     while match := pattern.search(text, pos):
         end = match.end()
         while end < len(text) and text[end].isspace(): end += 1
+        option = ''
         if end < len(text) and text[end] == '[':
-            end = text.index(']', end) + 1
+            close = text.index(']', end); option = text[end+1:close]; end = close + 1
         values = []
         for _ in range(count):
             value, end = group(text, end); values.append(value)
-        result = replacement(*values)
+        result = replacement(option, *values) if optional else replacement(*values)
         text = text[:match.start()] + result + text[end:]
         pos = match.start() + len(result)
     return text
@@ -68,13 +122,12 @@ for file, part in parts:
     text = re.sub(r'(?m)^\\newcommand.*$', '', text)
     if file.endswith('copyright'):
         text = r'\chapter{About this edition}' + '\n' + text
-    # Screenshots remain in the supplied PDF. Retain captions and figure references online.
-    def screenshot(image, caption, label, capture):
+    def screenshot(width, image, caption, label, capture):
         figure_labels.append(label)
-        return '\n\\begin{figure}\n\\caption{' + caption + '}\\label{' + label + '}\n\\end{figure}\n'
-    text = macro(text, 'screenshot', 4, screenshot)
-    text = re.sub(r'\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}', '', text)
-    text = re.sub(r'\\begin\{minipage\}(?:\[[^]]*\])?\{[^}]+\}[\s\S]*?\\end\{minipage\}', lambda m: '' if '\\includegraphics' in m[0] else m[0], text)
+        size = '[width=' + width + ']' if width else ''
+        return '\n\\begin{figure}\n\\includegraphics' + size + '{figures/' + image + '.png}\n\\caption{' + caption + '}\\label{' + label + '}\n\\end{figure}\n'
+    text = macro(text, 'screenshot', 4, screenshot, optional=True)
+    text = re.sub(r'\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}', lambda m: '\\includegraphics{diagram:tikz}', text)
     text = text.replace('\\begin{steps}', '\\begin{enumerate}').replace('\\end{steps}', '\\end{enumerate}')
     text = macro(text, 'procedure', 1, lambda x: '\\paragraph{' + x + '}')
     text = macro(text, 'problem', 1, lambda x: '\\subsection{' + x + '}')
@@ -113,7 +166,7 @@ for file, part in parts:
     chunks.append(text)
 
 combined = prefix + '\n'.join(chunks) + '\n\\chapter{Bibliography}\n'
-work = ROOT / '.sites-runtime/handbook'; work.mkdir(parents=True,exist_ok=True)
+work = ROOT / '.tools/handbook'; work.mkdir(parents=True,exist_ok=True)
 (work/'combined.tex').write_text(combined,encoding='utf-8')
 cmd = [args.pandoc,str(work/'combined.tex'),'-f','latex','-t','html5','--math-method=mathml','--citeproc','--bibliography',str(SOURCE/'references.bib'),'-M','link-citations=true','-M','nocite=@*']
 result = subprocess.run(cmd,capture_output=True,text=True,encoding='utf-8',check=True)
@@ -130,10 +183,49 @@ for item, body, head in zip(metadata,pieces,heads):
     item['title']=html.unescape(re.sub('<[^>]+>','',head[1]))
     item['html']=full
 
+missing_figures=[]
+def plain(fragment):
+    return re.sub(r'\s+',' ',html.unescape(re.sub('<[^>]+>','',fragment))).strip()
+
+IMAGE = r'<img src="(figures/[^"]+)"([^>]*?)\s*/>'
+MAX_FIGURE_HEIGHT = 640   # CSS px; the book caps screenshots at 70% of the text height
+
+def figure_image(m, alt):
+    src,attributes=m[1],m[2]
+    path=FIGURES/Path(src).relative_to('figures').with_suffix('.webp')
+    if not path.exists():
+        missing_figures.append(src); return ''
+    width,height=webp_size(path)
+    # Keep the book's relative width (\screenshot[0.45\linewidth]) and height cap.
+    share=re.search(r'width:\s*([\d.]+)%',attributes)
+    style=f'--fig-w:{float(share[1]):g}%;' if share else ''
+    style+=f'--fig-max:{round(MAX_FIGURE_HEIGHT*width/height)}px'
+    return (f'<img src="/guide/figures/{path.relative_to(FIGURES).as_posix()}" width="{width}" height="{height}" '
+            f'style="{style}" alt="{html.escape(alt)}" loading="lazy" decoding="async" />')
+
+def figure_html(m):
+    ident,attributes,inner=m.groups()
+    caption=re.search(r'<figcaption>(.*?)</figcaption>',inner,re.S)
+    alt=plain(caption[1]) if caption else ''
+    inner=inner.replace('<img src="diagram:tikz" />',DIAGRAMS.get(ident,''))
+    # Side-by-side panels keep their own sub-captions.
+    def panel(p):
+        sub=re.search(r'<p>(.*?)</p>',p[1],re.S)
+        label=plain(sub[1]) if sub else alt
+        body=re.sub(IMAGE,lambda i:figure_image(i,label),p[1])
+        body=re.sub(r'<p>(.*?)</p>',r'<span class="figure-subcaption">\1</span>',body,flags=re.S)
+        return '<div class="figure-panel">'+body+'</div>'
+    if '<div class="minipage">' in inner:
+        inner=re.sub(r'<div class="minipage">(.*?)</div>',panel,inner,flags=re.S)
+        inner=re.sub(r'((?:<div class="figure-panel">.*?</div>\s*)+)',r'<div class="figure-panels">\1</div>',inner,count=1,flags=re.S)
+    inner=re.sub(IMAGE,lambda i:figure_image(i,alt),inner)
+    return f'<figure id="{ident}"{attributes}>{inner}</figure>'
+
 number_by_slug={x['slug']:x['number'] for x in metadata}
 for item in metadata:
     body=item.pop('html')
-    body=re.sub(r'href="#([^"]+)"',lambda m:'href="/guide/'+id_to_slug.get(html.unescape(m[1]),item['slug'])+'#'+m[1]+'"',body)
+    body=re.sub(r'<figure id="([^"]+)"([^>]*)>(.*?)</figure>',figure_html,body,flags=re.S)
+    body=re.sub(r'href="#([^"]+)"',lambda m:'href="/guide/'+id_to_slug.get(html.unescape(m[1]),item['slug'])+'/#'+m[1]+'"',body)
     # Pandoc counts front matter as chapters; use the author's printed chapter numbers.
     def reference_number(m):
         start,label,value=m.groups()
@@ -146,7 +238,7 @@ for item in metadata:
     figure_count=[0]
     def figure_caption(m):
         figure_count[0]+=1
-        return '<figcaption><strong>Figure '+(item['number'] or '0')+'.'+str(figure_count[0])+'.</strong> '+m[1]+' <a class="pdf-figure-note" href="/guide/pdf">View illustration in the PDF edition.</a></figcaption>'
+        return '<figcaption><strong>Figure '+(item['number'] or '0')+'.'+str(figure_count[0])+'.</strong> '+m[1]+'</figcaption>'
     body=re.sub(r'<figcaption>(.*?)</figcaption>',figure_caption,body,flags=re.S)
     item['headings']=[dict(id=html.unescape(i),title=html.unescape(re.sub('<[^>]+>','',t))) for i,t in re.findall(r'<h2\b[^>]*id="([^"]+)"[^>]*>(.*?)</h2>',body,re.S)]
     item['html']=body
@@ -156,10 +248,11 @@ for item in metadata:
 
 index_html='<h1 id="index">Index</h1><dl>'
 for term,slugs in sorted(index_entries.items(),key=lambda pair:pair[0].casefold()):
-    index_html+='<dt>'+html.escape(term)+'</dt><dd>'+', '.join('<a href="/guide/'+slug+'">'+html.escape(next(x['title'] for x in metadata if x['slug']==slug))+'</a>' for slug in sorted(slugs))+'</dd>'
+    index_html+='<dt>'+html.escape(term)+'</dt><dd>'+', '.join('<a href="/guide/'+slug+'/">'+html.escape(next(x['title'] for x in metadata if x['slug']==slug))+'</a>' for slug in sorted(slugs))+'</dd>'
 index_html+='</dl>'
 metadata.append(dict(slug='index',part='Reference',number='',title='Index',headings=[],html=index_html,text=' '.join(sorted(index_entries))))
 
 target=ROOT/'content/handbook.json'
 target.write_text(json.dumps(metadata,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-print(json.dumps(dict(chapters=len(metadata),tables=output.count('<table'),math=output.count('<math'),screenshots=output.count('<img'),warnings=result.stderr[:3000])))
+if missing_figures: raise SystemExit('Missing WebP figures (run with --figures): '+', '.join(missing_figures))
+print(json.dumps(dict(chapters=len(metadata),tables=output.count('<table'),math=output.count('<math'),figures=sum(c['html'].count('<img') for c in metadata),warnings=result.stderr[:3000])))

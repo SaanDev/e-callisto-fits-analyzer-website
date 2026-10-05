@@ -1,61 +1,86 @@
 # e-CALLISTO FITS Analyzer website
 
-A responsive software website for researchers and students, with light/dark themes, verified Windows/Linux/macOS downloads, documentation, tutorials, scientific background, citation tools, and a persistent forum.
+The website for [e-CALLISTO FITS Analyzer](https://github.com/SaanDev/e-Callisto_FITS_Analyzer): downloads for Windows, Linux and macOS, the complete illustrated user guide (web edition and PDF), tutorials, scientific background, citation and community links. Light and dark themes, built as a static site for GitHub Pages.
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router) with `output: "export"`: every page is pre-rendered to plain HTML in `out/`. There is no server.
+- Hand-written CSS in `app/globals.css` (design tokens for both themes, motion, layout). Tailwind is used only for its CSS reset.
+- Fonts (Inter, JetBrains Mono) are self-hosted through `next/font`.
 
 ## Run locally
 
-Requires Node.js 22.13 or newer.
+Requires Node.js 20.9 or newer.
 
 ```sh
 npm ci
-npm run dev
+npm run dev          # http://localhost:3000
 ```
-
-The portable preview is served at http://127.0.0.1:5173. On Windows, if the npm launcher fails, run `node scripts/run-framework.mjs dev` directly after dependency installation. Build with `node scripts/run-framework.mjs build`.
-
-## Forum database
-
-The database schema is in `db/schema.ts`. Queries are prepared server-side; generated migrations live in `drizzle/`. The logical D1 binding is `DB` in `.openai/hosting.json`. Production migrations are applied by Sites publication.
-
-For a fresh local database, build first and apply the migration once:
 
 ```sh
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_regular_vulture.sql
+npm run build        # writes the static site to out/
+npm start            # serves out/ at http://localhost:3000
 ```
 
-Sign-in is provided by ChatGPT on hosted Sites. The portable development server uses a loopback-only test identity; it strips forged authentication headers and does not ship its mock sign-in in production. The production Worker must run behind the Sites identity dispatcher; do not expose that Worker directly while trusting incoming identity headers.
+Run `npm run typecheck` and `npm run lint` before publishing.
 
-Visitors choose a public display name. Profiles, discussions, replies, and posting limits live in D1. Account emails and identity IDs are not returned in public discussion responses. Authors may remove their own posts. Deleting a discussion cascades to its replies. Posts are plain text, validated server-side, and protected by origin and identity checks. Accounts use ChatGPT rather than a separate email/password system.
+## Deploy to GitHub Pages
 
-## Content and releases
+`.github/workflows/deploy.yml` builds and publishes the site on every push to `main`.
 
-- `releases-verified.json`: v3.1.0 download URLs use the owner's requested version substitution for the drafted GitHub release. Sizes and SHA-256 values come from the supplied local installers. Links become available when the owner publishes the GitHub draft; installers are not copied into this website.
-- Windows and Linux v3.1.0: x64/amd64. macOS v3.1.0: Apple silicon arm64, macOS 15 or newer.
-- `public/logo.png` and `public/screenshots/`: assets copied from the software project.
-- `public/showcase/`: optimized copies of the supplied radio, solar imaging, and GCS screenshots and example movies. The 4096px AIA movie is served at 1080px (4.7 MB); the GCS movie is 1.4 MB. Original media in the parent `assets/` folder is preserved. Videos load on demand and include download links.
-- The homepage distinguishes the two main tools and nests image analysis and GCS fitting within Solar Image Analyzer. `/tools/solar-imaging` and `/tools/gcs-fitting` provide dedicated workflow guides for v3.1.0.
-- `content/guide-source/` preserves the author's supplied LaTeX text. `scripts/build-handbook.py --pandoc PATH` generates `content/handbook.json`: 21 chapters, five appendices, front matter, glossary, bibliography and index. The web edition retains text, equations, tables and references; figures link to the illustrated PDF, respecting the requested screenshot-free web guide.
-- `scripts/prepare-release.py` reads the supplied local v3.1.0 installers and original 174-page PDF. It writes release metadata and splits the original PDF into assets below the hosting size limit. `components/guide-pdf.tsx` reassembles and checks its SHA-256 before download or reading. `content/guide-pdf.json` records provenance; the PDF bytes remain unchanged.
-- `public/docs/` also retains earlier Markdown documentation and architecture notes as legacy reference material. Current guide links use `/guide` and `/guide/pdf`.
-- `lib/tutorials.ts`: three written walkthroughs. The tutorials page announces that video tutorials are coming soon.
-- `lib/citation.ts`: recommended paper citation and BibTeX from the project documentation.
+1. Push this folder to a GitHub repository, for example `SaanDev/e-callisto-website`.
+2. In the repository, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. Push to `main` (or run the workflow manually from the **Actions** tab).
 
-Release metadata is a snapshot with per-release verification notes. Update it when publishing new installers. No automated refresh is configured.
+The site is served from `https://saandev.github.io/<repository>/`. The workflow passes that path to the build in `NEXT_PUBLIC_BASE_PATH`, so links and assets work under it. With a custom domain (**Settings → Pages → Custom domain**) the path is empty and nothing needs to change.
 
-## Checks
+Inside the code, links between pages use `next/link`, which adds the base path automatically. Files from `public/` (images, video, the PDF) are referenced through `asset()` from `lib/site.ts`.
+
+## Community
+
+The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Callisto_FITS_Analyzer/discussions) on the software repository. Enable it once under the software repository's **Settings → General → Features → Discussions**. The page links to the default `Q&A`, `Ideas` and `Show and tell` categories.
+
+## Content
+
+| What | Where |
+|---|---|
+| Release downloads, sizes and SHA-256 checksums | `releases-verified.json` |
+| v3.1.0 highlights and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
+| Site constants (version, links, PDF name) | `lib/site.ts` |
+| Tutorials | `lib/tutorials.ts` |
+| Citation and BibTeX | `lib/citation.ts` |
+| User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf` |
+| User guide LaTeX source | `content/guide-source/` |
+| Web edition of the guide | `content/handbook.json` (generated) |
+| Guide figures (WebP) | `public/guide/figures/` (generated) |
+| Screenshots and example movies | `public/showcase/`, `public/screenshots/` |
+
+The download links point to the GitHub release tags `v3.1.0(Windows)`, `v3.1.0(MacOS)` and `v3.1.0(Linux)`. They work once those releases are published.
+
+### Updating the user guide
+
+The web edition is generated from the LaTeX source with [Pandoc](https://pandoc.org) 3.x. Pillow (`pip install pillow`) is needed only when converting figures.
+
+1. Copy the updated `.tex`/`.bib` files into `content/guide-source/` (same layout as the LaTeX project).
+2. Rebuild the web edition. `--figures` converts the book's PNG screenshots to WebP; leave it out if the figures have not changed.
+
+   ```sh
+   python scripts/build-handbook.py --pandoc /path/to/pandoc --figures /path/to/LaTeX_source/figures
+   python scripts/verify-handbook.py
+   ```
+
+3. Replace the PDF in `public/docs/` and update `PDF_SHA256` in `scripts/verify-handbook.py` and `guidePdf` in `lib/site.ts` if the file name, page count or size changed.
+
+`verify-handbook.py` checks every chapter, cross-reference, anchor and figure, and that the PDF matches the published original. The deploy workflow runs it before building.
+
+### Publishing a new release
 
 ```sh
-node node_modules/typescript/bin/tsc --noEmit
-node scripts/verify-community.mjs
-node scripts/run-framework.mjs build
+python scripts/prepare-release.py "<folder with the installers and PDF>" <new version> <previous version>
 ```
 
-The forum integration check targets the loopback development server only, creates a temporary discussion and reply, tests validation and rate limiting, then removes its discussion. It uses the local test identity and leaves that identity's display name as `Local test researcher`.
+This records the installer sizes and checksums in `releases-verified.json` and copies the guide PDF. Then update `version` in `lib/site.ts`, the platform tags in `components/download-cards.tsx`, and the highlights in `lib/release-notes.ts`.
 
-Browser checks cover desktop and 390px mobile layouts, light/dark theme persistence, mobile navigation, BibTeX copying, sign-in, profile creation, discussion creation, and the read-only WebMCP tool (including invalid input). API checks cover authentication, spoofed-header rejection, cross-origin rejection, profile and category validation, persisted replies, rate limiting, public identity privacy, and owner-only removal.
+## License
 
-## Hosting
-
-The Site identity is saved in `.openai/hosting.json`; preserve it when republishing. Sites provides the Cloudflare Worker, database, and ChatGPT sign-in. New Sites start private. Public availability and a custom domain are separate hosting settings. Do not commit credentials or local `.wrangler` state.
-
-The software project in the adjacent folder is read-only source material for this website and has not been modified.
+MIT. See `public/LICENSE.txt`.
