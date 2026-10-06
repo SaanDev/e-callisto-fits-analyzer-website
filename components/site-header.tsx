@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Sun, Moon, Menu, X, Download, ArrowRight } from 'lucide-react';
+import { Sun, Moon, Menu, X, Download, ArrowRight, Heart } from 'lucide-react';
 import { GitHubIcon } from '@/components/icons';
 import { asset, links } from '@/lib/site';
 
@@ -52,6 +52,7 @@ export default function SiteHeader() {
       </nav>
       <div className="header-actions">
         <a className="icon-button github-chip" href={links.repo} target="_blank" rel="noreferrer"><GitHubIcon size={17} />GitHub</a>
+        <Link className="icon-button sponsor-chip" href="/sponsor/" aria-label="Sponsor the project" aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><Heart size={16} /><span>Sponsor</span></Link>
         <button type="button" className="icon-button theme-toggle" onClick={toggleTheme} aria-label="Toggle dark theme">
           <Sun className="sun" size={18} />
           <Moon className="moon" size={18} />
@@ -65,6 +66,7 @@ export default function SiteHeader() {
     <nav id="mobile-nav" className={'mobile-nav' + (menu ? ' open' : '')} aria-label="Mobile navigation" inert={!menu}>
       {nav.map(([label, url], i) => <Link key={url} href={url} onClick={() => setMenu(false)} style={{ '--i': i } as React.CSSProperties} aria-current={isCurrent(pathname, url) ? 'page' : undefined}>{label}<ArrowRight size={18} /></Link>)}
       <a href={links.repo} target="_blank" rel="noreferrer" style={{ '--i': nav.length } as React.CSSProperties}>GitHub<ArrowRight size={18} /></a>
+      <Link href="/sponsor/" onClick={() => setMenu(false)} style={{ '--i': nav.length + 1 } as React.CSSProperties} aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><span className="mobile-sponsor"><Heart size={18} />Sponsor</span><ArrowRight size={18} /></Link>
       <Link className="button primary lg" href="/download/" onClick={() => setMenu(false)}><Download size={18} />Download v3.1.0</Link>
     </nav>
   </header>;

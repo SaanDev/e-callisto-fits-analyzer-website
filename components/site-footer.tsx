@@ -6,7 +6,7 @@ const columns: [string, [string, string][]][] = [
   ['Software', [['Download', '/download/'], ['What’s new in v3.1.0', '/download/#whats-new'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
   ['Learn', [['User guide', '/guide/'], ['PDF edition', '/guide/pdf/'], ['Tutorials', '/tutorials/'], ['Scientific background', '/science/']]],
   ['Community', [['Discussions', '/community/'], ['Report a bug', links.newIssue], ['Documentation hub', '/docs/'], ['Cite the software', '/citation/']]],
-  ['Project', [['Source code', links.repo], ['All releases', links.releases], ['Software paper', links.paper], ['MIT License', '/LICENSE.txt']]],
+  ['Project', [['Source code', links.repo], ['All releases', links.releases], ['Software paper', links.paper], ['Sponsor the project', '/sponsor/'], ['MIT License', '/LICENSE.txt']]],
 ];
 
 function FooterLink({ label, url }: { label: string; url: string }) {

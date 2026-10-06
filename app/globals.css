@@ -21,6 +21,7 @@
   --solar: #ea5d1c;
   --solar-2: #f6a51c;
   --caution: #c77d14;
+  --sponsor: #bf3989;
   --glow: rgb(23 102 209 / .13);
   --header: rgb(247 249 252 / .76);
   --shadow-sm: 0 1px 2px rgb(13 27 46 / .06), 0 1px 1px rgb(13 27 46 / .03);
@@ -55,6 +56,7 @@
   --solar: #ff7c3d;
   --solar-2: #ffc14d;
   --caution: #f0a53a;
+  --sponsor: #e86eac;
   --glow: rgb(94 166 255 / .14);
   --header: rgb(6 11 20 / .72);
   --shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
@@ -210,6 +212,11 @@ html:not(.dark) .theme-toggle .moon { transform: none; opacity: 1; }
 .menu-button { display: none; }
 .mobile-nav { display: none; }
 .github-chip { display: inline-flex; align-items: center; gap: 8px; width: auto; padding: 0 13px; font-size: 13.5px; font-weight: 600; }
+.sponsor-chip { display: inline-flex; align-items: center; gap: 7px; width: auto; padding: 0 13px; font-size: 13.5px; font-weight: 600; }
+.sponsor-chip svg, .mobile-sponsor svg { color: var(--sponsor); transition: transform .4s var(--ease-spring), fill .2s; }
+.sponsor-chip:hover, .sponsor-chip[aria-current] { border-color: var(--sponsor); color: var(--ink); }
+.sponsor-chip:hover svg { transform: scale(1.18); fill: currentColor; }
+.mobile-sponsor { display: inline-flex; align-items: center; gap: 10px; }
 
 /* -------------------------------------------------------------------- hero */
 .hero { position: relative; text-align: center; padding: 56px 0 0; isolation: isolate; }
@@ -511,6 +518,22 @@ html:not(.dark) .theme-toggle .moon { transform: none; opacity: 1; }
 .channel h2 { margin-top: 2px; }
 .setup-note { margin-top: 26px; }
 
+/* ----------------------------------------------------------------- sponsor */
+.sponsor-button svg { fill: currentColor; }
+.sponsor-button:hover svg { transform: scale(1.15); }
+.sponsor-how { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+.sponsor-how .step h3 { margin: 6px 0 8px; font-size: 21px; font-weight: 600; letter-spacing: -.02em; }
+.sponsor-how .step p { font-size: 15.5px; }
+.sponsor-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: 40px; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); background: radial-gradient(110% 120% at 100% 0%, color-mix(in srgb, var(--sponsor) 16%, transparent), transparent 55%), radial-gradient(90% 110% at 0% 100%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 55%), var(--panel); }
+.sponsor-mark { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 16px; margin-bottom: 22px; color: var(--sponsor); background: color-mix(in srgb, var(--sponsor) 13%, transparent); }
+.sponsor-mark svg { fill: currentColor; animation: heartbeat 2.4s var(--ease) infinite; }
+.sponsor-card .eyebrow { margin-bottom: 8px; color: var(--sponsor); }
+.sponsor-card h3 { font-size: 28px; font-weight: 650; }
+.sponsor-card p { font-size: 15.5px; margin: 12px 0 26px; }
+.sponsor-card .button { width: 100%; }
+.sponsor-card .small { margin-top: 12px; align-self: center; }
+@keyframes heartbeat { 0%, 40%, 100% { transform: scale(1); } 15% { transform: scale(1.14); } 28% { transform: scale(1.04); } }
+
 /* -------------------------------------------------------------- handbook */
 .handbook-intro { display: grid; grid-template-columns: 1.25fr 1fr; gap: 56px; align-items: center; padding: 8px 0 56px; }
 .handbook-intro h2 { margin: 6px 0 14px; }
@@ -630,13 +653,23 @@ mark { background: color-mix(in srgb, var(--solar-2) 38%, transparent); color: i
 .not-found .big { font-size: clamp(90px, 18vw, 180px); font-weight: 750; letter-spacing: -.06em; line-height: 1; background: var(--spectrum); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
 /* --------------------------------------------------------------- responsive */
+@media (max-width: 1240px) {
+  .sponsor-chip { width: 40px; padding: 0; justify-content: center; }
+  .sponsor-chip span { display: none; }
+}
 @media (max-width: 1180px) {
   .handbook-reader { grid-template-columns: 230px minmax(0, 1fr); }
   .handbook-toc { display: none; }
 }
+@media (max-width: 1120px) {
+  .github-chip { display: none; }
+}
+/* Too narrow for the full navigation and every header action. */
+@media (min-width: 901px) and (max-width: 970px) {
+  .sponsor-chip { display: none; }
+}
 @media (max-width: 1040px) {
   .nav a { padding: 8px 9px; }
-  .github-chip { display: none; }
   .footer-grid { grid-template-columns: repeat(3, 1fr); }
   .footer-brand { grid-column: 1 / -1; }
   .highlight-grid { grid-template-columns: repeat(2, 1fr); }
@@ -655,7 +688,8 @@ mark { background: color-mix(in srgb, var(--solar-2) 38%, transparent); color: i
   .mobile-nav .button { margin-top: 24px; width: 100%; font-size: 16px; justify-content: center; border-bottom: 0; color: #fff; }
   .section { padding-block: 76px; }
   .section-heading { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .toolkit-branches, .community-banner, .learn-grid, .download-grid, .install-grid, .channel-grid, .handbook-intro, .handbook-contents { grid-template-columns: 1fr; }
+  .toolkit-branches, .community-banner, .learn-grid, .download-grid, .install-grid, .channel-grid, .handbook-intro, .handbook-contents, .sponsor-how { grid-template-columns: 1fr; }
+  .sponsor-how { gap: 40px; }
   .feature-grid, .cards { grid-template-columns: 1fr 1fr; }
   .solar-tool, .solar-tool.reverse { grid-template-columns: 1fr; gap: 28px; }
   .solar-tool.reverse .tool-copy { order: 0; }
@@ -689,7 +723,7 @@ mark { background: color-mix(in srgb, var(--solar-2) 38%, transparent); color: i
   .stat { border-left: 0; padding-left: 0; }
   .stat:nth-child(3) { grid-column: 1 / -1; }
   .feature-grid, .cards, .cards.two, .highlight-grid, .movie-grid, .figure-panels { grid-template-columns: 1fr; }
-  .community-card, .citation-teaser { padding: 30px 24px; }
+  .community-card, .citation-teaser, .sponsor-card { padding: 30px 24px; }
   .cta-banner { padding: 48px 22px; border-radius: 22px; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .page-hero { padding: 40px 0 32px; }

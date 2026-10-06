@@ -1,4 +1,5 @@
-import { MessagesSquare, Lightbulb, Bug, Megaphone, Mail, ArrowUpRight, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { MessagesSquare, Lightbulb, Bug, Megaphone, Mail, ArrowUpRight, ShieldCheck, Heart } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import { GitHubIcon } from '@/components/icons';
 import { links } from '@/lib/site';
@@ -48,6 +49,7 @@ export default function Community() {
         <h2 style={{ marginTop: 0 }}>Author and maintainer</h2>
         <p><strong style={{ color: 'var(--ink)' }}>Sahan S Liyanage</strong> · Astronomical and Space Science Unit, University of Colombo, Sri Lanka</p>
         <p style={{ marginTop: 8 }}>For collaborations and questions that are not suited to a public forum, email <a className="text-link" href={`mailto:${links.email}`}>{links.email}</a>.</p>
+        <p style={{ marginTop: 8 }}>The analyzer is free and open source. If it helps your work, consider <Link className="text-link" href="/sponsor/"><Heart size={15} style={{ color: 'var(--sponsor)' }} />sponsoring its development</Link>.</p>
       </div>
     </section>
   </>;

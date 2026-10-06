@@ -30,6 +30,7 @@ export const links = {
   newIssue: repo + '/issues/new',
   discussions: repo + '/discussions',
   paper: 'https://doi.org/10.1093/rasti/rzag056',
+  sponsor: 'https://github.com/sponsors/SaanDev',
   email: 'sahanslst@gmail.com',
 };
 
