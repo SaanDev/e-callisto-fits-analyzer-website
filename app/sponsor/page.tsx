@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Heart, ArrowDown, ArrowRight, ArrowUpRight, Sparkles, Monitor, BookOpen, Star, Quote, MessagesSquare, Building2 } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import { links } from '@/lib/site';
+import { sponsors, sponsorsUpdated, type Sponsor as SponsorEntry } from '@/lib/sponsors';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: 'Sponsor', description: 'Support the development of e-CALLISTO FITS Analyzer, free and open-source software for solar radio and solar imaging research, through GitHub Sponsors.', path: '/sponsor/' });
@@ -17,6 +18,22 @@ const otherWays = [
   { icon: Quote, title: 'Cite the software', body: 'Citations show institutions and funders that the analyzer supports published research.', href: '/citation/', cta: 'How to cite' },
   { icon: MessagesSquare, title: 'Join the community', body: 'Answer a question, share a figure or report a bug. Every contribution makes the analyzer better for everyone.', href: '/community/', cta: 'Visit the community' },
 ];
+
+const current = sponsors.filter(s => s.active);
+const past = sponsors.filter(s => !s.active);
+
+function formatDate(date: string, month: 'long' | 'short' = 'long') {
+  return new Date(date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: month === 'long' ? 'numeric' : undefined, month, year: 'numeric', timeZone: 'UTC' });
+}
+
+function SponsorWall({ list, past = false }: { list: SponsorEntry[]; past?: boolean }) {
+  return <div className={'sponsor-wall' + (past ? ' past' : '')} data-reveal>
+    {list.map(s => <a key={s.login} className="sponsor-person" href={s.url} target="_blank" rel="noreferrer" title={`Sponsor since ${formatDate(s.since, 'short')}`}>
+      <img src={s.avatar} alt="" width={52} height={52} loading="lazy" />
+      <span><strong>{s.name}</strong><small>@{s.login}</small></span>
+    </a>)}
+  </div>;
+}
 
 export default function Sponsor() {
   return <>
@@ -77,7 +94,28 @@ export default function Sponsor() {
       </div>
     </section>
 
-    <section className="section wrap" id="other-ways">
+    <section className="section wrap" id="sponsors">
+      <div className="section-heading" data-reveal>
+        <div><span className="eyebrow">Our sponsors</span><h2>Thank you to<br />our sponsors.</h2></div>
+        <p>Everyone who sponsors the analyzer publicly on GitHub. Sponsors who choose to stay private are never listed.</p>
+      </div>
+      {current.length > 0 && <SponsorWall list={current} />}
+      {past.length > 0 && <>
+        <h3 className="sponsor-subhead" data-reveal>Past sponsors</h3>
+        <SponsorWall list={past} past />
+      </>}
+      {sponsors.length === 0 && <div className="sponsor-empty" data-reveal>
+        <span className="sponsor-mark" aria-hidden="true"><Heart size={26} /></span>
+        <div>
+          <h3>Be the first to sponsor the analyzer</h3>
+          <p>Public sponsors are listed here, with thanks.</p>
+        </div>
+        <a className="button" href={links.sponsor} target="_blank" rel="noreferrer"><Heart size={17} style={{ color: 'var(--sponsor)' }} />Become a sponsor</a>
+      </div>}
+      {sponsorsUpdated && <p className="small sponsor-updated">Updated daily from GitHub Sponsors. Last checked {formatDate(sponsorsUpdated)}.</p>}
+    </section>
+
+    <section className="section band" id="other-ways"><div className="wrap">
       <div className="section-heading" data-reveal>
         <div><span className="eyebrow">Other ways to help</span><h2>Not able to sponsor?<br />You can still help.</h2></div>
         <p>Many of the most valuable contributions cost nothing at all.</p>
@@ -103,6 +141,6 @@ export default function Sponsor() {
           <p>If your group relies on the analyzer and would like to support it through a grant, a collaboration or institutional funding, email <a className="text-link" href={`mailto:${links.email}`}>{links.email}</a>.</p>
         </div>
       </div>
-    </section>
+    </div></section>
   </>;
 }

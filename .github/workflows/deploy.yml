@@ -1,10 +1,13 @@
-# Builds the static site and publishes it to GitHub Pages on every push to main.
+# Builds the static site and publishes it to GitHub Pages on every push to main,
+# and once a day so the list of sponsors stays current.
 # One-time setup: repository Settings → Pages → Build and deployment → Source: GitHub Actions.
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -35,6 +38,13 @@ jobs:
 
       - name: Check the user guide
         run: python3 scripts/verify-handbook.py
+
+      - name: Fetch public sponsors
+        run: python3 scripts/fetch-sponsors.py
+        env:
+          # Personal access token (classic) with read:user and read:org. Optional:
+          # without it the Sponsor page shows its "be the first" message.
+          SPONSORS_TOKEN: ${{ secrets.SPONSORS_TOKEN }}
 
       - name: Build
         run: npm run build

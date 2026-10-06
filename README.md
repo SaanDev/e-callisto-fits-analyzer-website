@@ -50,6 +50,14 @@ To get the site indexed:
 
 The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Callisto_FITS_Analyzer/discussions) on the software repository. Enable it once under the software repository's **Settings → General → Features → Discussions**. The page links to the default `Q&A`, `Ideas` and `Show and tell` categories.
 
+## Sponsors
+
+The Sponsor page (`/sponsor/`) links to [GitHub Sponsors](https://github.com/sponsors/SaanDev) and lists the maintainer's public sponsors. `scripts/fetch-sponsors.py` writes them to `content/sponsors.json` before each build, and the deploy workflow also runs once a day so new sponsors appear without a push. Private sponsors and amounts are never fetched. The committed `content/sponsors.json` is an empty list, which the page shows as "Be the first to sponsor".
+
+To turn the list on, create a [personal access token (classic)](https://github.com/settings/tokens/new) with the `read:user` and `read:org` scopes, then add it to this repository under **Settings → Secrets and variables → Actions** as a secret named `SPONSORS_TOKEN`. When the token expires, the daily run fails with a message saying so (the site stays online with the last list) and pushes still deploy, without the list, until the secret is renewed.
+
+GitHub pauses scheduled workflows in a public repository after 60 days without activity. Re-enable it from the **Actions** tab if that happens.
+
 ## Content
 
 | What | Where |
@@ -59,6 +67,7 @@ The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Ca
 | Site constants (version, links, PDF name) | `lib/site.ts` |
 | Tutorials | `lib/tutorials.ts` |
 | Citation and BibTeX | `lib/citation.ts` |
+| Public sponsors (generated at deploy time) | `content/sponsors.json` |
 | User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf` |
 | User guide LaTeX source | `content/guide-source/` |
 | Web edition of the guide | `content/handbook.json` (generated) |
