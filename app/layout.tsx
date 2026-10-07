@@ -3,7 +3,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import SiteHeader from '@/components/site-header';
 import SiteFooter from '@/components/site-footer';
 import SiteEffects from '@/components/site-effects';
-import { asset, basePath, siteUrl, searchVerification } from '@/lib/site';
+import { asset, basePath, siteUrl, searchVerification, cloudflareAnalyticsToken } from '@/lib/site';
 import { siteName, defaultDescription, absoluteUrl } from '@/lib/seo';
 import './globals.css';
 
@@ -43,6 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <SiteHeader />
       <main id="main">{children}</main>
       <SiteFooter />
+      {/* Production builds only, so local development doesn't count as visits. */}
+      {cloudflareAnalyticsToken && process.env.NODE_ENV === 'production' &&
+        <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: cloudflareAnalyticsToken })} />}
     </body>
   </html>;
 }

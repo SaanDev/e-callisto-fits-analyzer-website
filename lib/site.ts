@@ -19,6 +19,10 @@ export const searchVerification = {
   bing: '',
 };
 
+// Cloudflare Web Analytics token (Web Analytics → Manage site → JS snippet).
+// Cookie-free page view counts; leave empty to turn analytics off.
+export const cloudflareAnalyticsToken = '0afd7ee014204a8bbd865e9157b13881';
+
 export const version = '3.1.0';
 export const releaseDate = 'October 2026';
 

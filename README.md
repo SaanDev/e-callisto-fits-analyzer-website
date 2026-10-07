@@ -50,6 +50,10 @@ The site is served from the custom domain `https://ecallistoanalyzer.org/`; the 
 
 Search engines ignore the `keywords` meta tag. What they read is each page's `<title>`, its `<h1>` (in `PageIntro` the small label above the title is part of the h1, so make it descriptive) and the body text. Links from other sites (the software repository, e-callisto.org, publications) matter most for a new domain.
 
+## Analytics
+
+Visits are counted with [Cloudflare Web Analytics](https://dash.cloudflare.com/?to=/:account/web-analytics), which sets no cookies and needs no consent banner. Page views, visitors, referrers and countries are under **Analytics & Logs → Web Analytics → ecallistoanalyzer.org**. The site is set to **JS Snippet installation** (the domain's DNS records are not proxied, so automatic setup would record nothing), and the root layout loads the beacon with the token in `cloudflareAnalyticsToken` in `lib/site.ts`. Production builds only; set the token to `''` to turn it off.
+
 ## Community
 
 The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Callisto_FITS_Analyzer/discussions) on the software repository. Enable it once under the software repository's **Settings → General → Features → Discussions**. The page links to the default `Q&A`, `Ideas` and `Show and tell` categories.
