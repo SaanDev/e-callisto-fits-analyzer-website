@@ -8,7 +8,7 @@ export const metadata = pageMetadata({ title: 'User guide PDF · v3.1.0', descri
 
 export default function PdfEdition() {
   return <>
-    <PageIntro label="User guide · v3.1.0" title="The complete PDF edition." crumbs={[['User guide', '/guide/'], ['PDF edition']]}>
+    <PageIntro label="User guide PDF · v3.1.0" title="The complete PDF edition." crumbs={[['User guide', '/guide/'], ['PDF edition']]}>
       The original illustrated handbook by Sahan S Liyanage, with all 174 pages, figures, tables, equations, references and the index.
     </PageIntro>
     <section className="wrap content-section">

@@ -17,7 +17,7 @@ export default function Guide() {
   const parts = [...new Set(handbook.map(c => c.part))];
   return <>
     <JsonLd data={userGuideData()} />
-    <PageIntro label="The complete user guide · v3.1.0" title="Your guide to the analyzer." crumbs={[['User guide']]}>
+    <PageIntro label="e-CALLISTO FITS Analyzer user guide · v3.1.0" title="Your guide to the analyzer." crumbs={[['User guide']]}>
       From your first FITS observation to solar imaging and three-dimensional CME reconstruction. The complete guide by Sahan S Liyanage.
     </PageIntro>
     <section className="wrap content-section">

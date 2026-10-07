@@ -6,12 +6,12 @@ import { links } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwarePaper } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'Citation', description: 'How to cite e-CALLISTO FITS Analyzer: the RAS Techniques and Instruments software paper, a copyable reference and BibTeX.', path: '/citation/' });
+export const metadata = pageMetadata({ title: 'How to cite', description: 'How to cite e-CALLISTO FITS Analyzer: the RAS Techniques and Instruments software paper, a copyable reference and BibTeX.', path: '/citation/' });
 
 export default function Citation() {
   return <>
     <JsonLd data={{ '@context': 'https://schema.org', ...softwarePaper }} />
-    <PageIntro label="Acknowledge the tools behind your work" title="Good science gives credit." crumbs={[['Citation']]}>
+    <PageIntro label="How to cite e-CALLISTO FITS Analyzer" title="Good science gives credit." crumbs={[['Citation']]}>
       If you use e-CALLISTO FITS Analyzer in your research, please cite the software paper.
     </PageIntro>
     <section className="wrap content-section">

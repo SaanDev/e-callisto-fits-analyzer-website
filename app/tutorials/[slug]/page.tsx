@@ -25,7 +25,7 @@ export default async function Tutorial({ params }: { params: Promise<{ slug: str
   if (index < 0) notFound();
   const t = tutorials[index], next = tutorials[index + 1];
   return <>
-    <PageIntro label={`${t.level} · About ${t.time}`} title={t.title} crumbs={[['Tutorials', '/tutorials/'], [t.title]]}>{t.description}</PageIntro>
+    <PageIntro label={`${t.level} · About ${t.time}`} labelInHeading={false} title={t.title} crumbs={[['Tutorials', '/tutorials/'], [t.title]]}>{t.description}</PageIntro>
     <section className="wrap content-section">
       <article className="prose">
         <div className="notice" style={{ display: 'flex', gap: 12 }}><Info size={19} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 4 }} /><p style={{ margin: 0 }}><strong>Before you begin:</strong> install the analyzer and have a FITS observation ready, or fetch one with the built-in e-CALLISTO downloader.</p></div>

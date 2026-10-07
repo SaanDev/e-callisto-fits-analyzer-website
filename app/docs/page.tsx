@@ -21,7 +21,7 @@ const resources = [
 
 export default function Docs() {
   return <>
-    <PageIntro label="Documentation · v3.1.0" title="A good place to get started." crumbs={[['Documentation']]}>
+    <PageIntro label="e-CALLISTO FITS Analyzer documentation" title="A good place to get started." crumbs={[['Documentation']]}>
       Learn the tools, understand the methods and make your analysis reproducible.
     </PageIntro>
     <section className="wrap content-section">

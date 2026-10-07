@@ -27,7 +27,7 @@ const previous = Object.values(releases.reduce<Record<string, { version: string;
 export default function Downloads() {
   return <>
     <JsonLd data={softwareData()} />
-    <PageIntro label="Download · v3.1.0" title={<>One toolkit.<br />A wider view of the Sun.</>} crumbs={[['Download']]}>
+    <PageIntro label="Download v3.1.0 · Windows, macOS & Linux" title={<>One toolkit.<br />A wider view of the Sun.</>} crumbs={[['Download']]}>
       Process radio spectra, analyze solar images and reconstruct CMEs in three dimensions. Free and open source for Windows, Linux and macOS.
     </PageIntro>
 

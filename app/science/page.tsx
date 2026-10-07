@@ -3,13 +3,13 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'Scientific background', description: 'What dynamic spectra show, plasma emission, frequency drift and coronal density models, and the limits of interpretation.', path: '/science/' });
+export const metadata = pageMetadata({ title: 'Solar radio bursts and dynamic spectra explained', description: 'What dynamic spectra show, plasma emission, frequency drift and coronal density models, and the limits of interpretation.', path: '/science/' });
 
 const sections = [['spectrum', 'Dynamic spectra'], ['emission', 'Plasma emission'], ['drift', 'Drift & density models'], ['imaging', 'Imaging & CME geometry'], ['limits', 'Interpretation limits'], ['sources', 'Read further']];
 
 export default function Science() {
   return <>
-    <PageIntro label="The science behind the spectrum" title="Read the Sun in radio." crumbs={[['Science']]}>
+    <PageIntro label="Solar radio bursts and dynamic spectra" title="Read the Sun in radio." crumbs={[['Science']]}>
       A starting point for understanding what dynamic spectra show, and what a scientific interpretation requires.
     </PageIntro>
     <section className="wrap content-section doc-layout">

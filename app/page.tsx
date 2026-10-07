@@ -12,15 +12,28 @@ import JsonLd from '@/components/json-ld';
 import { links } from '@/lib/site';
 import { pageMetadata, siteName, defaultDescription, websiteData, softwareData } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: `${siteName} · A clearer view of our dynamic Sun`, absoluteTitle: true, description: defaultDescription, path: '/' });
+export const metadata = pageMetadata({ title: `${siteName} · Solar radio burst analysis software`, absoluteTitle: true, description: defaultDescription, path: '/' });
 
 const highlightIcons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
 const radioFeatures = [
   { icon: Activity, title: 'Reveal the structure', body: 'Subtract the background, tune display thresholds and clean radio-frequency interference from raw spectra.', items: ['Mean, median or median (dB) background', 'RFI cleaning and noise clipping', 'Combine files across time and frequency'] },
   { icon: ScanLine, title: 'Measure the burst', body: 'Isolate features, extract intensity maxima and quantify drift, shock speed and Type II band splitting.', items: ['Automatic ridge tracking', 'Five coronal density models', 'Band-splitting magnetic field'] },
-  { icon: Layers, title: 'See the wider event', body: 'Bring GOES X-rays, CME catalogs, geomagnetic indices and solar imagery into the context of your observation.', items: ['GOES XRS & SEP, Kp, Dst', 'LASCO CME catalog', 'e-CALLISTO, Learmonth & STEREO/WAVES'] },
+  { icon: Layers, title: 'See the wider event', body: 'Place your observation in its space weather context with GOES X-rays, CME catalogs, geomagnetic indices and solar imagery.', items: ['GOES XRS & SEP, Kp, Dst', 'LASCO CME catalog', 'e-CALLISTO, Learmonth & STEREO/WAVES'] },
 ];
+
+// Answers to what people search for before they find the analyzer. Each links to the guide chapter that covers it.
+const faqs = [
+  { q: 'What is e-CALLISTO FITS Analyzer?', a: 'A free, open-source desktop application for visualizing, processing and analyzing the solar radio dynamic spectra recorded by the e-CALLISTO spectrometer network, together with solar images from SDO, SOHO and STEREO.', link: ['Introduction', '/guide/introduction/'] },
+  { q: 'How do I open an e-CALLISTO FITS file?', a: 'Use File > Open (Ctrl+O) or drag the files onto the main window. The analyzer reads .fit and .fits files, compressed or not, and merges consecutive files into one continuous dynamic spectrum.', link: ['Opening and combining data', '/guide/opening-data/'] },
+  { q: 'Where can I get e-CALLISTO data?', a: 'The built-in downloader retrieves FITS files directly from the e-CALLISTO archive, for one station or for every station that observed an event, and browses the Monstein burst list. Learmonth and STEREO/WAVES data are available too.', link: ['The e-CALLISTO FITS downloader', '/guide/downloader/'] },
+  { q: 'Can it remove the background and radio interference?', a: 'Yes. Subtract a mean, median or median (dB) background, clip noise and clean radio-frequency interference (RFI) to bring out faint solar radio bursts in the spectrogram.', link: ['Viewing and processing tools', '/guide/processing-tools/'] },
+  { q: 'How do I measure a Type II radio burst?', a: 'Isolate the burst, extract or track its intensity maxima and fit its backbone. The analyzer derives the drift rate, shock speed and shock height with five coronal density models, and the magnetic field from band splitting.', link: ['Type II burst analysis', '/guide/type-ii/'] },
+  { q: 'Do I need Python, and is it free?', a: 'No separate Python installation is needed: the installers for Windows, macOS and Linux include everything the analyzer uses. It is free and open source under the MIT license.', link: ['Installation and startup', '/guide/installation/'] },
+];
+
+/** Keeps "e-CALLISTO" from breaking at its hyphen. */
+const keepName = (text: string) => text.split('e-CALLISTO').flatMap((part, i) => i ? [<span className="nowrap" key={i}>e-CALLISTO</span>, part] : [part]);
 
 export default function Home() {
   return <>
@@ -32,8 +45,8 @@ export default function Home() {
           <span className="dot" aria-hidden="true" />Version 3.1.0 is here
           <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
         </Link>
-        <h1>A clearer view of <em>our dynamic Sun.</em></h1>
-        <p className="hero-copy">From radio bursts to erupting coronal structures. Analyze e-CALLISTO spectra and solar images in one connected, open-source toolkit.</p>
+        <h1><span className="eyebrow">Solar radio burst &amp; CME analysis software</span> A clearer view of <em>our dynamic Sun.</em></h1>
+        <p className="hero-copy">From solar radio bursts to erupting coronal structures. Analyze <span className="nowrap">e-CALLISTO</span> FITS spectra and solar images in one connected, free and open-source toolkit.</p>
         <div className="actions">
           <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.0</Link>
           <Link className="button lg" href="/guide/"><BookOpen size={18} />Explore the user guide</Link>
@@ -123,7 +136,23 @@ export default function Home() {
       </div>
     </section>
 
-    <section className="wrap" style={{ paddingBottom: 96 }}>
+    <section className="section band" id="faq">
+      <div className="wrap">
+        <div className="section-heading" data-reveal>
+          <div><span className="eyebrow">Frequently asked questions</span><h2>New to <span className="nowrap">e-CALLISTO</span> data?</h2></div>
+          <p>Short answers to common questions. Each links to the user guide chapter that covers it in depth.</p>
+        </div>
+        <div className="highlight-grid">
+          {faqs.map((f, i) => <article className="highlight faq spotlight" key={f.q} data-reveal style={{ '--delay': `${(i % 3) * 80}ms` } as React.CSSProperties}>
+            <h3>{keepName(f.q)}</h3>
+            <p>{keepName(f.a)}</p>
+            <Link className="text-link" href={f.link[1]}>{f.link[0]} <ArrowRight size={15} /></Link>
+          </article>)}
+        </div>
+      </div>
+    </section>
+
+    <section className="wrap" style={{ paddingBlock: 96 }}>
       <div className="cta-banner" data-reveal="scale">
         <h2>Ready to look closer at the Sun?</h2>
         <p>Download e-CALLISTO FITS Analyzer v3.1.0 for Windows, Linux or macOS. Free, open source and ready for your next observation.</p>

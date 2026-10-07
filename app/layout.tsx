@@ -12,7 +12,7 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', displ
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl + basePath + '/'),
-  title: { default: `${siteName} · A clearer view of our dynamic Sun`, template: `%s · ${siteName}` },
+  title: { default: `${siteName} · Solar radio burst analysis software`, template: `%s · ${siteName}` },
   description: defaultDescription,
   applicationName: siteName,
   authors: [{ name: 'Sahan S Liyanage' }],

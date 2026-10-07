@@ -5,11 +5,11 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'Solar Image Analyzer', description: 'Analyze SDO, SOHO and STEREO images: CME tracking, height–time fits, PFSS magnetic-field modelling, differences, composites and movie exports.', path: '/tools/solar-imaging/' });
+export const metadata = pageMetadata({ title: 'Solar Image Analyzer for SDO, SOHO and STEREO', description: 'Analyze SDO, SOHO and STEREO images: CME tracking, height–time fits, PFSS magnetic-field modelling, differences, composites and movie exports.', path: '/tools/solar-imaging/' });
 
 export default function SolarImaging() {
   return <>
-    <PageIntro label="Solar Image Analyzer · Image analysis" title="From images to measurements." crumbs={[['Solar Image Analyzer']]}>
+    <PageIntro label="Solar Image Analyzer · SDO, SOHO & STEREO" title="From images to measurements." crumbs={[['Solar Image Analyzer']]}>
       Explore SDO, SOHO and STEREO data, track an eruption and connect it with the magnetic structure of the Sun.
     </PageIntro>
     <section className="wrap content-section">

@@ -5,11 +5,11 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'GCS CME Fitting', description: 'Fit a Graduated Cylindrical Shell and a separate shock model to multi-viewpoint coronagraph images and record CME kinematics.', path: '/tools/gcs-fitting/' });
+export const metadata = pageMetadata({ title: 'GCS CME fitting and 3D reconstruction', description: 'Fit a Graduated Cylindrical Shell and a separate shock model to multi-viewpoint coronagraph images and record CME kinematics.', path: '/tools/gcs-fitting/' });
 
 export default function GCSFitting() {
   return <>
-    <PageIntro label="Solar Image Analyzer · GCS · New in v3.1.0" title="Fit an eruption in three dimensions." crumbs={[['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting']]}>
+    <PageIntro label="GCS CME fitting · New in v3.1.0" title="Fit an eruption in three dimensions." crumbs={[['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting']]}>
       Evaluate CME geometry and propagation with a Graduated Cylindrical Shell model viewed through multiple coronagraphs.
     </PageIntro>
     <section className="wrap content-section">

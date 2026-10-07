@@ -40,11 +40,15 @@ Inside the code, links between pages use `next/link`, which adds the base path a
 
 Each page declares a canonical URL, its own title, description and link preview (`pageMetadata()` in `lib/seo.ts`), and schema.org structured data: the software, the user guide, each guide chapter, the software paper and breadcrumbs. `sitemap.xml` lists every page.
 
-To get the site indexed:
+The site is served from the custom domain `https://ecallistoanalyzer.org/`; the old `saandev.github.io` address redirects there. To get it indexed:
 
-1. Add the site in [Google Search Console](https://search.google.com/search-console) as a **URL prefix** property (`https://saandev.github.io/e-callisto-fits-analyzer-website/`). Choose the **HTML tag** method, paste the `content` value into `searchVerification.google` in `lib/site.ts`, push, and click **Verify**.
-2. Submit `sitemap.xml` under **Sitemaps**. (A project site's `robots.txt` is not at the domain root, so search engines will not find the sitemap on their own.)
-3. In [Bing Webmaster Tools](https://www.bing.com/webmasters), import the site from Search Console, or verify with `searchVerification.bing`.
+1. In [Google Search Console](https://search.google.com/search-console), use the **Domain** property for `ecallistoanalyzer.org`, verified by the `google-site-verification` TXT record at the domain's DNS provider. (Alternatively, a **URL prefix** property can be verified with the **HTML tag** method: paste the `content` value into `searchVerification.google` in `lib/site.ts` and push.)
+2. Submit `https://ecallistoanalyzer.org/sitemap.xml` under **Sitemaps**, then use **URL Inspection → Request indexing** for the home, download and user guide pages.
+3. In [Bing Webmaster Tools](https://www.bing.com/webmasters), import the site from Search Console, or verify with `searchVerification.bing`. Bing's index also serves DuckDuckGo, Yahoo and Ecosia.
+
+`robots.txt` at the domain root allows all crawlers and points to the sitemap.
+
+Search engines ignore the `keywords` meta tag. What they read is each page's `<title>`, its `<h1>` (in `PageIntro` the small label above the title is part of the h1, so make it descriptive) and the body text. Links from other sites (the software repository, e-callisto.org, publications) matter most for a new domain.
 
 ## Community
 
