@@ -3,7 +3,8 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import SiteHeader from '@/components/site-header';
 import SiteFooter from '@/components/site-footer';
 import SiteEffects from '@/components/site-effects';
-import { asset, basePath, siteUrl, searchVerification, cloudflareAnalyticsToken } from '@/lib/site';
+import AnalyticsConsent from '@/components/analytics-consent';
+import { asset, basePath, siteUrl, searchVerification, cloudflareAnalyticsToken, googleAnalyticsId } from '@/lib/site';
 import { siteName, defaultDescription, absoluteUrl } from '@/lib/seo';
 import './globals.css';
 
@@ -39,6 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
     <body>
       <a className="skip-link" href="#main">Skip to content</a>
+      {/* Early in the page so keyboard users reach it before the navigation. */}
+      {googleAnalyticsId && <AnalyticsConsent />}
       <SiteEffects />
       <SiteHeader />
       <main id="main">{children}</main>

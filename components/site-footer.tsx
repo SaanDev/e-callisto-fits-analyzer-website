@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { GitHubIcon } from '@/components/icons';
+import { CookieSettingsButton } from '@/components/analytics-consent';
 import { asset, links, version } from '@/lib/site';
 
 const columns: [string, [string, string][]][] = [
@@ -32,7 +33,11 @@ export default function SiteFooter() {
       <div className="footer-spectrum" aria-hidden="true" />
       <div className="footer-bottom">
         <span>© 2026 Sahan S Liyanage · Astronomical and Space Science Unit, University of Colombo</span>
-        <a href={links.repo} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', gap: 8, alignItems: 'center' }}><GitHubIcon size={15} />SaanDev/e-Callisto_FITS_Analyzer</a>
+        <div className="footer-meta">
+          <Link href="/privacy/">Privacy</Link>
+          <CookieSettingsButton />
+          <a href={links.repo} target="_blank" rel="noreferrer" style={{ display: 'inline-flex', gap: 8, alignItems: 'center' }}><GitHubIcon size={15} />SaanDev/e-Callisto_FITS_Analyzer</a>
+        </div>
       </div>
     </div>
   </footer>;

@@ -23,6 +23,10 @@ export const searchVerification = {
 // Cookie-free page view counts; leave empty to turn analytics off.
 export const cloudflareAnalyticsToken = '0afd7ee014204a8bbd865e9157b13881';
 
+// Google Analytics 4 measurement ID (Admin → Data streams → Web). It loads only
+// after a visitor accepts the cookie banner; leave empty to remove both.
+export const googleAnalyticsId = 'G-V06VJQ9X56';
+
 export const version = '3.1.0';
 export const releaseDate = 'October 2026';
 
