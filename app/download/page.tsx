@@ -3,22 +3,24 @@ import { Monitor, Terminal, Laptop, Wrench, Info, BookOpen, ArrowRight, Activity
 import PageIntro from '@/components/page-intro';
 import DownloadCards from '@/components/download-cards';
 import releases from '@/releases-verified.json';
-import { highlights, fixes, notes } from '@/lib/release-notes';
-import { links } from '@/lib/site';
+import { highlights, fixes, notes, patchFixes } from '@/lib/release-notes';
+import { currentReleases, links } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'Download v3.1.0',
-  description: 'Download e-CALLISTO FITS Analyzer v3.1.0 for Windows, Linux and macOS, with checksums, installation steps and the full list of what’s new.',
+  title: 'Download v3.1.1',
+  description: 'Download e-CALLISTO FITS Analyzer v3.1.1 for Windows and Linux and v3.1.0 for macOS, with checksums, installation steps and the full list of what’s new.',
   path: '/download/',
 });
 
 const icons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
+const current: string[] = Object.values(currentReleases);
+
 const previous = Object.values(releases.reduce<Record<string, { version: string; prerelease: boolean; platforms: { name: string; url: string }[] }>>((all, r) => {
   const [, version, platform] = r.tag.match(/^v(.+?)\((.+)\)$/) ?? [];
-  if (!version || version === '3.1.0') return all;
+  if (!version || current.includes(r.tag)) return all;
   all[version] ??= { version, prerelease: r.prerelease, platforms: [] };
   all[version].platforms.push({ name: platform === 'MacOS' ? 'macOS' : platform, url: r.url });
   return all;
@@ -27,7 +29,7 @@ const previous = Object.values(releases.reduce<Record<string, { version: string;
 export default function Downloads() {
   return <>
     <JsonLd data={softwareData()} />
-    <PageIntro label="Download v3.1.0 · Windows, macOS & Linux" title={<>One toolkit.<br />A wider view of the Sun.</>} crumbs={[['Download']]}>
+    <PageIntro label="Download v3.1.1 · Windows, macOS & Linux" title={<>One toolkit.<br />A wider view of the Sun.</>} crumbs={[['Download']]}>
       Process radio spectra, analyze solar images and reconstruct CMEs in three dimensions. Free and open source for Windows, Linux and macOS.
     </PageIntro>
 
@@ -51,14 +53,14 @@ export default function Downloads() {
             <h3><Monitor size={20} />Windows</h3>
             <ol>
               <li>Close any running instance of the analyzer.</li>
-              <li>Run <code>e-CALLISTO_FITS_Analyzer_v3.1.0_Setup.exe</code> and approve the administrator prompt.</li>
+              <li>Run <code>e-CALLISTO_FITS_Analyzer_v3.1.1_Setup.exe</code> and approve the administrator prompt.</li>
               <li>Follow the setup wizard, then launch from the Start menu or desktop shortcut.</li>
             </ol>
           </article>
           <article className="card" data-reveal style={{ '--delay': '90ms' } as React.CSSProperties}>
             <h3><Terminal size={20} />Linux</h3>
             <ol>
-              <li>Install the package from your download folder:<pre style={{ marginTop: 10 }}>sudo apt install ./e-callisto-fits-analyzer_3.1.0_amd64.deb</pre></li>
+              <li>Install the package from your download folder:<pre style={{ marginTop: 10 }}>sudo apt install ./e-callisto-fits-analyzer_3.1.1_amd64.deb</pre></li>
               <li>Launch from the application menu or run <code>e-callisto-fits-analyzer</code>.</li>
               <li>If the graphics driver prevents start-up, run with <code>CALLISTO_FORCE_SOFTWARE_OPENGL=1</code>.</li>
             </ol>
@@ -78,8 +80,12 @@ export default function Downloads() {
 
     <section className="section wrap" id="whats-new">
       <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">What’s new in v3.1.0</span><h2>Sharper measurements.<br />A wider view.</h2></div>
+        <div><span className="eyebrow">What’s new in v3.1</span><h2>Sharper measurements.<br />A wider view.</h2></div>
         <p>Automatic ridge tracking and density-model comparisons for radio bursts, multi-view GCS CME and shock fitting, PFSS modelling and publication-style figure exports.</p>
+      </div>
+      <div className="notice" data-reveal style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginTop: 0 }}>
+        <Wrench size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 3 }} />
+        <div><strong>v3.1.1 is a bug-fix release for Windows and Linux.</strong>{patchFixes.map(f => <p key={f}>{f}</p>)}<p>The macOS app was not affected and stays at v3.1.0. Everything below arrived in v3.1.0.</p></div>
       </div>
       <div className="highlight-grid">
         {highlights.map((h, i) => {
@@ -93,7 +99,7 @@ export default function Downloads() {
       </div>
       <div className="cards two" style={{ marginTop: 20 }}>
         <article className="card" data-reveal>
-          <h3 style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 0 }}><Wrench size={19} />Fixes and improvements</h3>
+          <h3 style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 0 }}><Wrench size={19} />Fixes and improvements in v3.1.0</h3>
           <ul className="prose" style={{ fontSize: 15 }}>{fixes.map(f => <li key={f}>{f}</li>)}</ul>
         </article>
         <article className="card" data-reveal style={{ '--delay': '90ms' } as React.CSSProperties}>

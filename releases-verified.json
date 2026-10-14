@@ -1,5 +1,33 @@
 [
   {
+    "tag": "v3.1.1(Windows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.1(Windows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v3.1.1_Setup.exe",
+        "size": 272732337,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.1%28Windows%29/e-CALLISTO_FITS_Analyzer_v3.1.1_Setup.exe",
+        "digest": "sha256:f667791995a94bfbb7f223eec20e1f43cd33374725d65a0e0ba5378246cddd67"
+      }
+    ],
+    "verification": "Size and SHA-256 from the release installers, 2026-10-14."
+  },
+  {
+    "tag": "v3.1.1(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.1(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.1.1_amd64.deb",
+        "size": 422405860,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.1%28Linux%29/e-callisto-fits-analyzer_3.1.1_amd64.deb",
+        "digest": "sha256:55bf3e5fe698fdb2eb521eb41639b768ba38328e14290a7e5b7aaa0c95980135"
+      }
+    ],
+    "verification": "Size and SHA-256 from the release installers, 2026-10-14."
+  },
+  {
     "tag": "v3.1.0(Windows)",
     "prerelease": false,
     "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.0(Windows)",

@@ -4,7 +4,7 @@ import { basePath, siteUrl, version, links, guidePdf } from '@/lib/site';
 import { citation } from '@/lib/citation';
 
 export const siteName = 'e-CALLISTO FITS Analyzer';
-export const defaultDescription = 'Free, open-source analysis of e-CALLISTO solar radio spectra and solar images, with CME tracking, PFSS and GCS fitting, for Windows, Linux and macOS. Download v3.1.0, read the complete user guide and join the community.';
+export const defaultDescription = 'Free, open-source analysis of e-CALLISTO solar radio spectra and solar images, with CME tracking, PFSS and GCS fitting, for Windows, Linux and macOS. Download v3.1.1, read the complete user guide and join the community.';
 
 /** Absolute URL of a site path such as "/download/". */
 export function absoluteUrl(path: string): string {
@@ -88,7 +88,7 @@ export function userGuideData(): Thing {
     '@context': 'https://schema.org',
     '@type': 'Book',
     name: 'e-CALLISTO FITS Analyzer User Guide',
-    bookEdition: `Version ${version}, first edition`,
+    bookEdition: `Version ${guidePdf.version}, first edition`,
     numberOfPages: guidePdf.pages,
     inLanguage: 'en',
     author,
@@ -110,7 +110,7 @@ export function chapterData({ title, description, path, image }: { title: string
     ...(image ? { image: absoluteUrl(image) } : {}),
     inLanguage: 'en',
     author,
-    isPartOf: { '@type': 'Book', name: 'e-CALLISTO FITS Analyzer User Guide', bookEdition: `Version ${version}`, url: absoluteUrl('/guide/') },
+    isPartOf: { '@type': 'Book', name: 'e-CALLISTO FITS Analyzer User Guide', bookEdition: `Version ${guidePdf.version}`, url: absoluteUrl('/guide/') },
     about: { '@type': 'SoftwareApplication', name: siteName },
   };
 }

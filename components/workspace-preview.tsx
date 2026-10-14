@@ -64,7 +64,7 @@ export default function WorkspacePreview() {
       <figure className="app-showcase" ref={frame} id="workspace-panel" role="tabpanel" aria-labelledby={`workspace-tab-${view.id}`}>
         <div className="window-bar">
           <div className="window-dots"><i /><i /><i /></div>
-          <span className="window-title">e-CALLISTO FITS Analyzer 3.1.0</span>
+          <span className="window-title">e-CALLISTO FITS Analyzer 3.1.1</span>
           <span className="window-label">ONE PACKAGE · TWO TOOLS</span>
         </div>
         <div className="showcase-stage">

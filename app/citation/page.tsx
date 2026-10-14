@@ -30,7 +30,7 @@ export default function Citation() {
       </div>
       <article className="prose" style={{ marginTop: 24 }} data-reveal>
         <h2>Make your methods reproducible</h2>
-        <p>State the software version you used (for example, v3.1.0) and report important processing and model choices: background subtraction, RFI settings, the selected frequency range, the density model and fold multiplier, and any GCS fitting assumptions. Cite the relevant data providers and scientific methods separately where appropriate.</p>
+        <p>State the software version you used (for example, v3.1.1) and report important processing and model choices: background subtraction, RFI settings, the selected frequency range, the density model and fold multiplier, and any GCS fitting assumptions. Cite the relevant data providers and scientific methods separately where appropriate.</p>
         <p>The citation above matches the recommendation in the software’s built-in citation dialog (<strong>Cite this Software</strong> in the main toolbar).</p>
       </article>
     </section>

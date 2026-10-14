@@ -27,8 +27,16 @@ export const cloudflareAnalyticsToken = '0afd7ee014204a8bbd865e9157b13881';
 // after a visitor accepts the cookie banner; leave empty to remove both.
 export const googleAnalyticsId = 'G-V06VJQ9X56';
 
-export const version = '3.1.0';
+export const version = '3.1.1';
 export const releaseDate = 'October 2026';
+
+// GitHub release tag of the current installer on each platform. v3.1.1 fixed
+// the Windows and Linux packages only, so macOS stays on v3.1.0.
+export const currentReleases = {
+  Windows: 'v3.1.1(Windows)',
+  Linux: 'v3.1.1(Linux)',
+  macOS: 'v3.1.0(MacOS)',
+};
 
 export const repo = 'https://github.com/SaanDev/e-Callisto_FITS_Analyzer';
 export const links = {
@@ -43,6 +51,7 @@ export const links = {
 };
 
 export const guidePdf = {
+  version: '3.1.0',
   href: '/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf',
   filename: 'e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf',
   pages: 174,

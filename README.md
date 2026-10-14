@@ -73,8 +73,8 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | What | Where |
 |---|---|
 | Release downloads, sizes and SHA-256 checksums | `releases-verified.json` |
-| v3.1.0 highlights and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
-| Site constants (version, links, PDF name) | `lib/site.ts` |
+| v3.1.0 highlights, v3.1.1 fixes and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
+| Site constants (version, current release per platform, links, PDF name) | `lib/site.ts` |
 | Tutorials | `lib/tutorials.ts` |
 | Citation and BibTeX | `lib/citation.ts` |
 | Public sponsors (generated at deploy time) | `content/sponsors.json` |
@@ -84,7 +84,7 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | Guide figures (WebP) | `public/guide/figures/` (generated) |
 | Screenshots and example movies | `public/showcase/`, `public/screenshots/` |
 
-The download links point to the GitHub release tags `v3.1.0(Windows)`, `v3.1.0(MacOS)` and `v3.1.0(Linux)`. They work once those releases are published.
+The download links point to the GitHub release tags in `currentReleases` (`lib/site.ts`): `v3.1.1(Windows)`, `v3.1.1(Linux)` and `v3.1.0(MacOS)`. v3.1.1 fixed the Windows and Linux packages only, so macOS stays on v3.1.0. The user guide is still the v3.1.0 edition (`guidePdf.version`).
 
 ### Updating the user guide
 
@@ -108,7 +108,7 @@ The web edition is generated from the LaTeX source with [Pandoc](https://pandoc.
 python scripts/prepare-release.py "<folder with the installers and PDF>" <new version> <previous version>
 ```
 
-This records the installer sizes and checksums in `releases-verified.json` and copies the guide PDF. Then update `version` in `lib/site.ts`, the platform tags in `components/download-cards.tsx`, and the highlights in `lib/release-notes.ts`.
+This records the installer sizes and checksums in `releases-verified.json` and copies the guide PDF. Then update `version` and `currentReleases` in `lib/site.ts`, and the highlights in `lib/release-notes.ts`. For a release that skips a platform, add its records to `releases-verified.json` by hand and leave that platform's tag in `currentReleases` unchanged.
 
 ## License
 

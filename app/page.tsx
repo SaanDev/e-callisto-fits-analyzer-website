@@ -42,13 +42,13 @@ export default function Home() {
       <HeroSpectrum />
       <div className="wrap">
         <Link className="release-pill" href="/download/#whats-new">
-          <span className="dot" aria-hidden="true" />Version 3.1.0 is here
+          <span className="dot" aria-hidden="true" />Version 3.1.1 is here
           <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
         </Link>
         <h1><span className="eyebrow">Solar radio burst &amp; CME analysis software</span> A clearer view of <em>our dynamic Sun.</em></h1>
         <p className="hero-copy">From solar radio bursts to erupting coronal structures. Analyze <span className="nowrap">e-CALLISTO</span> FITS spectra and solar images in one connected, free and open-source toolkit.</p>
         <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.0</Link>
+          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.1</Link>
           <Link className="button lg" href="/guide/"><BookOpen size={18} />Explore the user guide</Link>
         </div>
         <div className="hero-meta">
@@ -155,9 +155,9 @@ export default function Home() {
     <section className="wrap" style={{ paddingBlock: 96 }}>
       <div className="cta-banner" data-reveal="scale">
         <h2>Ready to look closer at the Sun?</h2>
-        <p>Download e-CALLISTO FITS Analyzer v3.1.0 for Windows, Linux or macOS. Free, open source and ready for your next observation.</p>
+        <p>Download the latest e-CALLISTO FITS Analyzer for Windows, Linux or macOS. Free, open source and ready for your next observation.</p>
         <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.0</Link>
+          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.1</Link>
           <Link className="button secondary lg" href="/guide/"><BookOpen size={18} />Read the guide</Link>
         </div>
       </div>

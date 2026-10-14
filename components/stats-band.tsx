@@ -69,7 +69,7 @@ export default function StatsBand() {
   return <section className="stats-band" aria-label="The project in numbers">
     <div className="wrap stats-grid">
       <div className="stat" data-reveal style={{ '--delay': '0ms' } as React.CSSProperties}>
-        <span className="stat-value">v3.1<span className="unit">.0</span></span>
+        <span className="stat-value">v3.1<span className="unit">.1</span></span>
         <span className="stat-label">Latest release · October 2026</span>
       </div>
       <div className="stat" data-reveal style={{ '--delay': '100ms' } as React.CSSProperties}>

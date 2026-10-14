@@ -67,7 +67,7 @@ export default function SiteHeader() {
       {nav.map(([label, url], i) => <Link key={url} href={url} onClick={() => setMenu(false)} style={{ '--i': i } as React.CSSProperties} aria-current={isCurrent(pathname, url) ? 'page' : undefined}>{label}<ArrowRight size={18} /></Link>)}
       <a href={links.repo} target="_blank" rel="noreferrer" style={{ '--i': nav.length } as React.CSSProperties}>GitHub<ArrowRight size={18} /></a>
       <Link href="/sponsor/" onClick={() => setMenu(false)} style={{ '--i': nav.length + 1 } as React.CSSProperties} aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><span className="mobile-sponsor"><Heart size={18} />Sponsor</span><ArrowRight size={18} /></Link>
-      <Link className="button primary lg" href="/download/" onClick={() => setMenu(false)}><Download size={18} />Download v3.1.0</Link>
+      <Link className="button primary lg" href="/download/" onClick={() => setMenu(false)}><Download size={18} />Download v3.1.1</Link>
     </nav>
   </header>;
 }
