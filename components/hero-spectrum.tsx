@@ -27,14 +27,14 @@ export default function HeroSpectrum() {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d', { alpha: false });
     if (!canvas || !ctx) return;
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     let cols = 0, bins = 0, simTime = 0, dark = false;
     let rowProfile: number[] = [];
     let bursts: Burst[] = [];
     let nextType2 = 1, nextType3 = 0.5;
     let lut = new Uint8ClampedArray(64 * 3);
-    let visible = true, raf = 0, last = 0;
+    let visible = false, animationTimer = 0;
     let columnImage: ImageData;
 
     function buildLut() {
@@ -104,29 +104,41 @@ export default function HeroSpectrum() {
       buildLut(); fill();
     }
 
-    function tick(now: number) {
-      raf = requestAnimationFrame(tick);
-      if (!visible || now - last < STEP_MS) return;
-      last = now;
+    function tick() {
       ctx!.drawImage(canvas!, -1, 0);
       step(); writeColumn(columnImage.data, 1, 0);
       ctx!.putImageData(columnImage, cols - 1, 0);
+      animationTimer = window.setTimeout(tick, STEP_MS);
+    }
+
+    function syncAnimation() {
+      window.clearTimeout(animationTimer);
+      if (visible && !document.hidden && !motion.matches && cols && bins) {
+        animationTimer = window.setTimeout(tick, STEP_MS);
+      }
     }
 
     dark = document.documentElement.classList.contains('dark');
     resize();
     let timer = 0;
-    const onResize = () => { clearTimeout(timer); timer = window.setTimeout(resize, 200); };
+    const onResize = () => { clearTimeout(timer); timer = window.setTimeout(() => { resize(); syncAnimation(); }, 200); };
     window.addEventListener('resize', onResize);
     const themeWatch = new MutationObserver(() => {
       const now = document.documentElement.classList.contains('dark');
       if (now !== dark) { dark = now; buildLut(); fill(); }
     });
     themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; syncAnimation(); });
     io.observe(canvas);
-    if (!reduce) raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); clearTimeout(timer); window.removeEventListener('resize', onResize); themeWatch.disconnect(); io.disconnect(); };
+    motion.addEventListener('change', syncAnimation);
+    document.addEventListener('visibilitychange', syncAnimation);
+    return () => {
+      clearTimeout(animationTimer); clearTimeout(timer);
+      window.removeEventListener('resize', onResize);
+      motion.removeEventListener('change', syncAnimation);
+      document.removeEventListener('visibilitychange', syncAnimation);
+      themeWatch.disconnect(); io.disconnect();
+    };
   }, []);
 
   return <div className="hero-canvas-wrap" aria-hidden="true"><canvas ref={canvasRef} className="hero-canvas" /></div>;

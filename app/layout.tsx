@@ -36,7 +36,7 @@ export const viewport: Viewport = {
 const themeScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('callisto-theme');if(t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches)d.classList.add('dark')}catch(e){}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
+  return <html lang="en" data-scroll-behavior="smooth" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
     <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
     <body>
       <a className="skip-link" href="#main">Skip to content</a>

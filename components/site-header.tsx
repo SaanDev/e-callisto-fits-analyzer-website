@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sun, Moon, Menu, X, Download, ArrowRight, Heart } from 'lucide-react';
@@ -25,12 +25,37 @@ function isCurrent(pathname: string, url: string) {
 export default function SiteHeader() {
   const pathname = usePathname();
   const [menu, setMenu] = useState(false);
+  const header = useRef<HTMLElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    document.body.style.overflow = menu ? 'hidden' : '';
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenu(false); };
+    if (!menu) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const background = Array.from(document.querySelectorAll<HTMLElement>('main, .site-footer'));
+    const previousInert = background.map(el => el.inert);
+    background.forEach(el => { el.inert = true; });
+    header.current?.querySelector<HTMLElement>('#mobile-nav a')?.focus();
+    const close = () => { setMenu(false); menuButton.current?.focus(); };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+      if (event.key !== 'Tab') return;
+      const focusable = Array.from(header.current?.querySelectorAll<HTMLElement>('a[href], button') ?? []).filter(el => el.getClientRects().length > 0);
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    const desktop = window.matchMedia('(min-width: 1041px)');
+    const onDesktop = () => { if (desktop.matches) setMenu(false); };
+    onDesktop();
+    desktop.addEventListener('change', onDesktop);
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      background.forEach((el, i) => { el.inert = previousInert[i]; });
+      window.removeEventListener('keydown', onKey);
+      desktop.removeEventListener('change', onDesktop);
+    };
   }, [menu]);
 
   function toggleTheme() {
@@ -42,7 +67,7 @@ export default function SiteHeader() {
     try { localStorage.setItem('callisto-theme', dark ? 'dark' : 'light'); } catch { /* private mode */ }
   }
 
-  return <header className={'site-header' + (menu ? ' menu-open' : '')}>
+  return <header ref={header} className={'site-header' + (menu ? ' menu-open' : '')}>
     <div className="wrap header-inner">
       <Link href="/" className="brand" aria-label="e-CALLISTO FITS Analyzer home">
         <img src={asset('/logo-96.png')} alt="" width={38} height={38} />
@@ -55,13 +80,13 @@ export default function SiteHeader() {
         <div className="header-utilities">
           <a className="icon-button github-chip" href={links.repo} target="_blank" rel="noreferrer" aria-label="Source code on GitHub" title="Source code on GitHub"><GitHubIcon size={18} /></a>
           <Link className="icon-button sponsor-chip" href="/sponsor/" aria-label="Sponsor the project" title="Sponsor the project" aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><Heart size={18} /></Link>
-          <button type="button" className="icon-button theme-toggle" onClick={toggleTheme} aria-label="Toggle dark theme" title="Toggle theme">
+          <button type="button" className="icon-button theme-toggle" onClick={toggleTheme} aria-label="Toggle color theme" title="Toggle theme">
             <Sun className="sun" size={18} />
             <Moon className="moon" size={18} />
           </button>
         </div>
         <Link className="button primary sm header-download" href="/download/"><Download size={16} />Download</Link>
-        <button type="button" className="icon-button menu-button" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="mobile-nav" onClick={() => setMenu(!menu)}>
+        <button ref={menuButton} type="button" className="icon-button menu-button" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="mobile-nav" onClick={() => setMenu(!menu)}>
           {menu ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>

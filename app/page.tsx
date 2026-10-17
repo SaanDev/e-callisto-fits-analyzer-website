@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Download, BookOpen, ArrowRight, Activity, ScanLine, Layers, Monitor, ShieldCheck, Code2, MessagesSquare, Quote, Sparkles, Orbit, Box, Image as ImageIcon, FolderOpen, Satellite } from 'lucide-react';
+import { Download, BookOpen, ArrowRight, Activity, ScanLine, Layers, Monitor, ShieldCheck, Code2, MessagesSquare, Quote, Sparkles, Orbit, Box, Image as ImageIcon, FolderOpen, Satellite, Plus } from 'lucide-react';
 import HeroSpectrum from '@/components/hero-spectrum';
 import WorkspacePreview from '@/components/workspace-preview';
 import StatsBand from '@/components/stats-band';
@@ -142,12 +142,14 @@ export default function Home() {
           <div><span className="eyebrow">Frequently asked questions</span><h2>New to <span className="nowrap">e-CALLISTO</span> data?</h2></div>
           <p>Short answers to common questions. Each links to the user guide chapter that covers it in depth.</p>
         </div>
-        <div className="highlight-grid">
-          {faqs.map((f, i) => <article className="highlight faq spotlight" key={f.q} data-reveal style={{ '--delay': `${(i % 3) * 80}ms` } as React.CSSProperties}>
-            <h3>{keepName(f.q)}</h3>
-            <p>{keepName(f.a)}</p>
-            <Link className="text-link" href={f.link[1]}>{f.link[0]} <ArrowRight size={15} /></Link>
-          </article>)}
+        <div className="faq-list" data-reveal>
+          {faqs.map((f, i) => <details className="faq-item" name="home-faq" key={f.q} open={i === 0}>
+            <summary><span className="faq-number" aria-hidden="true">0{i + 1}</span><h3>{keepName(f.q)}</h3><Plus size={19} aria-hidden="true" /></summary>
+            <div className="faq-answer">
+              <p>{keepName(f.a)}</p>
+              <Link className="text-link" href={f.link[1]}>{f.link[0]} <ArrowRight size={15} /></Link>
+            </div>
+          </details>)}
         </div>
       </div>
     </section>
