@@ -11,6 +11,7 @@ const nav = [
   ['Overview', '/'],
   ['User guide', '/guide/'],
   ['Tutorials', '/tutorials/'],
+  ['ecallistolib', '/ecallistolib/'],
   ['Science', '/science/'],
   ['Community', '/community/'],
 ] as const;
@@ -51,12 +52,14 @@ export default function SiteHeader() {
         {nav.map(([label, url]) => <Link key={url} href={url} aria-current={isCurrent(pathname, url) ? 'page' : undefined}>{label}</Link>)}
       </nav>
       <div className="header-actions">
-        <a className="icon-button github-chip" href={links.repo} target="_blank" rel="noreferrer"><GitHubIcon size={17} />GitHub</a>
-        <Link className="icon-button sponsor-chip" href="/sponsor/" aria-label="Sponsor the project" aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><Heart size={16} /><span>Sponsor</span></Link>
-        <button type="button" className="icon-button theme-toggle" onClick={toggleTheme} aria-label="Toggle dark theme">
-          <Sun className="sun" size={18} />
-          <Moon className="moon" size={18} />
-        </button>
+        <div className="header-utilities">
+          <a className="icon-button github-chip" href={links.repo} target="_blank" rel="noreferrer" aria-label="Source code on GitHub" title="Source code on GitHub"><GitHubIcon size={18} /></a>
+          <Link className="icon-button sponsor-chip" href="/sponsor/" aria-label="Sponsor the project" title="Sponsor the project" aria-current={isCurrent(pathname, '/sponsor/') ? 'page' : undefined}><Heart size={18} /></Link>
+          <button type="button" className="icon-button theme-toggle" onClick={toggleTheme} aria-label="Toggle dark theme" title="Toggle theme">
+            <Sun className="sun" size={18} />
+            <Moon className="moon" size={18} />
+          </button>
+        </div>
         <Link className="button primary sm header-download" href="/download/"><Download size={16} />Download</Link>
         <button type="button" className="icon-button menu-button" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} aria-controls="mobile-nav" onClick={() => setMenu(!menu)}>
           {menu ? <X size={20} /> : <Menu size={20} />}

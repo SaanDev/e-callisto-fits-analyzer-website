@@ -76,6 +76,7 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | v3.1.0 highlights, v3.1.1 fixes and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
 | Site constants (version, current release per platform, links, PDF name) | `lib/site.ts` |
 | Tutorials | `lib/tutorials.ts` |
+| ecallistolib library overview, installation and Python examples | `app/ecallistolib/page.tsx` (based on the library’s v1.5.0 README and package metadata) |
 | Citation and BibTeX | `lib/citation.ts` |
 | Public sponsors (generated at deploy time) | `content/sponsors.json` |
 | User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf` |
