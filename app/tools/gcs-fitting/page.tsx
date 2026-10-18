@@ -5,16 +5,16 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'GCS CME fitting and 3D reconstruction', description: 'Fit a Graduated Cylindrical Shell and a separate shock model to multi-viewpoint coronagraph images and record CME kinematics.', path: '/tools/gcs-fitting/' });
+export const metadata = pageMetadata({ title: 'GCS CME fitting and 3D reconstruction', description: 'Reconstruct CMEs in 3D with e-CALLISTO FITS Analyzer: GCS flux-rope and shock fitting, multi-view coronagraph images and CME kinematics.', path: '/tools/gcs-fitting/' });
 
 export default function GCSFitting() {
   return <>
     <PageIntro label="GCS CME fitting · New in v3.1.0" title="Fit an eruption in three dimensions." crumbs={[['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting']]}>
-      Evaluate CME geometry and propagation with a Graduated Cylindrical Shell model viewed through multiple coronagraphs.
+      Reconstruct coronal mass ejections in three dimensions with e-CALLISTO FITS Analyzer. Fit a Graduated Cylindrical Shell (GCS) model to SOHO and STEREO coronagraph images, measure CME kinematics and export results using free, open-source software for Windows, macOS and Linux.
     </PageIntro>
     <section className="wrap content-section">
       <a className="tool-image" href={asset('/showcase/gcs.webp')} target="_blank" rel="noreferrer" style={{ marginBottom: 56 }} data-reveal="scale">
-        <div className="image-frame"><img src={asset('/showcase/gcs.webp')} alt="GCS CME fit with STEREO B, SOHO and STEREO A coronagraph views" width={1800} height={1100} /></div>
+        <div className="image-frame"><img src={asset('/showcase/gcs.webp')} alt="GCS CME reconstruction in e-CALLISTO FITS Analyzer with STEREO B, SOHO and STEREO A coronagraph views" width={1800} height={1100} /></div>
         <span>STEREO B · SOHO · STEREO A — one shared model</span>
       </a>
       <div className="prose">
@@ -34,7 +34,7 @@ export default function GCSFitting() {
         <p>GCS apex heights are deprojected within the selected model geometry. Derived speeds and accelerations depend on viewpoint coverage, feature selection, timing and fitting assumptions, and reported fit uncertainties do not include every source of reconstruction uncertainty. Keep source frames, parameters and point provenance with your exported results.</p>
         <p>The complete workflow is described in <Link href="/guide/gcs-window/">Part VI of the user guide</Link>.</p>
         <div className="actions" style={{ marginTop: 30 }}>
-          <Link className="button primary" href="/download/"><Download size={16} />Download the toolkit</Link>
+          <Link className="button primary" href="/download/"><Download size={16} />Download e-CALLISTO FITS Analyzer</Link>
           <Link className="button" href="/tools/solar-imaging/"><ArrowLeft size={16} />Solar imaging</Link>
           <Link className="button ghost" href="/guide/gcs-window/"><BookOpen size={16} />Read Part VI</Link>
         </div>

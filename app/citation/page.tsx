@@ -12,7 +12,7 @@ export default function Citation() {
   return <>
     <JsonLd data={{ '@context': 'https://schema.org', ...softwarePaper }} />
     <PageIntro label="How to cite e-CALLISTO FITS Analyzer" title="Good science gives credit." crumbs={[['Citation']]}>
-      If you use e-CALLISTO FITS Analyzer in your research, please cite the software paper.
+      If you use e-CALLISTO FITS Analyzer for solar radio FITS data analysis, dynamic spectrum visualization, Type II burst measurements or solar imaging in your research, please cite the software paper. Copy the reference or BibTeX entry below.
     </PageIntro>
     <section className="wrap content-section">
       <div className="cards two">

@@ -17,7 +17,7 @@ const channels = [
 export default function Community() {
   return <>
     <PageIntro
-      label="The e-CALLISTO community"
+      label="e-CALLISTO FITS Analyzer community & support"
       title={<>A shared sky.<br />An open conversation.</>}
       crumbs={[['Community']]}
       actions={<>
@@ -25,7 +25,7 @@ export default function Community() {
         <a className="button lg" href={`mailto:${links.email}`}><Mail size={18} />Email the maintainer</a>
       </>}
     >
-      Ask questions, exchange methods and help each other make sense of solar radio and imaging observations. Discussions take place on GitHub, next to the source code.
+      Get help with e-CALLISTO FITS Analyzer, from opening solar radio FITS files to dynamic spectrum processing, Type II burst analysis and solar imaging. Exchange methods, share results and discuss the free, open-source software on GitHub.
     </PageIntro>
     <section className="wrap content-section">
       <div className="channel-grid">

@@ -9,7 +9,7 @@ import { pageMetadata, userGuideData } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'User guide · v3.1.0',
-  description: 'The complete, illustrated v3.1.0 user guide: 21 chapters, five appendices, glossary, bibliography and index. Read online or download the 174-page PDF.',
+  description: 'Read the e-CALLISTO FITS Analyzer user guide for solar radio FITS processing, Type II burst analysis, solar imaging and GCS CME fitting. Online and PDF.',
   path: '/guide/',
 });
 
@@ -18,7 +18,7 @@ export default function Guide() {
   return <>
     <JsonLd data={userGuideData()} />
     <PageIntro label="e-CALLISTO FITS Analyzer user guide · v3.1.0" title="Your guide to the analyzer." crumbs={[['User guide']]}>
-      From your first FITS observation to solar imaging and three-dimensional CME reconstruction. The complete guide by Sahan S Liyanage.
+      Learn solar radio data analysis with e-CALLISTO FITS Analyzer, free and open-source desktop software for Windows, macOS and Linux. This complete guide by Sahan S Liyanage covers FITS files, dynamic spectra, Type II bursts, solar imaging and three-dimensional CME reconstruction.
     </PageIntro>
     <section className="wrap content-section">
       <div className="handbook-intro">

@@ -3,14 +3,14 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'Solar radio bursts and dynamic spectra explained', description: 'What dynamic spectra show, plasma emission, frequency drift and coronal density models, and the limits of interpretation.', path: '/science/' });
+export const metadata = pageMetadata({ title: 'Solar radio bursts and dynamic spectra explained', description: 'Understand solar radio FITS data analysis with e-CALLISTO FITS Analyzer: dynamic spectra, Type II bursts, frequency drift and coronal density models.', path: '/science/' });
 
 const sections = [['spectrum', 'Dynamic spectra'], ['emission', 'Plasma emission'], ['drift', 'Drift & density models'], ['imaging', 'Imaging & CME geometry'], ['limits', 'Interpretation limits'], ['sources', 'Read further']];
 
 export default function Science() {
   return <>
     <PageIntro label="Solar radio bursts and dynamic spectra" title="Read the Sun in radio." crumbs={[['Science']]}>
-      A starting point for understanding what dynamic spectra show, and what a scientific interpretation requires.
+      Understand the science behind e-CALLISTO FITS Analyzer: solar radio dynamic spectra, plasma emission, Type II burst frequency drift and coronal density models. Learn how FITS data measurements connect to shock estimates and CME reconstruction, and what each interpretation requires.
     </PageIntro>
     <section className="wrap content-section doc-layout">
       <aside className="doc-nav" aria-label="On this page">
@@ -21,7 +21,7 @@ export default function Science() {
         <h2 id="spectrum" style={{ marginTop: 0 }}>A spectrum that changes with time</h2>
         <p>A dynamic spectrum displays radio intensity as a function of time and frequency. In a CALLISTO observation, time runs along the horizontal axis, frequency along the vertical axis, and colour represents intensity. The instrument’s native frequency range is 45–870 MHz; an individual observation’s coverage depends on station configuration and any converters.</p>
         <p>The e-CALLISTO network brings together distributed solar radio spectrometers around the world. Its observations support research, education and radio-frequency interference monitoring. <a href="https://www.e-callisto.org/" target="_blank" rel="noreferrer">Explore the e-CALLISTO network</a>.</p>
-        <img src={asset('/screenshots/noise_reduction.webp')} alt="Dynamic spectrum showing drifting radio emission; the colour scale represents intensity" loading="lazy" width={1800} height={1125} data-reveal />
+        <img src={asset('/screenshots/noise_reduction.webp')} alt="e-CALLISTO FITS Analyzer dynamic spectrum showing drifting solar radio emission, with colour representing intensity" loading="lazy" width={1800} height={1125} data-reveal />
 
         <h2 id="emission">From plasma to radio emission</h2>
         <p>Solar radio bursts can carry signatures of energetic electrons and shocks. Under a plasma-emission interpretation, radiation occurs near the local electron plasma frequency or its harmonic. The plasma frequency is approximately:</p>

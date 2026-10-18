@@ -4,7 +4,7 @@ import { basePath, siteUrl, version, links, guidePdf } from '@/lib/site';
 import { citation } from '@/lib/citation';
 
 export const siteName = 'e-CALLISTO FITS Analyzer';
-export const defaultDescription = 'Free, open-source analysis of e-CALLISTO solar radio spectra and solar images, with CME tracking, PFSS and GCS fitting, for Windows, Linux and macOS. Download v3.1.1, read the complete user guide and join the community.';
+export const defaultDescription = 'e-CALLISTO FITS Analyzer is free, open-source software for solar radio FITS data analysis on Windows, macOS and Linux, with Type II burst analysis, solar imaging and CME reconstruction.';
 
 /** Absolute URL of a site path such as "/download/". */
 export function absoluteUrl(path: string): string {

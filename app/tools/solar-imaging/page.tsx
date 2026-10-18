@@ -5,16 +5,16 @@ import PageIntro from '@/components/page-intro';
 import { asset } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'Solar Image Analyzer for SDO, SOHO and STEREO', description: 'Analyze SDO, SOHO and STEREO images: CME tracking, height–time fits, PFSS magnetic-field modelling, differences, composites and movie exports.', path: '/tools/solar-imaging/' });
+export const metadata = pageMetadata({ title: 'Solar Image Analyzer for SDO, SOHO and STEREO', description: 'Analyze SDO, SOHO and STEREO solar images with e-CALLISTO FITS Analyzer: CME tracking, height–time measurements, PFSS modelling and movie exports.', path: '/tools/solar-imaging/' });
 
 export default function SolarImaging() {
   return <>
     <PageIntro label="Solar Image Analyzer · SDO, SOHO & STEREO" title="From images to measurements." crumbs={[['Solar Image Analyzer']]}>
-      Explore SDO, SOHO and STEREO data, track an eruption and connect it with the magnetic structure of the Sun.
+      Use the Solar Image Analyzer in e-CALLISTO FITS Analyzer to explore SDO, SOHO and STEREO FITS images, track coronal mass ejections and model the Sun’s magnetic field with PFSS. Available in the free, open-source desktop application for Windows, macOS and Linux.
     </PageIntro>
     <section className="wrap content-section">
       <a className="tool-image" href={asset('/showcase/solar.webp')} target="_blank" rel="noreferrer" style={{ marginBottom: 56 }} data-reveal="scale">
-        <div className="image-frame"><img src={asset('/showcase/solar.webp')} alt="Solar Image Analyzer with PFSS overlay and CME height–time measurements" width={1800} height={1050} /></div>
+        <div className="image-frame"><img src={asset('/showcase/solar.webp')} alt="Solar Image Analyzer in e-CALLISTO FITS Analyzer with a PFSS overlay and CME height–time measurements" width={1800} height={1050} /></div>
         <span>Solar Image Analysis with a PFSS overlay and CME height–time measurements</span>
       </a>
       <div className="prose">
@@ -36,7 +36,7 @@ export default function SolarImaging() {
         <p>Every window and option is described in <Link href="/guide/solar-window/">Part V of the user guide</Link>.</p>
         <div className="actions" style={{ marginTop: 30 }}>
           <Link className="button primary" href="/tools/gcs-fitting/">Explore GCS CME fitting<ArrowRight className="arrow" size={16} /></Link>
-          <Link className="button" href="/download/"><Download size={16} />Get the analyzer</Link>
+          <Link className="button" href="/download/"><Download size={16} />Download e-CALLISTO FITS Analyzer</Link>
           <Link className="button ghost" href="/guide/solar-window/"><BookOpen size={16} />Read Part V</Link>
         </div>
       </div>

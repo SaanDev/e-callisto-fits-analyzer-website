@@ -46,7 +46,7 @@ export default function Sponsor() {
         <a className="button lg" href="#other-ways"><ArrowDown size={18} />Other ways to help</a>
       </>}
     >
-      e-CALLISTO FITS Analyzer is free, open-source software, built and maintained by Sahan S Liyanage at the University of Colombo. Sponsorship pays for the time it takes to keep it growing.
+      e-CALLISTO FITS Analyzer is free, open-source software for solar radio FITS analysis, solar imaging and CME reconstruction on Windows, macOS and Linux, built and maintained by Sahan S Liyanage at the University of Colombo. Sponsorship pays for the time it takes to keep it growing.
     </PageIntro>
 
     <section className="wrap content-section">

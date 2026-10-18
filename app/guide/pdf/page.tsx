@@ -8,8 +8,8 @@ export const metadata = pageMetadata({ title: 'User guide PDF · v3.1.0', descri
 
 export default function PdfEdition() {
   return <>
-    <PageIntro label="User guide PDF · v3.1.0" title="The complete PDF edition." crumbs={[['User guide', '/guide/'], ['PDF edition']]}>
-      The original illustrated handbook by Sahan S Liyanage, with all 174 pages, figures, tables, equations, references and the index.
+    <PageIntro label="e-CALLISTO FITS Analyzer user guide PDF · v3.1.0" title="The complete PDF edition." crumbs={[['User guide', '/guide/'], ['PDF edition']]}>
+      Download the e-CALLISTO FITS Analyzer user guide for offline reading: 174 illustrated pages on solar radio FITS processing, burst analysis, solar imaging and CME reconstruction, with figures, equations and references by Sahan S Liyanage.
     </PageIntro>
     <section className="wrap content-section">
       <GuidePdf reader />

@@ -9,8 +9,8 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({ title: 'Documentation', description: 'Everything you need to learn e-CALLISTO FITS Analyzer: the user guide, tutorials, tool guides, scientific background, installation and citation.', path: '/docs/' });
 
 const resources = [
-  { icon: BookOpen, title: 'User guide', body: 'The complete v3.1.0 reference for radio spectra, solar imaging, GCS fitting, exports and more.', href: '/guide/' },
-  { icon: GraduationCap, title: 'Tutorials', body: 'Written walkthroughs to get started. Video tutorials are coming soon.', href: '/tutorials/' },
+  { icon: BookOpen, title: 'e-CALLISTO FITS Analyzer user guide', body: 'The complete v3.1.0 reference for opening FITS files, processing solar radio spectra, solar imaging, GCS fitting and exports.', href: '/guide/' },
+  { icon: GraduationCap, title: 'Solar radio analysis tutorials', body: 'Step-by-step e-CALLISTO FITS Analyzer workflows for your first dynamic spectrum, radio burst drift measurement and reproducible exports.', href: '/tutorials/' },
   { icon: Orbit, title: 'Solar Image Analyzer', body: 'SDO, SOHO and STEREO imaging, CME tracking, height–time measurements and PFSS.', href: '/tools/solar-imaging/' },
   { icon: Box, title: 'GCS CME fitting', body: 'Multi-viewpoint fitting, shock models and recorded CME kinematics.', href: '/tools/gcs-fitting/' },
   { icon: Atom, title: 'Scientific background', body: 'Dynamic spectra, plasma emission, frequency drift and model-dependent estimates.', href: '/science/' },
@@ -22,7 +22,7 @@ const resources = [
 export default function Docs() {
   return <>
     <PageIntro label="e-CALLISTO FITS Analyzer documentation" title="A good place to get started." crumbs={[['Documentation']]}>
-      Learn the tools, understand the methods and make your analysis reproducible.
+      Learn to use e-CALLISTO FITS Analyzer for solar radio FITS data analysis, dynamic spectrum visualization, Type II burst measurements and solar imaging. Find installation instructions, tutorials and scientific methods for reproducible research.
     </PageIntro>
     <section className="wrap content-section">
       <div className="handbook-intro">

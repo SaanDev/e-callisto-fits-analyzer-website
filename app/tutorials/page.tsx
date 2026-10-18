@@ -9,7 +9,7 @@ export const metadata = pageMetadata({ title: 'e-CALLISTO data analysis tutorial
 export default function Tutorials() {
   return <>
     <PageIntro label="e-CALLISTO data analysis tutorials" title="One observation. New possibilities." crumbs={[['Tutorials']]}>
-      Practical walkthroughs for students and researchers. Work at your own pace with your own FITS observation.
+      Follow practical e-CALLISTO FITS Analyzer tutorials for students and researchers. Open solar radio FITS files, visualize dynamic spectra, measure burst frequency drift and export reproducible results on Windows, macOS or Linux.
     </PageIntro>
     <section className="wrap content-section">
       <div className="article-list">

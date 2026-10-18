@@ -17,14 +17,14 @@ export const metadata = pageMetadata({ title: `${siteName} · Solar radio burst 
 const highlightIcons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
 const radioFeatures = [
-  { icon: Activity, title: 'Reveal the structure', body: 'Subtract the background, tune display thresholds and clean radio-frequency interference from raw spectra.', items: ['Mean, median or median (dB) background', 'RFI cleaning and noise clipping', 'Combine files across time and frequency'] },
-  { icon: ScanLine, title: 'Measure the burst', body: 'Isolate features, extract intensity maxima and quantify drift, shock speed and Type II band splitting.', items: ['Automatic ridge tracking', 'Five coronal density models', 'Band-splitting magnetic field'] },
-  { icon: Layers, title: 'See the wider event', body: 'Place your observation in its space weather context with GOES X-rays, CME catalogs, geomagnetic indices and solar imagery.', items: ['GOES XRS & SEP, Kp, Dst', 'LASCO CME catalog', 'e-CALLISTO, Learmonth & STEREO/WAVES'] },
+  { icon: Activity, title: 'Clean solar radio spectra', body: 'Subtract the background, tune display thresholds and clean radio-frequency interference from raw spectra.', items: ['Mean, median or median (dB) background', 'RFI cleaning and noise clipping', 'Combine files across time and frequency'] },
+  { icon: ScanLine, title: 'Measure Type II radio bursts', body: 'Isolate features, extract intensity maxima and quantify drift, shock speed and Type II band splitting.', items: ['Automatic ridge tracking', 'Five coronal density models', 'Band-splitting magnetic field'] },
+  { icon: Layers, title: 'Explore space weather context', body: 'Place your observation in its space weather context with GOES X-rays, CME catalogs, geomagnetic indices and solar imagery.', items: ['GOES XRS & SEP, Kp, Dst', 'LASCO CME catalog', 'e-CALLISTO, Learmonth & STEREO/WAVES'] },
 ];
 
 // Answers to what people search for before they find the analyzer. Each links to the guide chapter that covers it.
 const faqs = [
-  { q: 'What is e-CALLISTO FITS Analyzer?', a: 'A free, open-source desktop application for visualizing, processing and analyzing the solar radio dynamic spectra recorded by the e-CALLISTO spectrometer network, together with solar images from SDO, SOHO and STEREO.', link: ['Introduction', '/guide/introduction/'] },
+  { q: 'What is e-CALLISTO FITS Analyzer?', a: 'e-CALLISTO FITS Analyzer is a free, open-source desktop application for Windows, macOS and Linux. It visualizes, processes and analyzes the solar radio dynamic spectra recorded by the e-CALLISTO spectrometer network, together with solar images from SDO, SOHO and STEREO.', link: ['Introduction', '/guide/introduction/'] },
   { q: 'How do I open an e-CALLISTO FITS file?', a: 'Use File > Open (Ctrl+O) or drag the files onto the main window. The analyzer reads .fit and .fits files, compressed or not, and merges consecutive files into one continuous dynamic spectrum.', link: ['Opening and combining data', '/guide/opening-data/'] },
   { q: 'Where can I get e-CALLISTO data?', a: 'The built-in downloader retrieves FITS files directly from the e-CALLISTO archive, for one station or for every station that observed an event, and browses the Monstein burst list. Learmonth and STEREO/WAVES data are available too.', link: ['The e-CALLISTO FITS downloader', '/guide/downloader/'] },
   { q: 'Can it remove the background and radio interference?', a: 'Yes. Subtract a mean, median or median (dB) background, clip noise and clean radio-frequency interference (RFI) to bring out faint solar radio bursts in the spectrogram.', link: ['Viewing and processing tools', '/guide/processing-tools/'] },
@@ -45,10 +45,10 @@ export default function Home() {
           <span className="dot" aria-hidden="true" />Version 3.1.1 is here
           <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
         </Link>
-        <h1><span className="eyebrow">Solar radio burst &amp; CME analysis software</span> A clearer view of <em>our dynamic Sun.</em></h1>
-        <p className="hero-copy">From solar radio bursts to erupting coronal structures. Analyze <span className="nowrap">e-CALLISTO</span> FITS spectra and solar images in one connected, free and open-source toolkit.</p>
+        <h1><span className="eyebrow">e-CALLISTO FITS Analyzer · Solar radio &amp; CME analysis</span> A clearer view of <em>our dynamic Sun.</em></h1>
+        <p className="hero-copy">e-CALLISTO FITS Analyzer is free, open-source software for visualizing and analyzing solar radio FITS data on Windows, macOS and Linux. Process dynamic spectra, measure Type II radio bursts and connect observations with solar imaging and CME reconstruction.</p>
         <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.1</Link>
+          <Link className="button primary lg" href="/download/"><Download size={18} />Free Download</Link>
           <Link className="button lg" href="/guide/"><BookOpen size={18} />Explore the user guide</Link>
         </div>
         <div className="hero-meta">
@@ -67,8 +67,8 @@ export default function Home() {
     <section className="section band" id="radio-tool">
       <div className="wrap">
         <div className="section-heading" data-reveal>
-          <div><span className="eyebrow">Tool 01 · e-CALLISTO FITS Analyzer</span><h2>Follow the signal.<br />Find the science.</h2></div>
-          <p>Process and analyze e-CALLISTO dynamic spectra, from the first FITS file to a publication-ready figure.</p>
+          <div><span className="eyebrow">Tool 01 · e-CALLISTO FITS Analyzer</span><h2>Analyze solar radio<br />FITS data.</h2></div>
+          <p>Open e-CALLISTO FITS files, visualize solar radio dynamic spectra and analyze Type II bursts, from background subtraction to drift-rate measurements and publication-ready figures.</p>
         </div>
         <div className="feature-grid">
           {radioFeatures.map((f, i) => <article className="feature spotlight" key={f.title} data-reveal style={{ '--delay': `${i * 90}ms` } as React.CSSProperties}>
@@ -105,7 +105,7 @@ export default function Home() {
         <div data-reveal>
           <span className="eyebrow">Start curious. Go deeper.</span>
           <h2>Your next discovery<br />starts here.</h2>
-          <p>The complete user guide covers every window, method and formula, from your first FITS file to three-dimensional CME reconstruction. Read it online or keep the PDF.</p>
+          <p>The e-CALLISTO FITS Analyzer user guide covers every window, method and formula, from opening solar radio FITS files to three-dimensional CME reconstruction. Read it online or keep the PDF.</p>
           <div className="resource-links" style={{ marginTop: 32 }}>
             {[['01', 'User guide', 'Searchable, illustrated, chapter by chapter.', '/guide/'], ['02', 'Tutorials', 'Follow an observation from import to export.', '/tutorials/'], ['03', 'The science', 'Understand the physics behind the spectrum.', '/science/']].map(([n, title, body, url]) =>
               <Link href={url} key={n}><span>{n}</span><div><h3>{title}</h3><p>{body}</p></div><ArrowRight size={20} /></Link>)}
@@ -159,7 +159,7 @@ export default function Home() {
         <h2>Ready to look closer at the Sun?</h2>
         <p>Download the latest e-CALLISTO FITS Analyzer for Windows, Linux or macOS. Free, open source and ready for your next observation.</p>
         <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Download v3.1.1</Link>
+          <Link className="button primary lg" href="/download/"><Download size={18} />Free Download</Link>
           <Link className="button secondary lg" href="/guide/"><BookOpen size={18} />Read the guide</Link>
         </div>
       </div>

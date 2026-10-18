@@ -22,7 +22,7 @@ export default function SiteFooter() {
       <div className="footer-grid">
         <div className="footer-brand">
           <Link className="brand" href="/"><img src={asset('/logo-96.png')} alt="" width={38} height={38} /><span>e-CALLISTO<small>FITS ANALYZER</small></span></Link>
-          <p>Free, open tools for solar radio spectra, solar imaging and CME reconstruction.</p>
+          <p>e-CALLISTO FITS Analyzer: free, open-source solar radio FITS analysis, solar imaging and CME reconstruction for Windows, macOS and Linux.</p>
           <span className="tag">v{version} · Free and open source</span>
         </div>
         {columns.map(([title, items]) => <div className="footer-col" key={title}>
