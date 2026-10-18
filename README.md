@@ -85,6 +85,12 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | Guide figures (WebP) | `public/guide/figures/` (generated) |
 | Screenshots and example movies | `public/showcase/`, `public/screenshots/` |
 
+The showcase movies use VP9 WebM and play inline, muted and looping, without native player controls. `components/example-movie.tsx` pauses them outside the viewport or in hidden tabs, respects reduced-motion preferences, and provides a small play/pause button. To convert a replacement export while preserving its dimensions and frame rate:
+
+```sh
+ffmpeg -i example.mp4 -an -c:v libvpx-vp9 -crf 32 -b:v 0 -deadline good -cpu-used 2 -pix_fmt yuv420p public/showcase/example.webm
+```
+
 The download links point to the GitHub release tags in `currentReleases` (`lib/site.ts`): `v3.1.1(Windows)`, `v3.1.1(Linux)` and `v3.1.0(MacOS)`. v3.1.1 fixed the Windows and Linux packages only, so macOS stays on v3.1.0. The user guide is still the v3.1.0 edition (`guidePdf.version`).
 
 ### Updating the user guide

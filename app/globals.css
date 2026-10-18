@@ -359,11 +359,14 @@ html:not(.dark) .theme-toggle .moon { transform: none; opacity: 1; }
 .movie-heading h3 { font-size: clamp(26px, 3vw, 34px); font-weight: 650; margin: 0 0 10px; }
 .movie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
 
-.example-movie { margin: 28px 0; overflow: hidden; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-lg); transition: box-shadow .3s var(--ease), transform .3s var(--ease); }
-.example-movie:hover { box-shadow: var(--shadow-md); }
+.example-movie { margin: 28px 0; }
 .movie-grid .example-movie { margin: 0; }
+.movie-stage { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: #04070d; }
 .example-movie video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: #04070d; }
-.example-movie figcaption { padding: 20px 22px; }
+.movie-toggle { position: absolute; right: 12px; bottom: 12px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #ffffff40; border-radius: 50%; background: #04070dcc; color: #fff; cursor: pointer; transition: background .2s, border-color .2s; }
+.movie-toggle:hover { background: #1c2539; border-color: #ffffff80; }
+.movie-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.example-movie figcaption { padding: 16px 2px 0; }
 .example-movie strong { display: block; color: var(--ink); font-weight: 600; }
 .example-movie figcaption > span { display: block; color: var(--muted); font-size: 14px; margin-top: 6px; }
 .movie-download { display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-size: 13.5px; font-weight: 600; margin-top: 12px; }

@@ -48,7 +48,7 @@ export default function SolarShowcase() {
       <div className="movie-heading" data-reveal>
         <span className="eyebrow">Generated with the analyzer</span>
         <h3>See the science in motion.</h3>
-        <p>Play examples exported from the Solar Image Analyzer and GCS tools.</p>
+        <p>Watch image sequences and CME fits exported from the Solar Image Analyzer and GCS tools.</p>
       </div>
       <div className="movie-grid">
         <div data-reveal><ExampleMovie kind="solar" /></div>
