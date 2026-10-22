@@ -14,7 +14,7 @@ const resources = [
   { icon: Orbit, title: 'Solar Image Analyzer', body: 'SDO, SOHO and STEREO imaging, CME tracking, height–time measurements and PFSS.', href: '/tools/solar-imaging/' },
   { icon: Box, title: 'GCS CME fitting', body: 'Multi-viewpoint fitting, shock models and recorded CME kinematics.', href: '/tools/gcs-fitting/' },
   { icon: Atom, title: 'Scientific background', body: 'Dynamic spectra, plasma emission, frequency drift and model-dependent estimates.', href: '/science/' },
-  { icon: Download, title: 'Installation & releases', body: 'v3.1.1 for Windows and Linux and v3.1.0 for macOS, with checksums and installation steps.', href: '/download/' },
+  { icon: Download, title: 'Installation & releases', body: 'v3.1.2 for Windows, Linux and macOS, with checksums and installation steps.', href: '/download/' },
   { icon: Quote, title: 'Citation', body: 'The published paper, recommended attribution and a copyable BibTeX entry.', href: '/citation/' },
   { icon: MessagesSquare, title: 'Community support', body: 'Ask a question, describe a workflow or discuss a scientific interpretation.', href: '/community/' },
 ];

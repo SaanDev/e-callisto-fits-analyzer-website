@@ -38,7 +38,7 @@ export default function WorkspacePreview() {
         <div className="window-bar" aria-hidden="true">
           <div className="window-dots"><i /><i /><i /></div>
           <span className="window-title">e-CALLISTO FITS Analyzer</span>
-          <span className="window-label">V3.1.1</span>
+          <span className="window-label">V3.1.2</span>
         </div>
         <div className="workspace-tabs" role="tablist" aria-label="Explore analysis workspaces" onKeyDown={onKeyDown}>
           {views.map((v, i) => <button

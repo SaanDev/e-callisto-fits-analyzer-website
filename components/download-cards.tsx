@@ -9,9 +9,9 @@ import { currentReleases } from '@/lib/site';
 type OS = keyof typeof currentReleases;
 
 const platforms = [
-  { os: 'Windows' as OS, arch: 'Windows 10 or 11 · 64-bit', ext: '.exe', Icon: Monitor, install: 'Run the installer and follow the setup wizard. It upgrades any v3.x installation, including v3.1.0 and the v3.1.0 beta, in place.' },
+  { os: 'Windows' as OS, arch: 'Windows 10 or 11 · 64-bit', ext: '.exe', Icon: Monitor, install: 'Run the installer and follow the setup wizard. It upgrades any earlier v3.x installation, including the v3.1.0 beta, in place.' },
   { os: 'Linux' as OS, arch: 'Debian / Ubuntu · amd64', ext: '.deb', Icon: Terminal, install: 'Install with apt, then launch from your applications menu or with e-callisto-fits-analyzer.' },
-  { os: 'macOS' as OS, arch: 'macOS 13 Ventura or later · Apple silicon', ext: '.dmg', Icon: Laptop, install: 'Open the disk image and drag the app into Applications. Allow it once under Privacy & Security, as described below.' },
+  { os: 'macOS' as OS, arch: 'macOS 15 Sequoia or later · Apple silicon', ext: '.dmg', Icon: Laptop, install: 'Open the disk image and drag the app into Applications. Allow it once under Privacy & Security, as described below.' },
 ];
 
 function detectOS(): OS | null {

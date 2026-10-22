@@ -3,26 +3,27 @@ import { Monitor, Terminal, Laptop, Wrench, Info, BookOpen, ArrowRight, Activity
 import PageIntro from '@/components/page-intro';
 import DownloadCards from '@/components/download-cards';
 import releases from '@/releases-verified.json';
-import { highlights, fixes, notes, patchFixes } from '@/lib/release-notes';
+import { highlights, fixes, notes, patchReleases } from '@/lib/release-notes';
 import { currentReleases, links } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({
-  title: 'Download v3.1.1',
-  description: 'Download free, open-source e-CALLISTO FITS Analyzer: v3.1.1 for Windows and Linux, v3.1.0 for macOS. Solar radio FITS analysis, installers and checksums.',
+  title: 'Download v3.1.2',
+  description: 'Download free, open-source e-CALLISTO FITS Analyzer v3.1.2 for Windows, Linux and macOS. Solar radio FITS analysis, installers and checksums.',
   path: '/download/',
 });
 
 const icons = { radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
 const current: string[] = Object.values(currentReleases);
+const platformNames: Record<string, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux', appimage: 'AppImage' };
 
 const previous = Object.values(releases.reduce<Record<string, { version: string; prerelease: boolean; platforms: { name: string; url: string }[] }>>((all, r) => {
   const [, version, platform] = r.tag.match(/^v(.+?)\((.+)\)$/) ?? [];
   if (!version || current.includes(r.tag)) return all;
   all[version] ??= { version, prerelease: r.prerelease, platforms: [] };
-  all[version].platforms.push({ name: platform === 'MacOS' ? 'macOS' : platform, url: r.url });
+  all[version].platforms.push({ name: platformNames[platform.toLowerCase()] ?? platform, url: r.url });
   return all;
 }, {}));
 
@@ -53,14 +54,14 @@ export default function Downloads() {
             <h3><Monitor size={20} />Windows</h3>
             <ol>
               <li>Close any running instance of the analyzer.</li>
-              <li>Run <code>e-CALLISTO_FITS_Analyzer_v3.1.1_Setup.exe</code> and approve the administrator prompt.</li>
+              <li>Run <code>e-CALLISTO_FITS_Analyzer_v3.1.2_Setup.exe</code> and approve the administrator prompt.</li>
               <li>Follow the setup wizard, then launch from the Start menu or desktop shortcut.</li>
             </ol>
           </article>
           <article className="card" data-reveal style={{ '--delay': '90ms' } as React.CSSProperties}>
             <h3><Terminal size={20} />Linux</h3>
             <ol>
-              <li>Install the package from your download folder:<pre style={{ marginTop: 10 }}>sudo apt install ./e-callisto-fits-analyzer_3.1.1_amd64.deb</pre></li>
+              <li>Install the package from your download folder:<pre style={{ marginTop: 10 }}>sudo apt install ./e-callisto-fits-analyzer_3.1.2_amd64.deb</pre></li>
               <li>Launch from the application menu or run <code>e-callisto-fits-analyzer</code>.</li>
               <li>If the graphics driver prevents start-up, run with <code>CALLISTO_FORCE_SOFTWARE_OPENGL=1</code>.</li>
             </ol>
@@ -69,8 +70,8 @@ export default function Downloads() {
             <h3><Laptop size={20} />macOS</h3>
             <ol>
               <li>Open the disk image and drag <strong>e-Callisto FITS Analyzer</strong> into <strong>Applications</strong>.</li>
-              <li><strong>macOS 15 and later:</strong> open the app once, then choose <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
-              <li><strong>macOS 13 and 14:</strong> Control-click the app, choose <strong>Open</strong>, then confirm.</li>
+              <li>Open the app once, then choose <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
+              <li><strong>macOS 13 and 14:</strong> v3.1.2 needs macOS 15 or later. Install <a className="text-link" href="#previous">v3.1.0</a> instead, then Control-click the app, choose <strong>Open</strong> and confirm.</li>
             </ol>
           </article>
         </div>
@@ -85,7 +86,11 @@ export default function Downloads() {
       </div>
       <div className="notice" data-reveal style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginTop: 0 }}>
         <Wrench size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 3 }} />
-        <div><strong>v3.1.1 is a bug-fix release for Windows and Linux.</strong>{patchFixes.map(f => <p key={f}>{f}</p>)}<p>The macOS app was not affected and stays at v3.1.0. Everything below arrived in v3.1.0.</p></div>
+        <div>
+          <strong>v3.1.2 is a bug-fix release of v3.1.0.</strong>
+          {patchReleases.map(r => <p key={r.version}><strong>v{r.version} · {r.platforms}.</strong> {r.fixes.join(' ')}</p>)}
+          <p>The macOS app now requires macOS 15 Sequoia or later. On macOS 13 or 14, use <a className="text-link" href="#previous">v3.1.0</a>. Everything below arrived in v3.1.0.</p>
+        </div>
       </div>
       <div className="highlight-grid">
         {highlights.map((h, i) => {

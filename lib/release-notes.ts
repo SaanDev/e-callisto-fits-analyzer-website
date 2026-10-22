@@ -1,9 +1,19 @@
 // v3.1.0 highlights, condensed from docs/release_notes/RELEASE_NOTES_v3.1.0_*.md
 // in the software repository (the full notes are in public/docs/release-notes).
 
-// v3.1.1 is a bug-fix release of the Windows and Linux packages; macOS stays on v3.1.0.
-export const patchFixes = [
-  'STEREO/WAVES (SWAVES) radio data open again. The installers left out the leap-second table the CDF reader needs to decode SWAVES time stamps, so opening a SWAVES day failed with a missing CDFLeapSeconds.txt error. STEREO-A and STEREO-B data now open normally.',
+// Bug-fix releases since v3.1.0, newest first, condensed from their GitHub release notes.
+export const patchReleases = [
+  {
+    version: '3.1.2', platforms: 'Windows, Linux and macOS', fixes: [
+      'About → Check for Updates… is ready for v3.2.0, whose releases also carry e-CALLISTO FITS Analyzer Lite. It ignores Lite’s installers and Lite-only releases and only offers a release with this application’s installer for your operating system.',
+      'A downloaded update whose file name cannot be read from its link is saved under the release installer’s name.',
+    ],
+  },
+  {
+    version: '3.1.1', platforms: 'Windows and Linux', fixes: [
+      'STEREO/WAVES (SWAVES) radio data open again. The installers left out the leap-second table the CDF reader needs to decode SWAVES time stamps, so opening a SWAVES day failed with a missing CDFLeapSeconds.txt error.',
+    ],
+  },
 ];
 
 export type Highlight = { id: string; title: string; tone?: 'solar'; items: [string, string][] };

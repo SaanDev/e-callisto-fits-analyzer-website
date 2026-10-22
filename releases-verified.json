@@ -1,5 +1,47 @@
 [
   {
+    "tag": "v3.1.2(WIndows)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.2(WIndows)",
+    "assets": [
+      {
+        "name": "e-CALLISTO_FITS_Analyzer_v3.1.2_Setup.exe",
+        "size": 272776041,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.2%28WIndows%29/e-CALLISTO_FITS_Analyzer_v3.1.2_Setup.exe",
+        "digest": "sha256:c37e91b8951dc950037b073fd1905c9be23283a3f61d81c445d20aa91d248033"
+      }
+    ],
+    "verification": "Size and SHA-256 from the GitHub release assets, 2026-10-22; Windows and Linux also match the local installers."
+  },
+  {
+    "tag": "v3.1.2(Linux)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.2(Linux)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.1.2_amd64.deb",
+        "size": 422236848,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.2%28Linux%29/e-callisto-fits-analyzer_3.1.2_amd64.deb",
+        "digest": "sha256:b78c0d5eef48cee68e1dc4d01eb89f496e1f0cfdb4a5a0d7bf886b01137f942f"
+      }
+    ],
+    "verification": "Size and SHA-256 from the GitHub release assets, 2026-10-22; Windows and Linux also match the local installers."
+  },
+  {
+    "tag": "v3.1.2(MacOS)",
+    "prerelease": false,
+    "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.2(MacOS)",
+    "assets": [
+      {
+        "name": "e-callisto-fits-analyzer_3.1.2_macOS_arm64.dmg",
+        "size": 883570028,
+        "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.1.2%28MacOS%29/e-callisto-fits-analyzer_3.1.2_macOS_arm64.dmg",
+        "digest": "sha256:8ecb12339897f2b97dfe220357d6c5da27febcba1f4ae159198fa24e7d69b296"
+      }
+    ],
+    "verification": "Size and SHA-256 from the GitHub release assets, 2026-10-22; Windows and Linux also match the local installers."
+  },
+  {
     "tag": "v3.1.1(Windows)",
     "prerelease": false,
     "url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/tag/v3.1.1(Windows)",

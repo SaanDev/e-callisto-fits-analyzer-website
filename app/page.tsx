@@ -42,7 +42,7 @@ export default function Home() {
       <HeroSpectrum />
       <div className="wrap">
         <Link className="release-pill" href="/download/#whats-new">
-          <span className="dot" aria-hidden="true" />Version 3.1.1 is here
+          <span className="dot" aria-hidden="true" />Version 3.1.2 is here
           <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
         </Link>
         <h1><span className="eyebrow">e-CALLISTO FITS Analyzer · Solar radio &amp; CME analysis</span> A clearer view of <em>our dynamic Sun.</em></h1>

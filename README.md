@@ -73,7 +73,7 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | What | Where |
 |---|---|
 | Release downloads, sizes and SHA-256 checksums | `releases-verified.json` |
-| v3.1.0 highlights, v3.1.1 fixes and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
+| v3.1.0 highlights, v3.1.1 and v3.1.2 fixes, and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
 | Site constants (version, current release per platform, links, PDF name) | `lib/site.ts` |
 | Tutorials | `lib/tutorials.ts` |
 | ecallistolib library overview, installation and Python examples | `app/ecallistolib/page.tsx` (based on the library’s v1.5.0 README and package metadata) |
@@ -91,7 +91,7 @@ The showcase movies use VP9 WebM and play inline, muted and looping, without nat
 ffmpeg -i example.mp4 -an -c:v libvpx-vp9 -crf 32 -b:v 0 -deadline good -cpu-used 2 -pix_fmt yuv420p public/showcase/example.webm
 ```
 
-The download links point to the GitHub release tags in `currentReleases` (`lib/site.ts`): `v3.1.1(Windows)`, `v3.1.1(Linux)` and `v3.1.0(MacOS)`. v3.1.1 fixed the Windows and Linux packages only, so macOS stays on v3.1.0. The user guide is still the v3.1.0 edition (`guidePdf.version`).
+The download links point to the GitHub release tags in `currentReleases` (`lib/site.ts`): `v3.1.2(WIndows)`, `v3.1.2(Linux)` and `v3.1.2(MacOS)`. Release URLs are case-sensitive, so each tag must be spelled exactly as on GitHub (the v3.1.2 Windows tag has a capital I). From v3.1.2 the macOS app requires macOS 15 or later; the download page points macOS 13 and 14 users to v3.1.0. The user guide is still the v3.1.0 edition (`guidePdf.version`).
 
 ### Updating the user guide
 

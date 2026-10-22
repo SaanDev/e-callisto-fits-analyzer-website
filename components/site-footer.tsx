@@ -4,7 +4,7 @@ import { CookieSettingsButton } from '@/components/analytics-consent';
 import { asset, links, version } from '@/lib/site';
 
 const columns: [string, [string, string][]][] = [
-  ['Software', [['Download', '/download/'], ['What’s new in v3.1.1', '/download/#whats-new'], ['ecallistolib · Python library', '/ecallistolib/'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
+  ['Software', [['Download', '/download/'], ['What’s new in v3.1.2', '/download/#whats-new'], ['ecallistolib · Python library', '/ecallistolib/'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
   ['Learn', [['User guide', '/guide/'], ['PDF edition', '/guide/pdf/'], ['Tutorials', '/tutorials/'], ['Scientific background', '/science/']]],
   ['Community', [['Discussions', '/community/'], ['Report a bug', links.newIssue], ['Documentation hub', '/docs/'], ['Cite the software', '/citation/']]],
   ['Project', [['Source code', links.repo], ['All releases', links.releases], ['Software paper', links.paper], ['Sponsor the project', '/sponsor/'], ['MIT License', '/LICENSE.txt']]],
