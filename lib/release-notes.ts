@@ -74,3 +74,35 @@ export const notes = [
   'PFSS models use synoptic magnetograms assembled over a full solar rotation, so they describe the global field around an observation rather than the instantaneous field.',
   'ARTEMIS-IV publishes no absolute flux calibration, so its dB values are relative to the per-channel background, not solar flux units.',
 ];
+
+// v3.2.0 preview, checked against the analyzer source (October 2026).
+// The existing `highlights` above describe the published v3.1 series.
+export const upcomingHighlights: Highlight[] = [
+  { id: 'lite', title: 'Introducing Analyzer Lite', items: [
+    ['A lighter CALLISTO workspace', 'A native Rust edition designed for quick startup and responsive spectrum processing, with a familiar interface.'],
+    ['Keep your radio analysis', 'Background subtraction, RFI cleaning, ridge tracking, Type II analysis, multi-station comparison and batch processing.'],
+    ['Work alongside the full app', 'Separate installation and settings, with .efaproj project exchange between editions.'],
+  ] },
+  { id: 'context', title: 'Event context on the spectrum', items: [
+    ['Catalog markers', 'Place solar-event catalog markers on the spectrum’s time axis and choose which sources to show.'],
+    ['Context that travels', 'Save fetched events in your project, reopen them offline and include markers in exported figures and reports.'],
+  ] },
+  { id: 'composer', title: 'Event Figure Composer', items: [
+    ['One figure for the whole event', 'Combine radio spectra, SWAVES, GOES, event catalogs, geomagnetic panels and solar-image thumbnails.'],
+    ['Control the layout', 'Reorder panels, adjust their heights and choose a journal column width, with a live preview.'],
+    ['Save the setup', 'Keep the figure composition with your project for later refinement.'],
+  ] },
+  { id: 'geomagnetic', title: 'Geomagnetic response', items: [
+    ['Follow the response at Earth', 'View Dst, SYM-H, Kp, IMF, plasma and auroral indices on a shared UTC axis.'],
+    ['Solar-wind context', 'Use OMNI data with clearly labelled L1 fallback measurements where recent OMNI data are unavailable.'],
+    ['Traceable exports', 'Export figures and CSV measurements with archive or spacecraft provenance.'],
+  ] },
+  { id: 'archives', title: 'More solar archive options', tone: 'solar', items: [
+    ['Direct archive access', 'Search and download Helioviewer JPEG2000 quicklooks and JSOC AIA synoptic FITS through Solar Image Analysis.'],
+    ['Download progress', 'Track downloaded bytes and reuse cached data across the imaging workflow.'],
+  ] },
+  { id: 'projects', title: 'A more complete event project', items: [
+    ['Save the wider observation', 'Keep radio, solar imaging, GCS, geomagnetic response, event context and figure composition in one project.'],
+    ['Choose your scope', 'Use Lite for CALLISTO work, and the full analyzer for solar imaging, CME reconstruction and space-weather context.'],
+  ] },
+];

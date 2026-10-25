@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { Radio, Orbit, Box, ArrowUpRight, Check } from 'lucide-react';
-import { asset } from '@/lib/site';
+import { asset, version } from '@/lib/site';
 
 const views = [
   { id: 'radio', name: 'Radio spectra', image: 'radio.webp', caption: 'Process and analyze dynamic spectra', link: '/guide/processing-tools/', icon: Radio },
@@ -38,7 +38,7 @@ export default function WorkspacePreview() {
         <div className="window-bar" aria-hidden="true">
           <div className="window-dots"><i /><i /><i /></div>
           <span className="window-title">e-CALLISTO FITS Analyzer</span>
-          <span className="window-label">V3.1.2</span>
+          <span className="window-label">V{version}</span>
         </div>
         <div className="workspace-tabs" role="tablist" aria-label="Explore analysis workspaces" onKeyDown={onKeyDown}>
           {views.map((v, i) => <button

@@ -30,6 +30,17 @@ export const googleAnalyticsId = 'G-V06VJQ9X56';
 export const version = '3.1.2';
 export const releaseDate = 'October 2026';
 
+// Announced source version; stable installer metadata stays separate until publication.
+export const upcomingVersion = '3.2.0';
+export const liteVersion = `${upcomingVersion}-lite`;
+
+// Set each tag after its Lite installer is published and verified in releases-verified.json.
+export const currentLiteReleases: Record<keyof typeof currentReleases, string | null> = {
+  Windows: null,
+  Linux: null,
+  macOS: null,
+};
+
 // GitHub release tag of the current installer on each platform. Release URLs
 // are case-sensitive, so these must match the tags exactly (v3.1.2's Windows
 // tag is spelled "WIndows").
