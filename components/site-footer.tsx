@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { GitHubIcon } from '@/components/icons';
 import { CookieSettingsButton } from '@/components/analytics-consent';
-import { asset, links, version, upcomingVersion } from '@/lib/site';
+import { asset, links, version } from '@/lib/site';
 
 const columns: [string, [string, string][]][] = [
-  ['Software', [['Download', '/download/'], [`Preview v${upcomingVersion} & Lite`, '/download/#whats-new'], ['ecallistolib · Python library', '/ecallistolib/'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
+  ['Software', [['Download', '/download/'], [`What’s new in v${version}`, '/download/#whats-new'], ['ecallistolib · Python library', '/ecallistolib/'], ['Solar Image Analyzer', '/tools/solar-imaging/'], ['GCS CME fitting', '/tools/gcs-fitting/']]],
   ['Learn', [['User guide', '/guide/'], ['PDF edition', '/guide/pdf/'], ['Tutorials', '/tutorials/'], ['Scientific background', '/science/']]],
   ['Community', [['Discussions', '/community/'], ['Report a bug', links.newIssue], ['Documentation hub', '/docs/'], ['Cite the software', '/citation/']]],
   ['Project', [['Source code', links.repo], ['All releases', links.releases], ['Software paper', links.paper], ['Sponsor the project', '/sponsor/'], ['MIT License', '/LICENSE.txt']]],

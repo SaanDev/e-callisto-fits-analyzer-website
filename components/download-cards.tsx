@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from 'react';
 import { Monitor, Terminal, Laptop, Download, ChevronRight, FileText } from 'lucide-react';
 import CopyButton from '@/components/copy-button';
-import { links, liteVersion } from '@/lib/site';
+import { links, liteVersion, version } from '@/lib/site';
 import { getDownload, type Edition, type OS } from '@/lib/downloads';
 
 const platforms = [
@@ -34,8 +34,8 @@ export default function DownloadCards({ edition = 'full' }: { edition?: Edition 
       const download = getDownload(p.os, edition);
       if (!download) return <article key={p.os} className="download-card" data-reveal>
         <div className="platform-head"><span className="card-icon"><p.Icon size={24} /></span><div><h3>{p.os}</h3><p>{p.arch}</p></div></div>
-        <span className="tag pending-release">{edition === 'lite' ? `v${liteVersion}` : 'Installer'} · Coming soon</span>
-        <p className="install">{edition === 'lite' ? 'The Lite installer for this platform has not been published yet.' : 'A verified installer for this platform is not available yet.'} Download links, sizes and checksums will appear here after publication.</p>
+        <span className="tag pending-release">{edition === 'lite' ? `v${liteVersion}` : `v${version}`} · Unavailable</span>
+        <p className="install">No verified installer is listed for this platform. Check GitHub releases for available packages.</p>
         <a className="release-link" href={links.releases} target="_blank" rel="noreferrer"><FileText size={15} />Check GitHub releases</a>
       </article>;
       const { release, file } = download;
@@ -47,9 +47,9 @@ export default function DownloadCards({ edition = 'full' }: { edition?: Edition 
           <span className="card-icon"><p.Icon size={24} /></span>
           <div><h3>{p.os}</h3><p>{p.arch}</p></div>
         </div>
-        <a className={'button ' + (recommended || !os ? 'primary' : '')} href={file.browser_download_url}><Download size={17} />Download {p.ext}</a>
+        <a className={'button ' + (recommended || !os ? 'primary' : '')} href={file.browser_download_url} aria-label={`Download ${edition === 'lite' ? 'Analyzer Lite' : 'full analyzer'} for ${p.os}`}><Download size={17} />Download {edition === 'lite' ? 'Lite ' : ''}{p.ext}</a>
         <div className="download-meta"><span>{release.tag.split('(')[0]}{edition === 'lite' ? ' Lite' : ''} · {(file.size / 1e6).toFixed(0)} MB</span><span>Hosted on GitHub</span></div>
-        <p className="install">{edition === 'lite' ? ({ Windows: 'Run the Lite setup wizard. It installs alongside the full analyzer.', Linux: 'Install the Lite .deb with apt, then launch e-callisto-fits-analyzer-lite.', macOS: 'Open the disk image and drag Analyzer Lite into Applications.' }[p.os]) : p.install}</p>
+        <p className="install">{edition === 'lite' ? ({ Windows: 'Run the Lite setup wizard. It installs alongside the full analyzer.', Linux: <>Install with <code>sudo apt install ./{file.name}</code>, then launch <code>e-callisto-fits-analyzer-lite</code>.</>, macOS: 'Open the disk image and drag Analyzer Lite into Applications. Allow it once under Privacy & Security, as described below.' }[p.os]) : p.install}</p>
         <details className="checksum">
           <summary><ChevronRight size={14} />SHA-256 checksum</summary>
           <pre>{digest}</pre>

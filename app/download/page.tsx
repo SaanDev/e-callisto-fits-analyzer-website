@@ -4,18 +4,18 @@ import PageIntro from '@/components/page-intro';
 import DownloadCards from '@/components/download-cards';
 import EditionComparison from '@/components/edition-comparison';
 import releases from '@/releases-verified.json';
-import { highlights, upcomingHighlights, fixes, notes, patchReleases } from '@/lib/release-notes';
-import { currentReleases, currentLiteReleases, asset, links, version, upcomingVersion, liteVersion } from '@/lib/site';
+import { highlights, releaseHighlights, fixes, notes, patchReleases } from '@/lib/release-notes';
+import { currentReleases, currentLiteReleases, asset, links, version, liteVersion } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Download · Full analyzer & Lite',
-  description: `Download free, open-source e-CALLISTO FITS Analyzer v${version} for Windows, Linux and macOS. Compare the full edition with the lightweight Analyzer Lite v${liteVersion} preview, with installers and checksums.`,
+  description: `Download free, open-source e-CALLISTO FITS Analyzer v${version} for Windows, Linux and macOS. Compare the full edition with the lightweight Analyzer Lite v${liteVersion}, with installers and checksums.`,
   path: '/download/',
 });
 
-const icons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
+const icons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, reports: BookOpen, imaging: ImageIcon, reset: Sparkles, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
 const current: string[] = [...Object.values(currentReleases), ...Object.values(currentLiteReleases).filter((tag): tag is string => tag !== null)];
 const platformNames: Record<string, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux', appimage: 'AppImage' };
@@ -39,13 +39,17 @@ export default function Downloads() {
       <nav className="actions edition-nav" aria-label="Download page sections">
         <Link className="button primary" href="#installers">Download full analyzer</Link>
         <Link className="button" href="#lite">Analyzer Lite</Link>
-        <Link className="button" href="#whats-new">v{upcomingVersion} features</Link>
+        <Link className="button" href="#whats-new">v{version} features</Link>
       </nav>
       <div className="section-heading" data-reveal>
         <div><span className="eyebrow">Full analyzer + Lite</span><h2>The tools your research needs.</h2></div>
-        <p>Introducing v{upcomingVersion} and a new lightweight Lite edition. The full analyzer’s current stable installers are v{version}; v{upcomingVersion} installers will be listed after publication.</p>
+        <p>Version {version} is available for Windows, Linux and macOS in both the full analyzer and Analyzer Lite. All six installers share one GitHub release tag; choose your edition and operating system below.</p>
       </div>
       <EditionComparison detailed />
+      <div className="notice" data-reveal>
+        <strong>Opening projects from older versions?</strong>
+        <p>v3.1 radio projects open in v{version}, but projects saved by v{version} cannot be opened in v3.1. Keep a copy before saving older work in the new version.</p>
+      </div>
     </section>
 
     <section className="section band" id="installers">
@@ -57,15 +61,15 @@ export default function Downloads() {
         <DownloadCards />
 
         <div className="notice" data-reveal style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-        <Info size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 3 }} />
-        <div><strong>Verify your download.</strong><p>Compare the SHA-256 checksum on each card with your file, for example with <code>certutil -hashfile file SHA256</code> on Windows or <code>shasum -a 256 file</code> on macOS and Linux.</p></div>
-      </div>
+          <Info size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 3 }} />
+          <div><strong>Verify your download.</strong><p>Compare the SHA-256 checksum on each card with your file, for example with <code>certutil -hashfile file SHA256</code> on Windows or <code>shasum -a 256 file</code> on macOS and Linux.</p></div>
+        </div>
       </div>
     </section>
 
     <section className="section wrap" id="lite">
       <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">v{liteVersion} · Preview</span><h2>Less overhead.<br />More CALLISTO.</h2></div>
+        <div><span className="eyebrow">v{liteVersion} · Available now</span><h2>Less overhead.<br />More CALLISTO.</h2></div>
         <p>Built in Rust for a lightweight, responsive radio workspace, with GPU rendering and software fallbacks. Keep background subtraction, RFI cleaning, ridge tracking, Type II analysis, projects and exports in a familiar interface.</p>
       </div>
       <DownloadCards edition="lite" />
@@ -100,7 +104,7 @@ export default function Downloads() {
             <ol>
               <li>Open the disk image and drag <strong>e-Callisto FITS Analyzer</strong> into <strong>Applications</strong>.</li>
               <li>Open the app once, then choose <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
-              <li><strong>macOS 13 and 14:</strong> v3.1.2 needs macOS 15 or later. Install <a className="text-link" href="#previous">v3.1.0</a> instead, then Control-click the app, choose <strong>Open</strong> and confirm.</li>
+              <li><strong>macOS 13 and 14:</strong> v{version} needs macOS 15 or later. Install <a className="text-link" href="#previous">v3.1.0</a> instead, then Control-click the app, choose <strong>Open</strong> and confirm.</li>
             </ol>
           </article>
         </div>
@@ -110,11 +114,11 @@ export default function Downloads() {
 
     <section className="section wrap" id="whats-new">
       <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">v{upcomingVersion} preview</span><h2>From a radio burst<br />to the whole event.</h2></div>
-        <p>New features from the v{upcomingVersion} source, alongside the first Analyzer Lite edition. Public installers are coming soon.</p>
+        <div><span className="eyebrow">What’s new in v{version}</span><h2>From a radio burst<br />to the whole event.</h2></div>
+        <p>One project for the whole event, expanded geomagnetic analysis, event figures, richer reports and new solar imaging tools, alongside the first Analyzer Lite release.</p>
       </div>
       <div className="highlight-grid">
-        {upcomingHighlights.map((h, i) => {
+        {releaseHighlights.map((h, i) => {
           const Icon = icons[h.id as keyof typeof icons] ?? Sparkles;
           return <article key={h.id} className={'highlight spotlight' + (h.tone ? ' ' + h.tone : '')} data-reveal style={{ '--delay': `${(i % 3) * 80}ms` } as React.CSSProperties}>
             <span className="card-icon"><Icon size={20} /></span><h3>{h.title}</h3>
@@ -123,9 +127,9 @@ export default function Downloads() {
         })}
       </div>
       <div className="actions" style={{ marginTop: 28 }} data-reveal>
-        <a className="button" href={asset('/docs/release-notes/RELEASE_NOTES_v3.2.0.md')} download><BookOpen size={17} />Download v{upcomingVersion} preview notes</a>
+        <a className="button" href={asset('/docs/release-notes/RELEASE_NOTES_v3.2.0.md')} download><BookOpen size={17} />Download v{version} release notes</a>
       </div>
-      <p className="small edition-note">Event context, Event Figure Composer, geomagnetic response and solar archive options belong to the full edition. The illustrated user guide remains the v3.1.0 edition; use these release highlights for the v{upcomingVersion} additions.</p>
+      <p className="small edition-note">Event context, Event Figure Composer, geomagnetic response and solar archive options belong to the full edition. The illustrated user guide remains the v3.1.0 edition; use these release highlights for the v{version} additions.</p>
     </section>
 
     <section className="section wrap" id="stable-notes">
@@ -136,9 +140,9 @@ export default function Downloads() {
       <div className="notice" data-reveal style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginTop: 0 }}>
         <Wrench size={20} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 3 }} />
         <div>
-          <strong>v{version} is a bug-fix release of v3.1.0.</strong>
+          <strong>Earlier fixes in v3.1.2 and v3.1.1.</strong>
           {patchReleases.map(r => <p key={r.version}><strong>v{r.version} · {r.platforms}.</strong> {r.fixes.join(' ')}</p>)}
-          <p>The macOS app now requires macOS 15 Sequoia or later. On macOS 13 or 14, use <a className="text-link" href="#previous">v3.1.0</a>. Everything below arrived in v3.1.0.</p>
+          <p>The macOS app requires macOS 15 Sequoia or later. On macOS 13 or 14, use <a className="text-link" href="#previous">v3.1.0</a>. Everything below arrived in v3.1.0.</p>
         </div>
       </div>
       <div className="highlight-grid">

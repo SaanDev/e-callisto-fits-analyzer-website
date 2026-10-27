@@ -73,8 +73,8 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | What | Where |
 |---|---|
 | Release downloads, sizes and SHA-256 checksums | `releases-verified.json` |
-| v3.2.0 preview, v3.1.0 highlights, v3.1.2 and v3.1.1 fixes and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
-| Site constants (stable version, preview version, full/Lite tags, links, PDF name) | `lib/site.ts` |
+| v3.2.0 highlights, v3.1.0 highlights, v3.1.2 and v3.1.1 fixes and notes | `lib/release-notes.ts`, full notes in `public/docs/release-notes/` |
+| Site constants (version, full/Lite tags, links, PDF name) | `lib/site.ts` |
 | Tutorials | `lib/tutorials.ts` |
 | ecallistolib library overview, installation and Python examples | `app/ecallistolib/page.tsx` (based on the library’s v1.5.0 README and package metadata) |
 | Citation and BibTeX | `lib/citation.ts` |
@@ -91,21 +91,15 @@ The showcase movies use VP9 WebM and play inline, muted and looping, without nat
 ffmpeg -i example.mp4 -an -c:v libvpx-vp9 -crf 32 -b:v 0 -deadline good -cpu-used 2 -pix_fmt yuv420p public/showcase/example.webm
 ```
 
-The download links point to the GitHub release tags in `currentReleases` (`lib/site.ts`): `v3.1.2(WIndows)`, `v3.1.2(Linux)` and `v3.1.2(MacOS)`. Release URLs are case-sensitive, so each tag must be spelled exactly as on GitHub (the v3.1.2 Windows tag has a capital I). From v3.1.2 the macOS app requires macOS 15 or later; the download page points macOS 13 and 14 users to v3.1.0. The user guide is still the v3.1.0 edition (`guidePdf.version`).
+The download links for both editions point to the shared GitHub release tag `v3.2.0`. `currentReleases` and `currentLiteReleases` in `lib/site.ts` identify that tag for Windows, Linux and macOS. `releases-verified.json` contains all six installers in one record, with their exact names, download URLs, byte sizes and SHA-256 digests from the GitHub release assets API (checked 2026-10-27). The macOS installers require macOS 15 or later on Apple silicon; macOS 13 and 14 users can find the older full v3.1.0 installer in Previous releases. The illustrated user guide remains the v3.1.0 edition (`guidePdf.version`).
 
 ### v3.2.0 and Analyzer Lite
 
-The home and download pages introduce the v3.2.0 source features and the Rust-based Analyzer Lite edition. `components/edition-comparison.tsx` presents the CALLISTO workflow and the full edition's solar-imaging, CME and space-weather tools. `upcomingHighlights` in `lib/release-notes.ts` supplies the new highlights; `public/docs/release-notes/RELEASE_NOTES_v3.2.0.md` is the downloadable preview summary.
+The home and download pages present the published v3.2.0 release and the Rust-based Analyzer Lite edition. `components/edition-comparison.tsx` compares the CALLISTO workflow with the full edition's solar imaging, CME and space-weather tools. `releaseHighlights` in `lib/release-notes.ts` supplies the highlights; `public/docs/release-notes/RELEASE_NOTES_v3.2.0.md` contains the published release notes.
 
-The public GitHub API was checked on 2026-10-25: v3.1.2 is still the latest published installer for all three platforms, and v3.2.0/Lite installers are not published. Keep `version` and `currentReleases` on the verified stable release until that changes. `upcomingVersion` / `liteVersion` identify the preview, and `currentLiteReleases` stays `null` per platform until verified installers exist. The Lite cards show “Coming soon” without invented links, sizes or checksums.
+`lib/downloads.ts` selects installers by operating system, architecture and edition, regardless of asset order. It supports legacy per-platform tags and shared tags, excludes prereleases, and shows an unavailable state if a matching installer is missing. Lite's installer names contain `-lite`; the full installers do not.
 
-After the shared `v3.2.0` release is published:
-
-1. Record its assets in `releases-verified.json` using their exact names, URLs, byte sizes and SHA-256 values from the GitHub assets API. A single record can contain all six installers.
-2. Set `version` to `3.2.0` and point `currentReleases` and `currentLiteReleases` to the verified tag for each available platform. Leave unavailable platforms on their prior tag or `null`.
-3. Update the preview/availability wording on the home, download and comparison components, and move the prior stable fixes into the earlier-release section. The user guide version remains independent.
-
-`lib/downloads.ts` selects an asset by operating system, architecture and edition, rather than taking the first asset. It handles both the old per-platform tags and shared tags, excludes prereleases, and returns no download when that edition's installer is missing. Do not run the legacy `prepare-release.py` unchanged for a shared six-installer release; it generates the old per-platform records.
+The download page explains the project compatibility change: v3.1 radio projects open in v3.2.0, but projects saved in v3.2.0 cannot open in v3.1. The two v3.2.0 editions exchange projects and install side by side.
 
 ### Updating the user guide
 
@@ -125,11 +119,11 @@ The web edition is generated from the LaTeX source with [Pandoc](https://pandoc.
 
 ### Publishing a new release
 
-```sh
-python scripts/prepare-release.py "<folder with the installers and PDF>" <new version> <previous version>
-```
+For shared tags such as `v3.2.0`, retrieve the published release from `https://api.github.com/repos/SaanDev/e-Callisto_FITS_Analyzer/releases/tags/<tag>`. Confirm it is neither a draft nor a prerelease, then record the six published installers in one `releases-verified.json` entry using their exact asset metadata. Keep earlier records for the release history.
 
-This records the installer sizes and checksums in `releases-verified.json` and copies the guide PDF. Then update `version` and `currentReleases` in `lib/site.ts`, and the highlights in `lib/release-notes.ts`. For a release that skips a platform, add its records to `releases-verified.json` by hand and leave that platform's tag in `currentReleases` unchanged.
+Update `version`, `liteVersion` and both platform tag maps in `lib/site.ts`, the package version, the highlights and the downloadable release notes. Keep the user guide version independent until a new guide is published. Run `npm run typecheck`, `npm run lint`, `python3 scripts/verify-handbook.py` and `npm run build`.
+
+`scripts/prepare-release.py` is the legacy local-installer helper for per-platform tags. Do not use it unchanged for a shared six-installer release.
 
 ## License
 

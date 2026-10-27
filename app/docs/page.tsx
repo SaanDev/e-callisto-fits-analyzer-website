@@ -3,13 +3,13 @@ import { BookOpen, GraduationCap, Orbit, Box, Atom, Download, Quote, MessagesSqu
 import PageIntro from '@/components/page-intro';
 import GuidePdf from '@/components/guide-pdf';
 import HandbookCover from '@/components/handbook-cover';
-import { asset, links, version, upcomingVersion } from '@/lib/site';
+import { asset, links, version } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: 'Documentation', description: 'Everything you need to learn e-CALLISTO FITS Analyzer: the user guide, tutorials, tool guides, scientific background, installation and citation.', path: '/docs/' });
 
 const resources = [
-  { icon: Download, title: `v${upcomingVersion} & Analyzer Lite`, body: 'Preview the new features and compare the lightweight CALLISTO edition with the full solar analysis toolkit. The illustrated guide remains the v3.1.0 edition.', href: '/download/#whats-new' },
+  { icon: Download, title: `v${version} & Analyzer Lite`, body: 'Explore the new features and compare the lightweight CALLISTO edition with the full solar analysis toolkit. The illustrated guide remains the v3.1.0 edition.', href: '/download/#whats-new' },
   { icon: BookOpen, title: 'e-CALLISTO FITS Analyzer user guide', body: 'The complete v3.1.0 reference for opening FITS files, processing solar radio spectra, solar imaging, GCS fitting and exports.', href: '/guide/' },
   { icon: GraduationCap, title: 'Solar radio analysis tutorials', body: 'Step-by-step e-CALLISTO FITS Analyzer workflows for your first dynamic spectrum, radio burst drift measurement and reproducible exports.', href: '/tutorials/' },
   { icon: Orbit, title: 'Solar Image Analyzer', body: 'SDO, SOHO and STEREO imaging, CME tracking, height–time measurements and PFSS.', href: '/tools/solar-imaging/' },

@@ -27,27 +27,22 @@ export const cloudflareAnalyticsToken = '0afd7ee014204a8bbd865e9157b13881';
 // after a visitor accepts the cookie banner; leave empty to remove both.
 export const googleAnalyticsId = 'G-V06VJQ9X56';
 
-export const version = '3.1.2';
-export const releaseDate = 'October 2026';
+export const version = '3.2.0';
+export const releaseDate = '27 October 2026';
+export const liteVersion = `${version}-lite`;
 
-// Announced source version; stable installer metadata stays separate until publication.
-export const upcomingVersion = '3.2.0';
-export const liteVersion = `${upcomingVersion}-lite`;
-
-// Set each tag after its Lite installer is published and verified in releases-verified.json.
-export const currentLiteReleases: Record<keyof typeof currentReleases, string | null> = {
-  Windows: null,
-  Linux: null,
-  macOS: null,
+// One published tag contains the full and Lite installers for every platform.
+// Asset selection in lib/downloads.ts distinguishes the editions and platforms.
+export const currentReleases = {
+  Windows: 'v3.2.0',
+  Linux: 'v3.2.0',
+  macOS: 'v3.2.0',
 };
 
-// GitHub release tag of the current installer on each platform. Release URLs
-// are case-sensitive, so these must match the tags exactly (v3.1.2's Windows
-// tag is spelled "WIndows").
-export const currentReleases = {
-  Windows: 'v3.1.2(WIndows)',
-  Linux: 'v3.1.2(Linux)',
-  macOS: 'v3.1.2(MacOS)',
+export const currentLiteReleases: Record<keyof typeof currentReleases, string | null> = {
+  Windows: 'v3.2.0',
+  Linux: 'v3.2.0',
+  macOS: 'v3.2.0',
 };
 
 export const repo = 'https://github.com/SaanDev/e-Callisto_FITS_Analyzer';

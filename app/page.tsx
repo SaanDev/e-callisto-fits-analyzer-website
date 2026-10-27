@@ -8,14 +8,14 @@ import SolarShowcase from '@/components/solar-showcase';
 import HandbookCover from '@/components/handbook-cover';
 import { GitHubIcon } from '@/components/icons';
 import EditionComparison from '@/components/edition-comparison';
-import { upcomingHighlights } from '@/lib/release-notes';
+import { releaseHighlights } from '@/lib/release-notes';
 import JsonLd from '@/components/json-ld';
-import { links, upcomingVersion } from '@/lib/site';
+import { links, version } from '@/lib/site';
 import { pageMetadata, siteName, defaultDescription, websiteData, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: `${siteName} · Solar radio burst analysis software`, absoluteTitle: true, description: defaultDescription, path: '/' });
 
-const highlightIcons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
+const highlightIcons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, reports: BookOpen, imaging: ImageIcon, reset: Sparkles, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
 
 const radioFeatures = [
   { icon: Activity, title: 'Clean solar radio spectra', body: 'Subtract the background, tune display thresholds and clean radio-frequency interference from raw spectra.', items: ['Mean, median or median (dB) background', 'RFI cleaning and noise clipping', 'Combine files across time and frequency'] },
@@ -25,7 +25,7 @@ const radioFeatures = [
 
 // Answers to what people search for before they find the analyzer. Each links to the guide chapter that covers it.
 const faqs = [
-  { q: 'Which edition should I choose?', a: 'Choose Analyzer Lite for a lightweight CALLISTO radio workflow, including spectrum processing, burst measurements and exports. Choose the full analyzer for solar imaging, PFSS, GCS CME fitting, SWAVES and space-weather context. Lite is being introduced with v3.2.0; the download page shows current availability.', link: ['Compare editions and downloads', '/download/#editions'] },
+  { q: 'Which edition should I choose?', a: 'Choose Analyzer Lite for a lightweight CALLISTO radio workflow, including spectrum processing, burst measurements and exports. Choose the full analyzer for solar imaging, PFSS, GCS CME fitting, SWAVES and space-weather context. Both editions are available for Windows, Linux and macOS.', link: ['Compare editions and downloads', '/download/#editions'] },
   { q: 'What is e-CALLISTO FITS Analyzer?', a: 'e-CALLISTO FITS Analyzer is a free, open-source desktop application for Windows, macOS and Linux. It visualizes, processes and analyzes the solar radio dynamic spectra recorded by the e-CALLISTO spectrometer network, together with solar images from SDO, SOHO and STEREO.', link: ['Introduction', '/guide/introduction/'] },
   { q: 'How do I open an e-CALLISTO FITS file?', a: 'Use File > Open (Ctrl+O) or drag the files onto the main window. The analyzer reads .fit and .fits files, compressed or not, and merges consecutive files into one continuous dynamic spectrum.', link: ['Opening and combining data', '/guide/opening-data/'] },
   { q: 'Where can I get e-CALLISTO data?', a: 'The built-in downloader retrieves FITS files directly from the e-CALLISTO archive, for one station or for every station that observed an event, and browses the Monstein burst list. Learmonth and STEREO/WAVES data are available too.', link: ['The e-CALLISTO FITS downloader', '/guide/downloader/'] },
@@ -44,8 +44,8 @@ export default function Home() {
       <HeroSpectrum />
       <div className="wrap">
         <Link className="release-pill" href="/download/#whats-new">
-          <span className="dot" aria-hidden="true" />Introducing v{upcomingVersion} + Lite
-          <span className="pill-cta">Preview what’s new <ArrowRight size={13} /></span>
+          <span className="dot" aria-hidden="true" />Introducing v{version} + Lite
+          <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
         </Link>
         <h1><span className="eyebrow">e-CALLISTO FITS Analyzer · Solar radio &amp; CME analysis</span> A clearer view of <em>our dynamic Sun.</em></h1>
         <p className="hero-copy">e-CALLISTO FITS Analyzer is free, open-source software for visualizing and analyzing solar radio FITS data on Windows, macOS and Linux. Process dynamic spectra, measure Type II radio bursts and connect observations with solar imaging and CME reconstruction.</p>
@@ -95,11 +95,11 @@ export default function Home() {
 
     <section className="section wrap" id="whats-new">
       <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">Coming in v{upcomingVersion}</span><h2>From a radio burst<br />to the whole event.</h2></div>
+        <div><span className="eyebrow">New in v{version}</span><h2>From a radio burst<br />to the whole event.</h2></div>
         <p>A new Lite edition, event context on your spectrum, multi-panel event figures and expanded geomagnetic analysis. <Link className="text-link" href="/download/#whats-new">Full release notes <ArrowRight size={15} /></Link></p>
       </div>
       <div className="highlight-grid">
-        {upcomingHighlights.map((h, i) => {
+        {releaseHighlights.map((h, i) => {
           const Icon = highlightIcons[h.id as keyof typeof highlightIcons] ?? Sparkles;
           return <article className={'highlight spotlight' + (h.tone ? ' ' + h.tone : '')} key={h.id} data-reveal style={{ '--delay': `${(i % 3) * 80}ms` } as React.CSSProperties}>
             <span className="card-icon"><Icon size={20} /></span>
