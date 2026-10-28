@@ -7,6 +7,6 @@ export default function HandbookCover({ badge = true }: { badge?: boolean }) {
       <img src={asset('/guide/cover.webp')} alt={`Cover of the e-CALLISTO FITS Analyzer User Guide, version ${guidePdf.version}`} width={637} height={900} loading="lazy" />
     </div>
     <div className="book-shadow" aria-hidden="true" />
-    {badge && <div className="book-badge">{guidePdf.pages} pages<small>21 chapters · 65 figures</small></div>}
+    {badge && <div className="book-badge">{guidePdf.pages} pages<small>{guidePdf.chapters} chapters · {guidePdf.figures} figures</small></div>}
   </div>;
 }

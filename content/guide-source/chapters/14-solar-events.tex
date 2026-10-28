@@ -7,7 +7,9 @@ The viewers in the \menu{Solar Events} menu place a radio event in its wider con
 X-ray flare, energetic protons, the geomagnetic response and any associated coronal mass
 ejection. Each viewer is an independent window that fetches its data from the archive
 listed in Appendix~\ref{app:data-sources}. The viewers can also be started from source as
-standalone programs (Section~\ref{sec:from-source}).
+standalone programs (Section~\ref{sec:from-source}). The Geomagnetic Response, which combines
+Dst, Kp, the solar wind and auroral indices around the loaded event, and the catalog-based
+event tools are described in Chapter~\ref{ch:event-context}.
 
 \section{Common controls}
 
@@ -110,7 +112,7 @@ large negative values indicate geomagnetic storms.
   \item[Start, End] date and hour. \gui{Preset}: \gui{Last 24 hours}, \gui{Last 7 days},
     \gui{Current month} or \gui{Previous month}.
   \item[Plot Dst Data] fetches and plots the index with storm-level guides at 0 (quiet),
-    \(-50\), \(-100\) and \(-200\)~nT.
+    \(-50\), \(-100\) and \(-200\)~nT. Hours that Kyoto has not filled in are shown as gaps.
   \item[Dst Summary] the number of samples, the data sources (final, provisional or
     real-time), and the minimum, maximum (each with its time) and mean Dst.
   \item[Save Plot, Save Data, Reset] PNG figure, CSV table, or clear.

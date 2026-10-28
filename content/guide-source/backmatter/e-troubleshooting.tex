@@ -38,6 +38,40 @@ Last Session...}.
 The proposed folder may not be writable (for example inside \file{C:\\Program Files}); choose
 another folder when asked.
 
+\problem{A project cannot be opened in version 3.1.}
+Projects saved by version~3.2 cannot be opened by version~3.1. Open them in version~3.2 or
+later, and keep a copy saved by version~3.1 if you still need it there.
+
+\problem{A linked project downloads its images again.}
+A project saved with \gui{Link data} refers to image files on this computer. If they were moved,
+or the download cache was cleared, the frames are fetched again from the archive. Save with
+\gui{Embed data} to take a project to another computer or to work offline.
+
+\problem{Part of a project did not open.}
+A part that cannot be read is skipped and named in a message; the rest of the project opens.
+Check that the linked images are still available, or reopen an embedded copy.
+
+\section{Event context and geomagnetic response}
+
+\problem{The Geomagnetic Response card asks to press Refresh.}
+\menu{Solar Events > Fetch Event Context Automatically} is off. Press \gui{Refresh}, or turn the
+option on.
+
+\problem{Some geomagnetic panels are empty or say "not yet published".}
+OMNI data appear a few weeks after observation. For recent days the solar wind and IMF come from
+DSCOVR or SWPC real-time L1 data, labelled \emph{L1, not time-shifted to the bow shock}; SYM-H
+and AE have no stand-in and appear once OMNI publishes them. GOES proton data may also be
+missing for the last few weeks.
+
+\problem{An event-strip lane is marked (!).}
+The catalog could not answer for part of the range yet, for example a CDAW month that has not
+been published or a DONKI request that failed. The reason is shown in the status bar, and the
+day is asked for again next time.
+
+\problem{The Event Figure shows GOES data of another event.}
+Fetched GOES and proton series belong to the event and range they were fetched for. After loading
+another file, press \gui{Fetch missing data} again.
+
 \section{Downloads and archives}
 
 \problem{The station list is empty or a station is missing.}
@@ -62,6 +96,14 @@ Empty the caches with the \gui{Clear Cache} buttons of the e-CALLISTO Downloader
 Explorer, or with \menu{Data > Reset All (clear cache \& defaults)} in Solar Image Analysis.
 
 \section{Solar Image Analysis and GCS fitting}
+
+\problem{Light Curve, Region Stats or processing levels are disabled.}
+JP2 quicklook frames are display images, not calibrated data, so the photometric tools are
+disabled for them. Load the same frames as a FITS product.
+
+\problem{A JSOC binned or cutout download seems stuck.}
+JSOC builds binned and cutout frames on request, which can take minutes; the progress bar shows a
+busy indicator with the reason meanwhile. \gui{Stop} cancels the wait.
 
 \problem{The PFSS card is disabled.}
 When running from source, install the \texttt{sunkit-magex} package; the card shows the command.

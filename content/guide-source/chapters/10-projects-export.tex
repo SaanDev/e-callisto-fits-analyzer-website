@@ -9,35 +9,79 @@ figures, processed data, reports and batches of files are exported.
 \label{sec:projects}
 \index{project}\index{efaproj@.efaproj file}
 
-A project file (\file{.efaproj}\index{efaproj@.efaproj file}) stores the complete state of the analyzer so that work can
-be resumed exactly where it was left. A project contains:
-\begin{itemize}
-  \item the loaded or combined data, with the list of source files and the combination
-    method;
-  \item the processing state: background subtraction, RFI cleaning, isolated burst;
-  \item the view: display range, thresholds, units, axis scale, color map and graph
-    properties;
-  \item annotations, light curves and their settings, and a loaded STEREO/SWAVES panel
-    (restored without downloading it again);
-  \item the active processing preset, the operation log and the last time-window
-    synchronization;
-  \item the analysis session: maximum-intensity points, the fundamental/harmonic choice,
-    the Analyzer's fit, density model, fold and \(t_0\), and band-splitting points and fits.
-\end{itemize}
+A project file (\file{.efaproj}) keeps everything about one event in one file, so that work
+can be resumed exactly where it was left. Since version~3.2.0 it holds the work of every
+window; a project may hold any of these parts on its own, without a radio spectrum:
+\begin{description}
+  \item[Radio analysis] the loaded or combined data with the list of source files and the
+    combination method; the processing state (background subtraction, RFI cleaning, isolated
+    burst); the view (display range, thresholds, units, axis scale, color map and graph
+    properties); annotations, light curves and a loaded STEREO/SWAVES panel; the active
+    processing preset, the operation log and the last time-window synchronization; and the
+    analysis session (maximum-intensity points, the fundamental/harmonic choice, the
+    Analyzer's fit, density model, fold and \(t_0\), and band-splitting points and fits).
+  \item[Solar Image Analysis] the frames, the data source, display, crop and playback
+    settings, the CME measurements and the PFSS settings (Chapter~\ref{ch:solar-window}).
+  \item[GCS CME Fitting] the channels, display settings, front points and recorded fits of
+    both models (Chapter~\ref{ch:gcs-window}).
+  \item[Event context] the geomagnetic response, the Event Context Strip with its source
+    choices, and the Event Figure settings (Chapter~\ref{ch:event-context}).
+\end{description}
 
-Projects are managed from the \menu{File} menu:
+Projects are managed from the \menu{File} menu of the main window:
 \begin{description}
   \item[Save Project] (\kbd{Ctrl+S}, or the toolbar tool) saves to the current project
-    file, asking for a name the first time.
-  \item[Save Project As...] (\kbd{Ctrl+Shift+S}) saves to a new file.
-  \item[Open Project...] (\kbd{Ctrl+Shift+O}) opens a project. A project file can also be
+    file, asking for a name the first time. \kbd{Ctrl+S} in the Solar Image Analysis or GCS
+    window saves the same project.
+  \item[Save Project As...] (\kbd{Ctrl+Shift+S}) saves to a new file. When the project holds
+    solar or GCS images, you choose how to keep them (Section~\ref{sec:link-embed}).
+  \item[Open Project...] (\kbd{Ctrl+Shift+O}) opens a project and every window it needs:
+    Solar Image Analysis and the GCS window open and are restored. A project file can also be
     dropped onto the main window.
   \item[Recent Projects]\index{recent projects} lists the last ten projects opened or saved;
     \gui{Clear Recent Projects} empties the list, and an entry whose file is missing is
     removed with a message.
 \end{description}
-Before a project is opened, or new data are loaded, you are asked whether to save unsaved
-changes.
+Before a project is opened, new data are loaded, or the application is reset or closed, you
+are asked whether to save unsaved changes. Changes in any of the three windows count.
+
+\subsection{Linking or embedding images}
+\label{sec:link-embed}
+\index{project!link or embed}
+
+When a project holds solar or GCS images, \menu{Save Project As...} asks how the project
+should keep them (Figure~\ref{fig:link-embed}):
+\begin{description}
+  \item[Link data (small)] the project refers to the image files on this computer and stays a
+    few hundred kilobytes. If the files are later moved, or the download cache is cleared,
+    they are fetched again from the archive when the project is opened.
+  \item[Embed data (portable)] the images are stored inside the project; the button shows the
+    expected size. The project opens anywhere, even offline.
+\end{description}
+The radio arrays are always stored in the project. The choice is kept in the file, so
+\kbd{Ctrl+S} does not ask again.
+
+\screenshot[0.6\linewidth]{dialogs/project_storage_dialog}{Choosing how a project keeps its images.}{fig:link-embed}{The Save Project As question "How should the project keep its images?" with the explanation text and the Link data (small), Embed data (portable, ~… MB) and Cancel buttons, for a project holding Solar Image Analysis frames.}
+
+\subsection{Reopening projects}
+
+\begin{itemize}
+  \item A part of a project that cannot be read is skipped and named in a message, while the
+    rest opens.
+  \item Solar Image Analysis measurements are matched to the reloaded frames by observation
+    time.
+  \item An overlay composite that was built when the project was saved, such as the AIA Sun in
+    the LASCO occulter, is built again once the frames are in.
+  \item The geomagnetic response, the catalogs and the Event Figure settings are restored
+    without fetching anything.
+\end{itemize}
+
+\begin{caution}[Compatibility]
+  Projects saved by version~\appversion{} cannot be opened by version~3.1. Version~3.1 radio
+  projects open unchanged. A version~3.1 \file{.ecsolar}\index{ecsolar@.ecsolar file} Solar
+  Image Analysis session can be opened with \menu{Open Project...}: it is imported as a new,
+  unsaved project. \file{.ecsolar} files are no longer written.
+\end{caution}
 
 \subsection{Restored analysis sessions}
 \label{sec:restored-analysis}
@@ -52,8 +96,9 @@ points, fits and settings.
 \label{sec:autosave}
 \index{autosave}\index{recovery}
 
-While data are loaded and there are unsaved changes, the application writes a recovery
-snapshot every three minutes. The ten most recent snapshots are kept. If the application
+While a project has content and unsaved changes, the application writes a recovery
+snapshot every three minutes. Snapshots always link solar and GCS images rather than embed
+them, so they stay small and fast. The ten most recent snapshots are kept. If the application
 did not close normally, it offers to recover the latest snapshot at the next start.
 \menu{File > Recover Last Session...}\index{recovery!Recover Last Session} restores the most recent snapshot at any time.
 
@@ -71,7 +116,7 @@ graph in light mode:
   \item the current zoom, color map, display range, linear or logarithmic frequency axis,
     and the titles and font sizes from \gui{Graph Properties};
   \item every visible overlay: light curves, annotations, the GOES X-ray overlay, the ruler
-    measurement and the STEREO/SWAVES panel.
+    measurement, the STEREO/SWAVES panel and the Event Context Strip.
 \end{itemize}
 The plot on screen keeps its own look. On Windows, if the proposed folder is not writable
 (for example inside \file{C:\\Program Files}), you are asked to choose another folder.
@@ -124,22 +169,74 @@ preparation of papers.
 \label{sec:project-report}
 \index{project report}
 
-\menu{File > Generate Project Report...}\index{project report} creates a consolidated PDF of the current project
-or loaded dataset. A progress dialog is shown while the report is built. The report
-contains the sections listed below; sections without content are omitted.
+\menu{File > Generate Project Report...} creates a consolidated PDF of the current project.
+A progress dialog is shown while the report is built. Catalogs and the geomagnetic response
+that are not yet loaded are fetched first, even when \menu{Solar Events > Fetch Event Context
+Automatically} is off; they are then kept, so the sidebar card and the event strip show them
+and the project saves them. A project without a radio spectrum has a report too: the radio
+sections are left out.
+
+\subsection{Event Story}
+\label{sec:event-story}
+\index{Event Story}
+
+The report opens with an \emph{Event Story} that tells what happened, in order, from the Sun
+to the Earth (Figure~\ref{fig:event-story}):
+\begin{itemize}
+  \item a headline and a one-line chain, for example \emph{flare \(\rightarrow\) radio burst
+    \(\rightarrow\) CME \(\rightarrow\) shock at Earth \(\rightarrow\) storm};
+  \item the \emph{event chain} graphic: Sun, corona, heliosphere and Earth lanes on a compressed
+    time axis (minutes near the eruption, days at Earth), with the time between the key steps;
+  \item \emph{Key Numbers};
+  \item \emph{What Happened}, four short chapters: at the Sun, in the corona, through the
+    heliosphere and at Earth;
+  \item a \emph{Timeline} of every milestone; bold rows are the steps joined on the event chain;
+  \item the event overview and Geomagnetic Response figures;
+  \item \emph{Sources and Caveats}.
+\end{itemize}
+The pieces are drawn from the loaded radio data, the event catalogs (GOES flares, CDAW and
+DONKI CMEs, DONKI shock arrivals and storms, the e-CALLISTO burst list), a GCS reconstruction
+and the geomagnetic response. They are associated by timing and by DONKI's own links, and the
+story says when they do not fit: a storm that peaked before this event's shock arrived is
+attributed to earlier eruptions. Without radio data the story starts from the Solar Image
+Analysis frames or the GCS event.
+
+\screenshot[0.55\linewidth]{event-context/report_event_story}{The first page of a project report's Event Story.}{fig:event-story}{The first page of a generated project report: the Event Story headline and chain, the event chain graphic with its Sun, Corona, Heliosphere and Earth lanes, and the Key Numbers table, for an event with a flare, a type II burst, a CME and a storm.}
+
+\begin{caution}
+  The Event Story associates events by timing and by DONKI's links. Check the associations
+  before citing them.
+\end{caution}
+
+\subsection{Report sections}
+
+After the Event Story the report contains the sections listed below; sections without content
+are omitted.
 \begin{itemize}
   \item \emph{Data Source} and \emph{Selected FITS Header};
   \item \emph{Processing}, and \emph{RFI, Annotations, and Light Curves};
   \item \emph{Analysis Summary} and \emph{Type II Results}, including the fit equation (with
     \(t_0\) when it is not the file start), the density model, and band-splitting output;
-  \item \emph{Figures}: the raw and background-subtracted spectra, light curves with the
-    spectrum, the maximum-intensity fit, the Type~II band-splitting plots, the
-    STEREO/SWAVES split view\index{STEREO/SWAVES!split view}, and any available GOES X-ray, GOES proton, Dst and Kp context
-    plots;
+  \item \emph{Figures}: the raw and background-subtracted spectra (with the Event Context Strip
+    when it is shown), light curves with the spectrum, the maximum-intensity fit, the Type~II
+    band-splitting plots, the STEREO/SWAVES split view\index{STEREO/SWAVES!split view}, and any
+    available GOES X-ray, GOES proton, Dst and Kp context plots;
+  \item \emph{Solar Image Analysis}, when that window holds frames: the current frame as on
+    screen, the instrument, product, frames and processing, the overlay layers, and the CME
+    measurements with their kinematics;
+  \item \emph{GCS CME Fitting}, when the GCS window holds work: the viewpoints and a table of
+    the recorded fits (the GCS window's own report draws every fit on its images,
+    Section~\ref{sec:gcs-export});
   \item \emph{Full FITS Header Appendix}.
 \end{itemize}
 Every graph in the report is drawn in the same style as \gui{Export Figure}, on a white page
 even in the dark theme.
+
+\section{Event Figure}
+
+\menu{File > Export As > Event Figure…} composes one publication figure of the whole event
+from the spectrum, other instruments, catalogs, image thumbnails and the geomagnetic response.
+It is described in Section~\ref{sec:event-figure}.
 
 \section{Batch processing}
 \label{sec:batch}

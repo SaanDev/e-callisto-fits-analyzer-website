@@ -27,8 +27,8 @@ Table~\ref{tab:main-regions}.
     Menu bar & Access to every function, including those not on the toolbar (Section~\ref{sec:menus}). On macOS the menu bar is at the top of the screen. \\
     Toolbar & Icon buttons for the most frequent actions (Section~\ref{sec:toolbar}). \\
     \gui{Cite this Software}\index{Cite this Software} & Opens the citation dialog (Section~\ref{sec:cite-dialog}). \\
-    Sidebar & Collapsible panels for the timeline, background subtraction, display thresholds, units, axis scale, graph properties, the analysis summary and the ruler readout (Chapter~\ref{ch:sidebar}). \\
-    Main plotting area & The dynamic spectrum with its color bar. Interactive tools act here. \\
+    Sidebar & Collapsible panels for the timeline, background subtraction, display thresholds, units, axis scale, graph properties, the analysis summary, the geomagnetic response and the ruler readout (Chapter~\ref{ch:sidebar}). \\
+    Main plotting area & The dynamic spectrum with its color bar, and optionally the Event Context Strip above it (Section~\ref{sec:event-strip}). Interactive tools act here. \\
     Status bar & Messages on the left; the update status and the live cursor readout on the right (Section~\ref{sec:status-bar}). \\
     \bottomrule
   \end{tabularx}
@@ -72,13 +72,20 @@ processed data remain disabled until they can be used.
   \callout{13} & Unlock zooming and panning & Re-enable scroll-wheel zooming and panning. & \\
   \callout{14} & Reset Selection & Clear the isolated-burst selection and drift markers. & \\
   \callout{15} & Reset to Raw & Discard all processing and show the raw spectrum. & \\
-  \callout{16} & Reset All & Clear the workspace: data, processing, selections and analysis overlays. & \\
+  \callout{16} & Reset All & Return the application to its start-up state (see below). & \\
   \bottomrule
 \end{xltabular}
 
+\gui{Reset All}\index{Reset All} (also \menu{Edit > Reset All}) returns the application to how
+it starts: the loaded data, processing, graph settings, sidebar readouts and undo history are
+cleared, and the analysis, Geomagnetic Response, Event Figure, Solar Image Analysis and GCS
+windows are closed. Your preferences, including the View-menu event-strip choices, and the
+download cache are kept.
+
 \begin{caution}
-  \gui{Reset All}\index{Reset All} clears the whole workspace. Save a project first if you want to keep
-  the current state.
+  With unsaved changes, \gui{Reset All} asks whether to \gui{Save}, \gui{Discard} or
+  \gui{Cancel}, as when opening a project or quitting. With everything saved but work open in
+  the Solar Image Analysis or GCS window, it asks you to confirm.
 \end{caution}
 
 \section{Plotting area and renderers}
@@ -88,7 +95,8 @@ processed data remain disabled until they can be used.
 The plotting area shows the dynamic spectrum with frequency on the vertical axis, time on
 the horizontal axis and intensity as color. The plot title shows the source file name
 and the processing state, for example \gui{-Background Subtracted} or
-\gui{-Isolated Burst}.
+\gui{-Isolated Burst}. With \menu{View > Event Context Strip} on, catalog lanes are drawn
+above the spectrum on their own time axis (Section~\ref{sec:event-strip}).
 
 Two renderers are available and are selected with \menu{View > Mode}\index{renderer!Classic and Modern}:
 \begin{description}
@@ -116,15 +124,15 @@ every command, with its shortcut and the section where it is described.
     \toprule
     \thead{Menu} & \thead{Main functions} \\
     \midrule
-    \menu{File} & Open and combine FITS files; recent files and projects; open, save and recover projects; project reports; figure, FITS, provenance and analysis-log export. \\
+    \menu{File} & Open and combine FITS files; recent files and projects; open, save and recover projects; project reports; figure, FITS, provenance, analysis-log and Event Figure export. \\
     \menu{Edit} & Undo and redo; extend the timeline with adjacent observations; reset to raw data; reset the workspace. \\
     \menu{Download} & Launch the e-CALLISTO FITS Downloader. \\
-    \menu{Solar Events} & CME catalog, GOES X-ray and proton flux, geomagnetic indices, SunPy Explorer, radio-burst downloaders, time-window synchronization, GOES overlay and the SWAVES panel. \\
-    \menu{View} & FITS header, display range and its presets, view configurations, Multi-Station Comparison, theme and rendering mode. \\
+    \menu{Solar Events} & CME catalog, GOES X-ray and proton flux, geomagnetic indices and the Geomagnetic Response, SunPy Explorer, radio-burst downloaders, time-window synchronization, GOES overlay, the SWAVES panel and automatic event-context fetching. \\
+    \menu{View} & FITS header, display range and its presets, view configurations, Multi-Station Comparison, the Event Context Strip and its sources, theme and rendering mode. \\
     \menu{Analysis} & Solar Image Analysis, GCS CME Fitting, maximum intensities, Type~II band-splitting, light curves and the ruler. \\
     \menu{Processing} & Hardware acceleration, RFI cleaning, annotations, presets, automatic outlier cleaning, restored analysis sessions and batch processing. \\
     \menu{About} & Update check, bug report and version information. \\
-    \menu{Help} & The built-in user guide. \\
+    \menu{Help} & The built-in user guide and the official website. \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -138,16 +146,17 @@ every command, with its shortcut and the section where it is described.
   \menu{Open} & Load one file, or combine a compatible multi-file selection. & \kbd{Ctrl+O}, §\ref{sec:opening-files} \\
   \menu{Recent Files} & Reopen one of the last ten FITS selections. & §\ref{sec:recent-files} \\
   \menu{Combine FITS Files...} & Validate, preview and import time, frequency or time~\(\times\)~frequency combinations. & §\ref{sec:combine-dialog} \\
-  \menu{Open Project...} & Open a saved \file{.efaproj} project. & \kbd{Ctrl+Shift+O}, §\ref{sec:projects} \\
+  \menu{Open Project...} & Open a project and restore every window it needs; also imports a version~3.1 \file{.ecsolar} session. & \kbd{Ctrl+Shift+O}, §\ref{sec:projects} \\
   \menu{Recent Projects} & Reopen one of the last ten projects. & §\ref{sec:projects} \\
-  \menu{Save Project} & Save the workspace to the current project file. & \kbd{Ctrl+S} \\
-  \menu{Save Project As...} & Save the workspace to a new project file. & \kbd{Ctrl+Shift+S} \\
+  \menu{Save Project} & Save the radio, Solar Image Analysis and GCS work to the current project file. & \kbd{Ctrl+S} \\
+  \menu{Save Project As...} & Save to a new project file, choosing to link or embed the images. & \kbd{Ctrl+Shift+S}, §\ref{sec:link-embed} \\
   \menu{Recover Last Session...}\index{recovery!Recover Last Session} & Restore the most recent autosave snapshot. & §\ref{sec:autosave} \\
-  \menu{Generate Project Report...}\index{project report} & Create a PDF summary of the dataset and analysis. & §\ref{sec:project-report} \\
+  \menu{Generate Project Report...}\index{project report} & Create a PDF report that opens with the Event Story. & §\ref{sec:project-report} \\
   \menu{Export As > Export Figure}\index{export!figure} & Save the plot as an image or vector figure. & \kbd{Ctrl+E}, §\ref{sec:export-figure} \\
   \menu{Export As > Export to FIT}\index{export!FITS} & Save the processed spectrum as a FITS file. & \kbd{Ctrl+F}, §\ref{sec:export-fits} \\
   \menu{Export As > Export Provenance Report...}\index{provenance report} & Write Markdown and JSON provenance summaries. & §\ref{sec:provenance} \\
   \menu{Export As > Export Analysis Log...}\index{analysis log} & Write CSV and text summaries of the fit and shock results. & §\ref{sec:provenance} \\
+  \menu{Export As > Event Figure…} & Compose one publication figure of the whole event. & §\ref{sec:event-figure} \\
   \bottomrule
 \end{xltabular}
 
@@ -166,7 +175,7 @@ every command, with its shortcut and the section where it is described.
   \menu{Add Next Observation} & Append the following observation. & \kbd{Ctrl+Shift+Right}, §\ref{sec:timeline} \\
   \menu{Prefetch Adjacent Observations}\index{timeline!prefetch} & When ticked (default), download neighboring observations in the background so the next timeline step is instant. & §\ref{sec:timeline} \\
   \menu{Reset to Raw} & Remove all processing and return to the loaded data. & \\
-  \menu{Reset All} & Clear processing, selections, analysis overlays and the loaded data. & \\
+  \menu{Reset All} & Return the application to its start-up state. & §\ref{sec:toolbar} \\
   \bottomrule
 \end{xltabular}
 
@@ -180,6 +189,7 @@ every command, with its shortcut and the section where it is described.
   \menu{Solar Events > Energetic Particles > GOES SEP Proton Flux} & GOES SGPS proton flux viewer. & §\ref{sec:goes-sep} \\
   \menu{Solar Events > Geomagnetic > Kyoto Dst Index} & Dst index viewer. & §\ref{sec:dst} \\
   \menu{Solar Events > Geomagnetic > GFZ Kp Index} & Kp index viewer. & §\ref{sec:kp} \\
+  \menu{Solar Events > Geomagnetic > Geomagnetic Response…} & Dst, Kp, IMF, solar wind and auroral indices around the event. & §\ref{sec:geomagnetic-response} \\
   \menu{Solar Events > Archives > SunPy Multi-Mission Explorer} & Multi-mission archive search and plotting. & Ch.~\ref{ch:sunpy} \\
   \menu{Solar Events > Radio Bursts > e-CALLISTO} & The e-CALLISTO FITS Downloader. & Ch.~\ref{ch:downloader} \\
   \menu{Solar Events > Radio Bursts > Learmonth} & Learmonth spectrograph browser. & §\ref{sec:learmonth} \\
@@ -187,6 +197,7 @@ every command, with its shortcut and the section where it is described.
   \menu{Solar Events > Sync Current Time Window}\index{time synchronization} & Send the time range of the loaded spectrum to open context windows. & §\ref{sec:sync-time} \\
   \menu{Solar Events > GOES Overlay > Short(XRS-A)}\index{GOES!overlay}, \menu{Long(XRS-B)} & Draw GOES X-ray curves on the spectrum. & §\ref{sec:goes-overlay} \\
   \menu{Solar Events > SWAVES Panel}\index{STEREO/SWAVES!panel} & Show or hide the loaded SWAVES panel. & §\ref{sec:swaves} \\
+  \menu{Solar Events > Fetch Event Context Automatically} & When ticked (default), fetch the geomagnetic response and catalogs when data are loaded or an event is selected. & §\ref{sec:event-time} \\
   \bottomrule
 \end{xltabular}
 
@@ -199,6 +210,8 @@ every command, with its shortcut and the section where it is described.
   \menu{Save / Apply / Delete Display Range Preset...}\index{display range!presets} & Store and reuse named display ranges. & §\ref{sec:display-range} \\
   \menu{Export View Config...}, \menu{Import View Config...} & Share display settings as \file{.efaview.json}\index{efaview.json@.efaview.json file}. & §\ref{sec:view-config} \\
   \menu{Multi-Station Comparison...} & Open the comparison workspace. & Ch.~\ref{ch:comparison} \\
+  \menu{Event Context Strip} & Show catalog lanes above the spectrum. & §\ref{sec:event-strip} \\
+  \menu{Event Context Sources > …} & Choose the lanes; \menu{Refresh Event Context} fetches them again. & §\ref{sec:event-strip} \\
   \menu{Theme > System / Light / Dark} & Choose the color theme. & §\ref{sec:themes} \\
   \menu{Mode > Classic / Modern} & Choose the Matplotlib or hardware-accelerated renderer. & §\ref{sec:renderers} \\
   \bottomrule
@@ -236,6 +249,7 @@ every command, with its shortcut and the section where it is described.
   \menu{About > Report a Bug...} & Prepare a bug report with diagnostics. & §\ref{sec:bug-report} \\
   \menu{About > About} & Version and author information. & §\ref{sec:about} \\
   \menu{Help > User Guide} & Open the built-in user guide. & \kbd{F1}, §\ref{sec:in-app-guide} \\
+  \menu{Help > Official Website} & Open \url{https://ecallistoanalyzer.org} in your web browser. & §\ref{sec:website} \\
   \bottomrule
 \end{xltabular}
 
@@ -267,5 +281,6 @@ use.
 
 FITS files and \file{.efaproj} projects can be dropped anywhere on the main window,
 including the plot. A single FITS file opens on its own; several are combined exactly as
-with \menu{File > Open}; a project file opens the project. Other file types are refused.
+with \menu{File > Open}; a project file opens the project, and a version~3.1 \file{.ecsolar}
+session is imported as a new project. Other file types are refused.
 If the current work has unsaved changes, you are asked whether to save them first.

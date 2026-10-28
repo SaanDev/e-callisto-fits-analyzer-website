@@ -6,10 +6,11 @@ import HandbookCover from '@/components/handbook-cover';
 import handbook from '@/content/handbook.json';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, userGuideData } from '@/lib/seo';
+import { guidePdf } from '@/lib/site';
 
 export const metadata = pageMetadata({
-  title: 'User guide · v3.1.0',
-  description: 'Read the e-CALLISTO FITS Analyzer user guide for solar radio FITS processing, Type II burst analysis, solar imaging and GCS CME fitting. Online and PDF.',
+  title: `User guide · v${guidePdf.version}`,
+  description: `Read the e-CALLISTO FITS Analyzer v${guidePdf.version} user guide for radio FITS processing, burst analysis, event context, geomagnetic response, solar imaging and GCS fitting.`,
   path: '/guide/',
 });
 
@@ -17,8 +18,8 @@ export default function Guide() {
   const parts = [...new Set(handbook.map(c => c.part))];
   return <>
     <JsonLd data={userGuideData()} />
-    <PageIntro label="e-CALLISTO FITS Analyzer user guide · v3.1.0" title="Your guide to the analyzer." crumbs={[['User guide']]}>
-      Learn solar radio data analysis with e-CALLISTO FITS Analyzer, free and open-source desktop software for Windows, macOS and Linux. This complete guide by Sahan S Liyanage covers FITS files, dynamic spectra, Type II bursts, solar imaging and three-dimensional CME reconstruction.
+    <PageIntro label={`e-CALLISTO FITS Analyzer user guide · v${guidePdf.version}`} title="Your guide to the analyzer." crumbs={[['User guide']]}>
+      Learn solar radio data analysis with e-CALLISTO FITS Analyzer, free and open-source desktop software for Windows, macOS and Linux. This complete guide by Sahan S Liyanage covers FITS files, dynamic spectra, Type II bursts, event context, geomagnetic response, solar imaging and three-dimensional CME reconstruction.
     </PageIntro>
     <section className="wrap content-section">
       <div className="handbook-intro">
@@ -26,6 +27,7 @@ export default function Guide() {
           <span className="eyebrow">One book. Two ways to read.</span>
           <h2>Explore a chapter. Or keep a copy.</h2>
           <p>Browse the searchable web edition with every screenshot, table, equation and reference, or download the original illustrated PDF for offline reading and printing.</p>
+          <p>New in this edition: <Link className="text-link" href="/guide/event-context/">Event Context and Geomagnetic Response</Link>, including the Event Context Strip and Event Figure Composer, plus updated project reports, archive options and Analyzer Lite guidance.</p>
           <GuidePdf />
         </div>
         <div data-reveal="scale" style={{ '--delay': '120ms' } as React.CSSProperties}><HandbookCover /></div>

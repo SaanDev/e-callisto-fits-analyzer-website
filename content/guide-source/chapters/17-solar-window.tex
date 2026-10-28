@@ -9,7 +9,8 @@ sequences from the solar archives or reads local FITS files, displays and proces
 measures eruptions and their kinematics, and models the coronal magnetic field\index{magnetic field}. Open it with
 \menu{Analysis > Solar Image Analysis} in the main window.
 
-This chapter describes the window, its menus and sessions, and how image data are obtained.
+This chapter describes the window, its menus, how image data are obtained, and how its work is
+saved in the project.
 Display and processing are described in Chapter~\ref{ch:solar-processing}, measurements in
 Chapter~\ref{ch:solar-measurements} and magnetic-field modeling in Chapter~\ref{ch:pfss}.
 
@@ -59,7 +60,7 @@ described in Table~\ref{tab:solar-regions}.
     \toprule
     \thead{No.} & \thead{Region} & \thead{Description} \\
     \midrule
-    \callout{1} & Menu bar & \menu{Session}, \menu{Data}, \menu{Analysis}, \menu{Movie}, \menu{Export} and \menu{About} (Section~\ref{sec:solar-menus}). \\
+    \callout{1} & Menu bar & \menu{Project}, \menu{Data}, \menu{Analysis}, \menu{Movie}, \menu{Export} and \menu{About} (Section~\ref{sec:solar-menus}). \\
     \callout{2} & Sidebar & Collapsible cards that read from top to bottom as the workflow: get data, choose records, analyze, then display, export and instrument-specific tools. \\
     \callout{3} & Sidebar handle & Hides or shows the sidebar. \\
     \callout{4} & Header bar & Live cursor readout --- distance from Sun center in \(R_\odot\), position angle, heliographic coordinates on the disk, and pixel --- and the one-click \gui{Export MP4}\index{movie export!MP4} button. \\
@@ -84,8 +85,8 @@ Measurements, statistics and exports always use the full-resolution data.
   \caption{Menus of the Solar Image Analysis window.}\label{tab:solar-menus}\\
   \toprule \thead{Command} & \thead{Function} \\ \midrule\endfirsthead
   \toprule \thead{Command} & \thead{Function} \\ \midrule\endhead
-  \menu{Session > Open Session…} & Open an \file{.ecsolar}\index{ecsolar@.ecsolar file} session (Section~\ref{sec:solar-sessions}). \\
-  \menu{Session > Save Session} / \menu{Save Session As…} & Save the session (\kbd{Ctrl+S} / \kbd{Ctrl+Shift+S}). \\
+  \menu{Project > Open Project…} & Open a project, or import a version~3.1 \file{.ecsolar}\index{ecsolar@.ecsolar file} session (Section~\ref{sec:solar-sessions}). \\
+  \menu{Project > Save Project} / \menu{Save Project As…} & Save the project of the main window, including this window's work (\kbd{Ctrl+S} / \kbd{Ctrl+Shift+S}). \\
   \menu{Data > Fetch Archive Records} & Search the archive (\gui{Fetch Records}\index{Solar Image Analysis!Fetch Records}). \\
   \menu{Data > Find Latest Available}\index{Solar Image Analysis!Find Latest} & Find the newest available data (\gui{Find Latest}). \\
   \menu{Data > SOHO Live Preview (Helioviewer)}\index{Helioviewer} & Near-real-time SOHO quicklook images (Section~\ref{sec:live-preview}). \\
@@ -143,10 +144,8 @@ which each is shown.
 \subsection{The Data Source card}
 \label{sec:data-source}
 
-The \gui{Data Source} card (Figure~\ref{fig:solar-data-source}) defines what to retrieve and
+The \gui{Data Source} card defines what to retrieve and
 how.
-
-\screenshot[0.5\linewidth]{solar/solar_data_source}{The \gui{Data Source} card.}{fig:solar-data-source}{The Data Source card (Observable, Start/End, Cadence, Max records, Use Analyzer Time Window, Download options, buttons) above the Archive Results card with a list of records, some ticked.}
 
 \begin{description}
   \item[Observable] the instrument and wavelength or product (Table~\ref{tab:observables}).
@@ -157,19 +156,27 @@ how.
     window, so that the images match the radio burst being studied.
 \end{description}
 
-\procedure{Download options (SDO)}
+\procedure{Download options}
 \begin{description}
-  \item[Source] \gui{Auto (JSOC → VSO)}\index{VSO}\index{JSOC} tries the Joint Science Operations Center (JSOC)
+  \item[Product] what \gui{Fetch Records} lists and \gui{Load Selected} downloads
+    (Section~\ref{sec:solar-products}): \gui{FITS · full resolution}, \gui{FITS · reduced
+    size} or \gui{JP2 · quicklook (Helioviewer)}. The choice is remembered. Products that the
+    selected observable does not have are greyed out, with the reason in their tooltip.
+  \item[Source] (SDO, FITS products) \gui{Auto (JSOC → VSO)}\index{VSO}\index{JSOC} tries the Joint Science Operations Center (JSOC)
     first and falls back to the Virtual Solar Observatory (VSO); \gui{JSOC (fast)} returns
     direct, compressed AIA files and is usually much faster; \gui{VSO (classic)} uses the
     VSO only.
   \item[JSOC notify e-mail] JSOC requires a one-time, free registration of an e-mail address
     at \url{https://jsoc.stanford.edu/ajax/register_email.html}. The address is remembered.
-  \item[Frame size] \gui{Full disk (4096²)}, \gui{Binned ½ (2048²)}, \gui{Binned ¼ (1024²)}
-    or \gui{Cutout (region)}\index{Solar Image Analysis!cutout}. Binned and cutout frames are produced by JSOC, so only the
+  \item[Frame size] for SDO FITS: \gui{Full disk (4096²)}, \gui{Synoptic 1024² (no
+    e-mail)}, \gui{Binned ½ (2048²)}, \gui{Binned ¼ (1024²)} or \gui{Cutout
+    (region)}\index{Solar Image Analysis!cutout}. The synoptic size reads JSOC's AIA synoptic
+    archive and needs no e-mail. Binned and cutout frames are produced by JSOC, so only the
     reduced data are transferred; they require the JSOC source and e-mail. For a cutout,
     enter the \gui{Centre X″}, \gui{Centre Y″}, \gui{Width″} and \gui{Height″} in arcseconds
-    from disk center.
+    from disk center. For JP2 quicklooks the box offers \gui{Native size}, \gui{Up to 2048 px}
+    or \gui{Up to 1024 px}, which decodes AIA and HMI's 4096-pixel images at a lower resolution
+    to save memory while keeping the coordinates exact.
   \item[High resolution AIA (best crop)] requests full-resolution AIA products. Files are
     larger, but cropped views keep more detail.
 \end{description}
@@ -187,6 +194,43 @@ An estimate of the download size is shown below the options when records are sel
   \item[Live Preview (Helioviewer)] shown for SOHO/LASCO and SOHO/EIT
     (Section~\ref{sec:live-preview}).
 \end{description}
+
+\subsection{Download products}
+\label{sec:solar-products}
+\index{Solar Image Analysis!download products}\index{JP2 quicklook}
+
+\begin{description}
+  \item[FITS · full resolution] the archive's own calibrated files: the largest and slowest
+    to download, and the product for photometry.
+  \item[FITS · reduced size] SDO only. The \gui{Synoptic 1024² (no e-mail)} frame size reads
+    JSOC's level-1.5 AIA synoptic archive: 1024-pixel frames at a 2-minute cadence, available
+    about a week after observation, with a near-real-time set covering the latest days
+    (1700~Å is not included). The binned and cutout sizes are made by JSOC on request and need
+    the JSOC notify e-mail.
+  \item[JP2 · quicklook (Helioviewer)] Helioviewer JPEG2000 images for AIA, HMI (magnetogram and
+    continuum), EIT, LASCO and STEREO EUVI, COR1 and COR2. Frames are listed in seconds and are
+    a few hundred kilobytes each, so this is the fast way to inspect an event. GOES/SUVI and the
+    heliospheric imagers have no JP2 product.
+\end{description}
+
+\begin{caution}
+  JP2 pixels are 8-bit display values, not calibrated data. Viewing, differences, movies,
+  geometry measurements and derotation work on them, but processing levels, light curves,
+  \gui{Region Stats} and active-region detection are disabled, and a \gui{JP2 quicklook · not
+  calibrated} badge above the image and the figure titles say so. Use a FITS product for
+  photometry.
+\end{caution}
+
+\subsection{Download progress}
+\label{sec:solar-progress}
+
+The progress bar under the image follows the real transfer from every source: bytes done of
+the expected total, speed and time remaining, with \gui{Show file details} listing each file
+While nothing can be measured --- an archive search, or
+JSOC building binned or cutout frames, which can take minutes --- the bar is a busy indicator
+and the line below it says what is being waited for. After the transfer it counts the frames
+as they are read, and reaches 100\% only when they are on screen. \gui{Stop} cancels a search,
+the wait for JSOC or the transfer; files already downloaded stay in the cache.
 
 \subsection{The Archive Results card}
 \label{sec:archive-results}
@@ -254,14 +298,21 @@ analyzed:
 derotation is re-applied afterwards. The status line reports the level in use. The card is
 hidden for instruments that offer only one level.
 
-\section{Sessions}
+\section{Saving the work in a project}
 \label{sec:solar-sessions}
-\index{session!solar}\index{ecsolar@.ecsolar file}
+\index{project!Solar Image Analysis}
 
-A Solar Image Analysis session (\file{.ecsolar}) is a single file that reopens an analysis
-exactly where it was left. It embeds the original FITS frames, so it survives a cleared
-cache or a move to another computer (at the cost of a large file), together with the data
-source, the display, crop and playback state, the CME measurements (height--time picks,
-circle fits and fit order) and the PFSS settings. The PFSS solution itself is not stored; one
-click on \gui{Compute PFSS}\index{PFSS!compute} reproduces it. Sessions are opened and saved from the
-\menu{Session} menu (\kbd{Ctrl+S}, \kbd{Ctrl+Shift+S}).
+The frames, data source, display, crop and playback settings, the CME measurements
+(height--time picks, circle fits and fit order) and the PFSS settings are part of the main
+window's project (Section~\ref{sec:projects}). \menu{Project > Save Project} (\kbd{Ctrl+S})
+and \menu{Save Project As…} (\kbd{Ctrl+Shift+S}) in this window save that project. With
+\gui{Link data} the project refers to the frames on this computer; a linked project whose
+frames have been moved or cleared from the cache fetches them again from the archive. With
+\gui{Embed data} the frames are stored in the project. Measurements are matched to the
+reloaded frames by observation time, and an overlay composite built when the project was saved
+is built again once the frames are in. The PFSS solution itself is not stored; one click on
+\gui{Compute PFSS}\index{PFSS!compute} reproduces it.
+
+A Solar Image Analysis session (\file{.ecsolar}) from version~3.1 or earlier can still be
+opened with \menu{Project > Open Project…}: it is imported as a new, unsaved project.
+\file{.ecsolar} files are no longer written.

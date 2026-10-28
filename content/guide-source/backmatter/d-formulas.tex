@@ -96,6 +96,27 @@ height of its top is \(h = 1\,R_\odot + 2r\).
 \end{align}
 Uncertainties are propagated from the covariance of the fitted coefficients.
 
+\section{Geomagnetic response}
+\label{sec:geo-formulas}
+
+\paragraph{Derived solar-wind parameters.} Where OMNI data are not yet published, the derived
+quantities are computed from the L1 measurements with OMNI's own formulas
+\parencite{king2005}, with \(V\) in km\,s\(^{-1}\), \(N_p\) in cm\(^{-3}\), \(T\) in K and
+\(B\), \(B_z\) (GSM) in nT:
+\begin{align}
+  P_\mathrm{dyn} &= 2\times10^{-6}\,N_p V^2 \quad\text{nPa}
+    \quad(\text{the factor 2 allows for about 4\% alpha particles}),\\
+  E_y &= -V B_z\times10^{-3} \quad\text{mV\,m}^{-1},\\
+  \beta &= \frac{\left(4.16\times10^{-5}\,T + 5.34\right) N_p}{B^2},\\
+  M_A &= \frac{V\sqrt{N_p}}{20\,B}.
+\end{align}
+
+\paragraph{Storm class and G level.} The storm class follows \textcite{gonzalez1994} from the
+Dst minimum: weak (\(\leq -30\)~nT), moderate (\(\leq -50\)~nT), intense (\(\leq -100\)~nT) and
+super (\(\leq -250\)~nT). The NOAA G level follows from the Kp maximum as
+\(G = \lfloor \mathrm{Kp}\rfloor - 4\) for \(\mathrm{Kp}\geq5\) (G1 at Kp~5 to G5 at Kp~9)
+\parencite{noaascales}.
+
 \section{Three-dimensional CME models}
 
 \paragraph{GCS} \parencite{thernisien2006,thernisien2011}. Parameters: Stonyhurst longitude and

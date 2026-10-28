@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { version } from '@/lib/site';
 
 const CACHE_KEY = 'callisto-download-total';
 const CACHE_MS = 30 * 60 * 1000;
@@ -69,7 +70,7 @@ export default function StatsBand() {
   return <section className="stats-band" aria-label="The project in numbers">
     <div className="wrap stats-grid">
       <div className="stat" data-reveal style={{ '--delay': '0ms' } as React.CSSProperties}>
-        <span className="stat-value">v3.1<span className="unit">.2</span></span>
+        <span className="stat-value">v{version.slice(0, version.lastIndexOf('.'))}<span className="unit">{version.slice(version.lastIndexOf('.'))}</span></span>
         <span className="stat-label">Latest release · October 2026</span>
       </div>
       <div className="stat" data-reveal style={{ '--delay': '100ms' } as React.CSSProperties}>

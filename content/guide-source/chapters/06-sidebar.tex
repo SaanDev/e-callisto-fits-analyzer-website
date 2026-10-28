@@ -4,9 +4,10 @@
 \index{sidebar}
 
 The sidebar on the left of the main window groups the controls used most often while
-working on a spectrum. It contains eight sections, from top to bottom:
+working on a spectrum. It contains nine sections, from top to bottom:
 \gui{Timeline}, \gui{Background Subtraction}, \gui{Noise Clipping Thresholds}, \gui{Units},
-\gui{Axis}, \gui{Graph Properties}, \gui{Analysis Summary} and \gui{Ruler Measurement}.
+\gui{Axis}, \gui{Graph Properties}, \gui{Analysis Summary}, \gui{Geomagnetic Response} and
+\gui{Ruler Measurement}.
 Each section is a card with a clickable header that collapses or expands it; the state of
 every card is remembered between sessions. The whole sidebar can be hidden with the arrow
 handle on the left edge of the plot.
@@ -189,6 +190,26 @@ also reports when a saved session has been restored. Before any analysis it read
 \gui{No analysis session loaded.}
 
 \screenshot[0.45\linewidth]{main-window/analysis_summary}{The \gui{Analysis Summary} panel.}{fig:analysis-summary}{Analysis Summary panel.}
+
+\section{Geomagnetic Response}
+\label{sec:geomagnetic-card}
+\index{Geomagnetic Response!sidebar card}
+
+The \gui{Geomagnetic Response} card (Figure~\ref{fig:geomagnetic-card}) summarizes what
+Earth's environment did after the current event (Section~\ref{sec:event-time}). Its first
+line names the event; five rows give the \gui{Dst min} (with its time and the hours after the
+event start), the \gui{Kp max} and its NOAA G level, the \gui{Bz min}, the \gui{V max} of the
+solar wind, and the \gui{Storm} class. A status line reports loading, missing data or that
+fetching is off.
+\begin{description}
+  \item[Refresh] fetches the response for the event again.
+  \item[Open window] opens the Geomagnetic Response window with every panel
+    (Section~\ref{sec:geomagnetic-response}).
+  \item[Use loaded data] shown after a burst-list or downloader selection; returns to the event
+    of the loaded file.
+\end{description}
+
+\screenshot[0.55\linewidth]{event-context/geomagnetic_card}{The \gui{Geomagnetic Response} card.}{fig:geomagnetic-card}{The Geomagnetic Response sidebar card after loading a file followed by a storm: the event line, the Dst min, Kp max, Bz min, V max and Storm rows filled in, the status line, and the Refresh and Open window buttons.}
 
 \section{Ruler Measurement}
 \label{sec:ruler-panel}

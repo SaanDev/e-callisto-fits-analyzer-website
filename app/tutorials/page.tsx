@@ -4,7 +4,7 @@ import PageIntro from '@/components/page-intro';
 import { tutorials } from '@/lib/tutorials';
 import { pageMetadata } from '@/lib/seo';
 
-export const metadata = pageMetadata({ title: 'e-CALLISTO data analysis tutorials', description: 'Practical, step-by-step walkthroughs for e-CALLISTO FITS Analyzer v3.1.0: your first spectrum, burst drift measurement and reproducible exports.', path: '/tutorials/' });
+export const metadata = pageMetadata({ title: 'e-CALLISTO data analysis tutorials', description: 'Practical, step-by-step walkthroughs for e-CALLISTO FITS Analyzer v3.2.0: your first spectrum, burst drift measurement and reproducible exports.', path: '/tutorials/' });
 
 export default function Tutorials() {
   return <>
@@ -28,7 +28,7 @@ export default function Tutorials() {
         <div>
           <span className="eyebrow">Stay tuned</span>
           <h2>Video tutorials are coming soon.</h2>
-          <p>Step-by-step videos for v3.1.0 are on the way. In the meantime, the complete user guide covers every window and method in detail.</p>
+          <p>Step-by-step videos for v3.2.0 are on the way. In the meantime, the complete user guide covers every window and method in detail.</p>
           <Link className="text-link" href="/guide/">Read the complete user guide <ArrowRight size={15} /></Link>
         </div>
       </div>

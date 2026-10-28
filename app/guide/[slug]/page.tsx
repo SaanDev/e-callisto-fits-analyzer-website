@@ -18,7 +18,7 @@ type Chapter = (typeof handbook)[number];
 
 // Reference pages whose opening text is a table or list rather than prose.
 const descriptions: Record<string, string> = {
-  copyright: 'Edition, copyright and licence details of the e-CALLISTO FITS Analyzer User Guide for software version 3.1.0.',
+  copyright: `Edition, copyright and licence details of the e-CALLISTO FITS Analyzer User Guide for software version ${guidePdf.version}.`,
   shortcuts: 'Keyboard shortcuts of the e-CALLISTO FITS Analyzer main window and analysis tools, including their macOS equivalents.',
   'file-formats': 'File types read and written by e-CALLISTO FITS Analyzer: FITS spectra, projects and sessions, exported FITS files and every other output.',
   'data-sources': 'The online archives e-CALLISTO FITS Analyzer retrieves data from, their access requirements and how to acknowledge the data providers.',

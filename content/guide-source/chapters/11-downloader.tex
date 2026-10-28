@@ -67,6 +67,11 @@ When several files are ticked, the downloader determines whether they can be com
 time, in frequency or in both, using the rules of Section~\ref{sec:combine-rules}. Files that
 cannot be combined are reported with an explanation (Figure~\ref{fig:combine-error}).
 
+Choosing a date, or selecting a file in the list, also sets the event time of the
+Geomagnetic Response and the event-context tools in the main window (the selected day, or the
+file's start time), so the geomagnetic response of a day can be inspected before anything is
+downloaded (Section~\ref{sec:event-time}).
+
 \section{Multi-Station Event}
 \label{sec:multi-station-event}
 
@@ -145,7 +150,8 @@ The event table lists the start and end time (UTC), type, number of stations, an
 observatories and remarks of each matching event, with a count such as
 \gui{1 of 2 events match the filters}. Hovering over a row shows the original catalog
 record and its source URL. Missing periods, source notices and loading errors are reported
-below the table.
+below the table. Selecting a burst sets the event time of the Geomagnetic Response
+(Section~\ref{sec:event-time}).
 
 \procedure{2.~Preview or import FITS}
 \begin{description}

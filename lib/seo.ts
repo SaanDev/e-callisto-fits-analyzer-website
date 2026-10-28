@@ -88,7 +88,7 @@ export function userGuideData(): Thing {
     '@context': 'https://schema.org',
     '@type': 'Book',
     name: 'e-CALLISTO FITS Analyzer User Guide',
-    bookEdition: `Version ${guidePdf.version}, first edition`,
+    bookEdition: `Version ${guidePdf.version}, ${guidePdf.edition.toLowerCase()}`,
     numberOfPages: guidePdf.pages,
     inLanguage: 'en',
     author,

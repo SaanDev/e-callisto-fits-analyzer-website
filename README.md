@@ -79,7 +79,7 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | ecallistolib library overview, installation and Python examples | `app/ecallistolib/page.tsx` (based on the library’s v1.5.0 README and package metadata) |
 | Citation and BibTeX | `lib/citation.ts` |
 | Public sponsors (generated at deploy time) | `content/sponsors.json` |
-| User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf` |
+| User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.2.0.pdf` |
 | User guide LaTeX source | `content/guide-source/` |
 | Web edition of the guide | `content/handbook.json` (generated) |
 | Guide figures (WebP) | `public/guide/figures/` (generated) |
@@ -91,7 +91,7 @@ The showcase movies use VP9 WebM and play inline, muted and looping, without nat
 ffmpeg -i example.mp4 -an -c:v libvpx-vp9 -crf 32 -b:v 0 -deadline good -cpu-used 2 -pix_fmt yuv420p public/showcase/example.webm
 ```
 
-The download links for both editions point to the shared GitHub release tag `v3.2.0`. `currentReleases` and `currentLiteReleases` in `lib/site.ts` identify that tag for Windows, Linux and macOS. `releases-verified.json` contains all six installers in one record, with their exact names, download URLs, byte sizes and SHA-256 digests from the GitHub release assets API (checked 2026-10-27). The macOS installers require macOS 15 or later on Apple silicon; macOS 13 and 14 users can find the older full v3.1.0 installer in Previous releases. The illustrated user guide remains the v3.1.0 edition (`guidePdf.version`).
+The download links for both editions point to the shared GitHub release tag `v3.2.0`. `currentReleases` and `currentLiteReleases` in `lib/site.ts` identify that tag for Windows, Linux and macOS. `releases-verified.json` contains all six installers in one record, with their exact names, download URLs, byte sizes and SHA-256 digests from the GitHub release assets API (checked 2026-10-27). The macOS installers require macOS 15 or later on Apple silicon; macOS 13 and 14 users can find the older full v3.1.0 installer in Previous releases. The illustrated user guide is the v3.2.0 second edition: 196 pages, 22 chapters and 71 figures (`guidePdf` in `lib/site.ts`). Its web edition includes the Event Context and Geomagnetic Response chapter. The earlier v3.1.0 PDF is retained for existing download links.
 
 ### v3.2.0 and Analyzer Lite
 
@@ -105,7 +105,7 @@ The download page explains the project compatibility change: v3.1 radio projects
 
 The web edition is generated from the LaTeX source with [Pandoc](https://pandoc.org) 3.x. Pillow (`pip install pillow`) is needed only when converting figures.
 
-1. Copy the updated `.tex`/`.bib` files into `content/guide-source/` (same layout as the LaTeX project).
+1. Copy the updated `.tex`/`.bib`/`.sty` files into `content/guide-source/` (same layout as the LaTeX project), removing any superseded chapter files after renumbering. The converter reads the software version from `ecallisto-handbook.sty`.
 2. Rebuild the web edition. `--figures` converts the book's PNG screenshots to WebP; leave it out if the figures have not changed.
 
    ```sh
@@ -113,9 +113,11 @@ The web edition is generated from the LaTeX source with [Pandoc](https://pandoc.
    python scripts/verify-handbook.py
    ```
 
-3. Replace the PDF in `public/docs/` and update `PDF_SHA256` in `scripts/verify-handbook.py` and `guidePdf` in `lib/site.ts` if the file name, page count or size changed.
+3. Replace the PDF in `public/docs/` and update `PDF_SHA256` in `scripts/verify-handbook.py` and `guidePdf` in `lib/site.ts` if the file name, edition, page count, chapter/figure totals or size changed. Render the PDF cover to `public/guide/cover.webp` (637 × 900) and refresh the expected chapter/reference page count in `verify-handbook.py`.
 
 `verify-handbook.py` checks every chapter, cross-reference, anchor and figure, and that the PDF matches the published original. The deploy workflow runs it before building.
+
+The supplied v3.2.0 PDF and source contain one screenshot placeholder: the Geomagnetic Response sidebar card (`event-context/geomagnetic_card.png`). The web edition preserves that figure's caption and displays a text note. This is the only allowed missing screenshot in the converter and verifier; when the screenshot becomes available, convert it and remove the placeholder exceptions from both scripts.
 
 ### Publishing a new release
 

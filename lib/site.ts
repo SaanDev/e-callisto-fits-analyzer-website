@@ -58,9 +58,12 @@ export const links = {
 };
 
 export const guidePdf = {
-  version: '3.1.0',
-  href: '/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf',
-  filename: 'e-CALLISTO_FITS_Analyzer_User_Guide_v3.1.0.pdf',
-  pages: 174,
-  size: '35.9 MB',
+  version: '3.2.0',
+  href: '/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.2.0.pdf',
+  filename: 'e-CALLISTO_FITS_Analyzer_User_Guide_v3.2.0.pdf',
+  edition: 'Second edition',
+  pages: 196,
+  chapters: 22,
+  figures: 71,
+  size: '41.0 MB',
 };

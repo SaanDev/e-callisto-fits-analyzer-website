@@ -28,7 +28,10 @@ rate and shock parameters of Type~II bursts and estimate the coronal magnetic fi
 band-split emission. Around this core, the software retrieves archive data from several
 radio instruments, displays X-ray, particle, geomagnetic and coronal mass ejection (CME)
 data for the same interval, analyzes solar images from space-borne observatories, models
-the coronal magnetic field, and reconstructs CMEs in three dimensions.
+the coronal magnetic field, and reconstructs CMEs in three dimensions. It follows an event to
+Earth with its geomagnetic response, draws the flare, CME and storm catalogs beside the
+spectrum, composes a figure of the whole event, and keeps the radio, solar-image and CME work
+of one event in a single project file.
 
 \section{Capabilities at a glance}
 
@@ -47,11 +50,14 @@ are described in this guide.
     Main window & Application start & Display and process dynamic spectra & \ref{ch:main-window}--\ref{ch:processing} \\
     Type~II analysis & Toolbar; \menu{Analysis} & Burst isolation, maxima, drift and shock parameters & \ref{ch:type-ii} \\
     Band-splitting analysis & \menu{Analysis > Type II Band-splitting} & Compression ratio, Alfvén speed\index{Alfvén speed}, magnetic field & \ref{ch:band-splitting} \\
-    Projects and export & \menu{File} & Projects, figures, FITS, reports, batch export & \ref{ch:projects} \\
+    Projects and export & \menu{File} & One project for every window, figures, FITS, reports, batch export & \ref{ch:projects} \\
     FITS Downloader & \menu{Download}; toolbar & e-CALLISTO archive search, preview and import & \ref{ch:downloader} \\
     Multi-Station Comparison & \menu{View} & Stacked spectra from several stations & \ref{ch:comparison} \\
     Learmonth, STEREO/SWAVES & \menu{Solar Events > Radio Bursts} & Additional radio spectra & \ref{ch:other-radio} \\
     Solar-event viewers & \menu{Solar Events} & GOES X-rays and protons, Dst, Kp, CME catalog & \ref{ch:solar-events} \\
+    Geomagnetic Response & \menu{Solar Events > Geomagnetic}; sidebar & Dst, Kp, IMF, solar wind and auroral indices around the event & \ref{ch:event-context} \\
+    Event Context Strip & \menu{View} & Flare, CME, DONKI and burst catalogs above the spectrum & \ref{ch:event-context} \\
+    Event Figure & \menu{File > Export As} & One publication figure of the whole event & \ref{ch:event-context} \\
     SunPy Explorer & \menu{Solar Events > Archives} & Multi-mission archive search and plots & \ref{ch:sunpy} \\
     Solar Image Analysis & \menu{Analysis > Solar Image Analysis} & Imaging, measurement, CME kinematics, PFSS & \ref{ch:solar-window}--\ref{ch:pfss} \\
     GCS CME Fitting & \menu{Analysis > GCS CME Fitting…} & 3-D flux-rope and shock reconstruction & \ref{ch:gcs-window}--\ref{ch:gcs-fitting} \\
@@ -79,9 +85,11 @@ The archives behind each retrieval tool are listed in Appendix~\ref{app:data-sou
     Learmonth Solar Radio Spectrograph archive & Converted to FIT files and imported (Section~\ref{sec:learmonth}). \\
     STEREO/SWAVES level-2 spectra & Displayed below the CALLISTO spectrum on a shared time axis (Section~\ref{sec:swaves}). \\
     Solar image FITS (SDO/AIA\index{SDO/AIA}, SDO/HMI\index{SDO/HMI}, SOHO/EIT\index{SOHO/EIT}, SOHO/LASCO\index{SOHO/LASCO}, STEREO/SECCHI, GOES/SUVI\index{GOES/SUVI}) & Displayed, processed and measured in Solar Image Analysis (Part~V). \\
-    Helioviewer\index{Helioviewer} JPEG2000 images & Near-real-time previews and the coronagraph images used for GCS fitting (Part~VI). \\
+    Helioviewer\index{Helioviewer} JPEG2000 images & Quicklook image sequences and near-real-time previews in Solar Image Analysis (Part~V), the coronagraph images used for GCS fitting (Part~VI), and Event Figure thumbnails. \\
     Synoptic magnetograms (GONG, HMI, ADAPT) & Boundary condition for PFSS modeling (Chapter~\ref{ch:pfss}). \\
     GOES XRS and SGPS, Kyoto Dst, GFZ Kp, SOHO/LASCO CME catalog & Context viewers and overlays (Chapter~\ref{ch:solar-events}). \\
+    OMNI, DSCOVR and SWPC solar-wind data; SYM-H and AE indices & Geomagnetic Response (Section~\ref{sec:geomagnetic-response}). \\
+    GOES/SWPC flare list, CDAW CMEs, NASA DONKI, e-CALLISTO burst lists & Event Context Strip, Event Figure and the report's Event Story (Chapter~\ref{ch:event-context}). \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -92,7 +100,8 @@ Figure~\ref{fig:workflow} shows how the main components relate to each other. Da
 the main window from local files, the downloaders or a saved project; they are processed
 in the sidebar; analysis windows take the processed spectrum as input; and every stage can
 be saved in a project or exported. The context and imaging tools can be synchronized to
-the time window of the loaded spectrum.
+the time window of the loaded spectrum, and the event-context tools follow the event time
+of the loaded data.
 
 \begin{figure}[!htbp]
   \centering
@@ -110,7 +119,7 @@ the time window of the loaded spectrum.
     \node[box, left=of iso] (an) {Burst Analyzer:\\ drift and shock};
     \node[box, left=of an] (bs) {Band-splitting:\\ magnetic field};
     \node[box, below=of an] (out) {Projects, figures,\\ FITS, reports (Ch.~\ref{ch:projects})};
-    \node[ctx, below=of bs] (ctx) {Solar-event viewers,\\ SunPy Explorer};
+    \node[ctx, below=of bs] (ctx) {Event context,\\ geomagnetic response};
     \node[ctx, below=of iso] (img) {Solar Image Analysis,\\ GCS CME Fitting};
     \draw[arr] (src) -- (load);
     \draw[arr] (load) -- (proc);
@@ -129,29 +138,39 @@ the time window of the loaded spectrum.
 \end{figure}
 
 \section{What is new in version \appversion}
+\label{sec:whats-new}
 
-Version~\appversion{} adds or substantially extends the following features, all of which
-are described in this guide:
+Version~\appversion{} turns a radio burst into the story of a whole event. It adds or
+substantially extends the following features, all of which are described in this guide:
 \begin{itemize}
-  \item automatic ridge tracking in the Maximum Intensities window
-    (Section~\ref{sec:ridge-tracking});
-  \item a selectable power-law time origin~$t_0$ and five coronal density models with a
-    side-by-side comparison in the Burst Analyzer (Section~\ref{sec:analyzer});
-  \item drag-and-drop opening and lists of recent files and projects
-    (Section~\ref{sec:opening-files});
-  \item the \gui{Timeline} panel for extending a spectrum with adjacent observations
-    (Section~\ref{sec:timeline}) and a linear or logarithmic frequency axis
-    (Section~\ref{sec:axis});
-  \item separate background-subtraction controls that always start from the raw data
-    (Section~\ref{sec:background});
-  \item the \gui{Burst List}\index{FITS Downloader!Burst List} catalog tab and unified time~\(\times\)~frequency combination in
-    the downloader (Chapter~\ref{ch:downloader});
-  \item PFSS coronal-field modeling, calibration-level selection, differential-rotation
-    compensation, circle fitting and higher-order kinematics in Solar Image Analysis
-    (Part~V);
-  \item multi-view GCS flux-rope and shock fitting with staged refinement, movies and
-    fitting reports\index{GCS!fitting report} (Part~VI).
+  \item \textbf{One project for every window:} a single \file{.efaproj} file holds the radio
+    analysis, the Solar Image Analysis frames and measurements, and the GCS fits, with the
+    images linked or embedded (Section~\ref{sec:projects});
+  \item \textbf{Geomagnetic Response:} Dst, SYM-H, Kp, the IMF, solar wind and auroral indices
+    from one day before to seven days after the event, as a sidebar card and a window
+    (Section~\ref{sec:geomagnetic-response});
+  \item \textbf{Event Context Strip and Event Figure:} flare, CME, DONKI and burst catalogs
+    above the spectrum, and one composed publication figure of the event
+    (Sections~\ref{sec:event-strip} and~\ref{sec:event-figure});
+  \item \textbf{Project reports} that open with an Event Story and include Solar Image Analysis
+    and GCS sections (Section~\ref{sec:project-report});
+  \item \textbf{Solar Image Analysis:} a choice of full-resolution FITS, reduced-size FITS or
+    JPEG2000 quicklook products, download progress based on the real transfer, the AIA~193~Å
+    Sun in LASCO's occulter, and labelled north-up movies
+    (Chapters~\ref{ch:solar-window} and~\ref{ch:solar-processing});
+  \item \gui{Reset All}, which returns the application to its start-up state
+    (Section~\ref{sec:toolbar}).
 \end{itemize}
+Version~3.1.0 introduced ridge tracking, the selectable power-law time origin and density
+models, the \gui{Timeline} panel, the logarithmic frequency axis, the \gui{Burst List}\index{FITS Downloader!Burst List},
+PFSS modeling and GCS fitting\index{GCS!fitting report}; they are described in the chapters concerned.
+
+\begin{caution}
+  Projects saved by version~\appversion{} cannot be opened by version~3.1. Keep a copy of any
+  project you still need to open in version~3.1 before saving it again. Version~3.1 radio
+  projects open unchanged, and a version~3.1 \file{.ecsolar} Solar Image Analysis session
+  opens as a new, unsaved project.
+\end{caution}
 
 \section{Citing the software}
 \label{sec:citing}

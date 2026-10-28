@@ -15,9 +15,9 @@
     \thead{Extension} & \thead{Meaning} \\
     \midrule
     \file{.fit}, \file{.fits}, \file{.fit.gz}, \file{.fits.gz} & Radio spectra in the main window, and solar images in Solar Image Analysis. Upper-case suffixes are accepted. \\
-    \file{.efaproj} & Complete analyzer project: data, processing, view and analysis session (Section~\ref{sec:projects}). \\
+    \file{.efaproj} & The one project file: radio analysis, Solar Image Analysis, GCS fitting and event context, with the solar and GCS images linked or embedded (Section~\ref{sec:projects}). Projects saved by version~3.2 cannot be opened by version~3.1. \\
     \file{.efaview.json} & Portable view configuration: display range, units, thresholds, color map and graph styling (Section~\ref{sec:view-config}). \\
-    \file{.ecsolar} & Solar Image Analysis session with embedded FITS frames (Section~\ref{sec:solar-sessions}). \\
+    \file{.ecsolar} & Solar Image Analysis session from version~3.1 and earlier. Opening one imports it as a new project; it is no longer written (Section~\ref{sec:solar-sessions}). \\
     \file{.srs} & Learmonth spectrograph daily archive file (Section~\ref{sec:learmonth}). \\
     \bottomrule
   \end{tabularx}
@@ -76,11 +76,13 @@ standard CALLISTO file:
   Learmonth conversion & FIT & Learmonth browser \\
   GOES, SEP, Dst, Kp data & PNG and CSV & Solar-event viewers \\
   SunPy plots and statistics & PNG, PDF, SVG, TIFF, JPG; CSV & SunPy Explorer \\
-  Solar images & PNG; cropped FITS; MP4, GIF & Solar Image Analysis \\
+  Solar images & PNG; cropped FITS; MP4, GIF (labelled, north up) & Solar Image Analysis \\
   Active regions & CSV & Solar Image Analysis \\
   CME tracking & CSV; PNG, PDF, EPS, SVG, TIFF, JPG & Solar Image Analysis tracking panel \\
   PFSS diagnostics & PNG, PDF, SVG & PFSS diagnostics window \\
   GCS analysis & JSON; CSV; figures; GIF, MP4; PDF report & GCS CME Fitting \\
+  Geomagnetic response & PNG, PDF, EPS, SVG, TIFF, JPG; CSV with provenance & Geomagnetic Response window \\
+  Event figure & PNG, PDF, EPS, SVG, TIFF, JPG & \menu{File > Export As > Event Figure…} \\
   Diagnostics bundle & ZIP & \menu{About > Report a Bug...} \\
   \bottomrule
 \end{xltabular}

@@ -1,5 +1,5 @@
 %% ===========================================================================
-%%  e-CALLISTO FITS Analyzer --- User Guide (version 3.1.0)
+%%  e-CALLISTO FITS Analyzer --- User Guide (version 3.2.0)
 %%  Sahan S Liyanage, Astronomical and Space Science Unit,
 %%  University of Colombo, Sri Lanka
 %%
@@ -41,7 +41,7 @@
 
 % Faster drafts: compile only selected chapters by uncommenting and editing
 % the line below (front matter and back matter are always typeset).
-% \includeonly{chapters/16-solar-window,chapters/17-solar-processing}
+% \includeonly{chapters/15-event-context,chapters/17-solar-window}
 
 \begin{document}
 
@@ -88,28 +88,30 @@ working with Learmonth and STEREO/SWAVES spectra.\end{minipage}\end{center}}
 \include{chapters/13-other-radio}
 
 \setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
-X-ray, particle, geomagnetic and CME catalog context for a radio event, and
-the SunPy Multi-Mission Explorer.\end{minipage}\end{center}}
+The event's context from the Sun to the Earth: X-ray, particle, geomagnetic and
+CME catalog viewers, the geomagnetic response, the event context strip and event
+figure, and the SunPy Multi-Mission Explorer.\end{minipage}\end{center}}
 \part{Solar-Event Context}
 \include{chapters/14-solar-events}
-\include{chapters/15-sunpy-explorer}
+\include{chapters/15-event-context}
+\include{chapters/16-sunpy-explorer}
 
 \setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
 The multi-mission imaging workspace: obtaining and displaying solar images,
 measuring eruptions, and modeling the coronal magnetic field.\end{minipage}\end{center}}
 \part{Solar Image Analysis}
-\include{chapters/16-solar-window}
-\include{chapters/17-solar-processing}
-\include{chapters/18-solar-measurements}
-\include{chapters/19-pfss}
+\include{chapters/17-solar-window}
+\include{chapters/18-solar-processing}
+\include{chapters/19-solar-measurements}
+\include{chapters/20-pfss}
 
 \setpartpreamble{\vspace{2em}\begin{center}\begin{minipage}{0.72\textwidth}\centering\large
 Multi-viewpoint reconstruction of coronal mass ejections and their shocks
 with the Graduated Cylindrical Shell and spheroid/ellipsoid
 models.\end{minipage}\end{center}}
 \part{Three-Dimensional CME Reconstruction}
-\include{chapters/20-gcs-window}
-\include{chapters/21-gcs-fitting}
+\include{chapters/21-gcs-window}
+\include{chapters/22-gcs-fitting}
 
 % ===========================================================================
 \appendix

@@ -18,21 +18,28 @@ based on these data, acknowledge the providers as their data policies request.
   Learmonth spectrograph & Australian Bureau of Meteorology, Space Weather Services, \url{https://downloads.sws.bom.gov.au/wdc/wdc_spec/data/learmonth/raw/} & Learmonth browser \\
   STEREO/SWAVES level-2 & NASA Space Physics Data Facility, \url{https://spdf.gsfc.nasa.gov/pub/data/stereo/combined/swaves/level2_cdf/} & SWAVES loader \\
   GOES XRS and SGPS & NOAA National Centers for Environmental Information, \url{https://data.ngdc.noaa.gov/platforms/solar-space-observing-satellites/} & GOES viewers, GOES overlay \\
-  Dst index & World Data Center for Geomagnetism, Kyoto, \url{https://wdc.kugi.kyoto-u.ac.jp} & Dst viewer \\
-  Kp index & GFZ German Research Centre for Geosciences, \url{https://kp.gfz.de} & Kp viewer \\
-  SOHO/LASCO CME catalog & CDAW Data Center, NASA GSFC, \url{https://cdaw.gsfc.nasa.gov} & CME catalog \\
+  Dst index & World Data Center for Geomagnetism, Kyoto (final, provisional or real-time), \url{https://wdc.kugi.kyoto-u.ac.jp} & Dst viewer, Geomagnetic Response \\
+  Kp index & GFZ German Research Centre for Geosciences, \url{https://kp.gfz.de} & Kp viewer, Geomagnetic Response \\
+  Solar wind, IMF, SYM-H and AE (OMNI 5-min) & NASA Space Physics Data Facility, \url{https://spdf.gsfc.nasa.gov/pub/data/omni/omni_cdaweb/hro_5min/} & Geomagnetic Response \\
+  Recent solar wind and IMF at L1 & NOAA NCEI DSCOVR archive; NOAA SWPC real-time solar wind, \url{https://services.swpc.noaa.gov/json/rtsw/} & Geomagnetic Response (stand-in where OMNI is not yet published) \\
+  CMEs, flares, shocks, storms, SEP events & NASA CCMC DONKI, \url{https://ccmc.gsfc.nasa.gov/DONKI/} & Event Context Strip, Geomagnetic Response markers, Event Story \\
+  GOES flare list & NOAA SWPC, through the Heliophysics Event Knowledgebase (HEK) & Event Context Strip, Event Story \\
+  SOHO/LASCO CME catalog & CDAW Data Center, NASA GSFC, \url{https://cdaw.gsfc.nasa.gov} & CME catalog, Event Context Strip, Event Story \\
   SDO/AIA and SDO/HMI & Joint Science Operations Center, \url{https://jsoc.stanford.edu}; Virtual Solar Observatory & Solar Image Analysis, SunPy Explorer, PFSS (HMI synoptic) \\
+  AIA synoptic 1024² FITS & JSOC AIA synoptic archive, \url{https://jsoc1.stanford.edu/data/aia/synoptic/} & Solar Image Analysis (\gui{FITS · reduced size}) \\
   SOHO/EIT, SOHO/LASCO, STEREO/SECCHI, GOES/SUVI, PROBA2/SWAP & Virtual Solar Observatory and mission archives, through SunPy & Solar Image Analysis, SunPy Explorer, overlay layers \\
-  Helioviewer JPEG2000 images & Helioviewer Project, \url{https://api.helioviewer.org} & Live Preview, GCS CME Fitting \\
+  Helioviewer JPEG2000 images & Helioviewer Project, \url{https://api.helioviewer.org} & JP2 quicklooks, Live Preview, AIA Sun in the occulter, GCS CME Fitting, Event Figure thumbnails \\
   GONG synoptic and ADAPT maps & National Solar Observatory, through SunPy & PFSS \\
   NOAA active-region labels & Heliophysics Event Knowledgebase (HEK), through SunPy & Active-region labels \\
   Software updates & GitHub releases, \url{https://github.com/SaanDev/e-Callisto_FITS_Analyzer} & Update check \\
+  Website and online guide & \url{https://ecallistoanalyzer.org} & \menu{Help > Official Website} \\
   \bottomrule
 \end{xltabular}}
 
 \begin{note}
   Archive availability changes over time. The calibrated SOHO/LASCO and SOHO/EIT archives lag
   real time by many months, the HMI synoptic series is published about one Carrington rotation
-  behind, and STEREO-B data end in 2014. Downloaded files are cached locally and can be
+  behind, OMNI solar-wind data appear a few weeks after observation, the definitive AIA
+  synoptic set about a week after, and STEREO-B data end in 2014. Downloaded files are cached locally and can be
   reused without network access.
 \end{note}

@@ -26,6 +26,11 @@ Analysis. The window downloads its own images, so nothing needs to be loaded fir
 \end{itemize}
 Choosing the menu item again reuses the open window and passes it the new time.
 
+The fitting is part of the main window's project (Section~\ref{sec:projects}): its channels,
+display settings, front points and recorded fits are saved with the radio and Solar Image
+Analysis work, and a reopened project restores the window. With \gui{Embed data} the JPEG2000
+images are stored in the project too, so the fit reopens offline.
+
 \section{Window layout}
 
 The window is divided into the regions numbered in Figure~\ref{fig:gcs-window} and described
@@ -155,7 +160,10 @@ clicked and return when that image is shown again.
   \caption{Menus of the GCS CME Fitting window.}\label{tab:gcs-menus}\\
   \toprule \thead{Command} & \thead{Function} & \thead{Shortcut} \\ \midrule\endfirsthead
   \toprule \thead{Command} & \thead{Function} & \thead{Shortcut} \\ \midrule\endhead
-  \menu{File > Export analysis JSON…}\index{GCS!JSON export} & Parameters, points and provenance of both models. & \kbd{Ctrl+Shift+S} \\
+  \menu{File > Open Project…} & Open a project in the main window. & \\
+  \menu{File > Save Project} & Save the main window's project, including this fit. & \kbd{Ctrl+S} \\
+  \menu{File > Save Project As…} & Save the project to a new file. & \kbd{Ctrl+Shift+S} \\
+  \menu{File > Export analysis JSON…}\index{GCS!JSON export} & Parameters, points and provenance of both models. & \\
   \menu{File > Export recorded fits CSV…} & Recorded series of the edited model. & \\
   \menu{File > Export height–time graph…} & Height--time graph with the chosen fit. & \\
   \menu{File > Save viewpoint snapshot…}\index{GCS!viewpoint snapshot} & The three views as shown. & \\

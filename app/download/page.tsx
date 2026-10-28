@@ -5,7 +5,7 @@ import DownloadCards from '@/components/download-cards';
 import EditionComparison from '@/components/edition-comparison';
 import releases from '@/releases-verified.json';
 import { highlights, releaseHighlights, fixes, notes, patchReleases } from '@/lib/release-notes';
-import { currentReleases, currentLiteReleases, asset, links, version, liteVersion } from '@/lib/site';
+import { currentReleases, currentLiteReleases, asset, links, version, liteVersion, guidePdf } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwareData } from '@/lib/seo';
 
@@ -128,8 +128,9 @@ export default function Downloads() {
       </div>
       <div className="actions" style={{ marginTop: 28 }} data-reveal>
         <a className="button" href={asset('/docs/release-notes/RELEASE_NOTES_v3.2.0.md')} download><BookOpen size={17} />Download v{version} release notes</a>
+        <Link className="button" href="/guide/introduction/#sec:whats-new"><BookOpen size={17} />Read the v{guidePdf.version} user guide</Link>
       </div>
-      <p className="small edition-note">Event context, Event Figure Composer, geomagnetic response and solar archive options belong to the full edition. The illustrated user guide remains the v3.1.0 edition; use these release highlights for the v{version} additions.</p>
+      <p className="small edition-note">Event context, Event Figure Composer, geomagnetic response and solar archive options belong to the full edition. The illustrated v{guidePdf.version} user guide covers these workflows in <Link className="text-link" href="/guide/event-context/">Chapter 15: Event Context and Geomagnetic Response</Link>.</p>
     </section>
 
     <section className="section wrap" id="stable-notes">
@@ -166,7 +167,7 @@ export default function Downloads() {
         </article>
       </div>
       <div className="actions" style={{ marginTop: 28 }} data-reveal>
-        <Link className="button" href="/guide/introduction/#what-is-new-in-version-3.1.0"><BookOpen size={17} />What’s new, in the user guide</Link>
+        <Link className="button" href="/guide/introduction/"><BookOpen size={17} />Read the current user guide</Link>
         <Link className="button ghost" href="/guide/">Read the complete guide <ArrowRight className="arrow" size={16} /></Link>
       </div>
     </section>

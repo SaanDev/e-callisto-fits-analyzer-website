@@ -13,6 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'content/guide-source'
 FIGURES = ROOT / 'public/guide/figures'
 FIGURE_WIDTH = 1600
+# This screenshot is also a placeholder in the supplied v3.2.0 PDF/source.
+# Preserve its caption and position without inventing an application screenshot.
+SOURCE_PLACEHOLDERS = {'figures/event-context/geomagnetic_card.png'}
 parser = argparse.ArgumentParser()
 parser.add_argument('--pandoc', required=True)
 parser.add_argument('--figures', help='LaTeX figures folder to convert to WebP')
@@ -59,7 +62,7 @@ DIAGRAMS = {
         + '<div class="flow-row">' + flow_box('Band-splitting:<br>magnetic field')
         + flow_box('Burst Analyzer:<br>drift and shock', ['left', 'down'])
         + flow_box('Burst isolation,<br>maximum intensities', ['left']) + '</div>'
-        + '<div class="flow-row">' + flow_box('Solar-event viewers,<br>SunPy Explorer', ['right'], 'context')
+        + '<div class="flow-row">' + flow_box('<a href="/guide/event-context/">Event context,<br>geomagnetic response</a>', ['right'], 'context')
         + flow_box('Projects, figures,<br>FITS, reports (<a href="/guide/projects-export/">Ch. 10</a>)')
         + flow_box('Solar Image Analysis,<br>GCS CME Fitting', [], 'context') + '</div></div>',
 }
@@ -106,7 +109,7 @@ for line in main.splitlines():
 
 prefix = r'''
 \newcommand{\appname}{e-CALLISTO FITS Analyzer}
-\newcommand{\appversion}{3.1.0}
+\newcommand{\appversion}{GUIDE_VERSION}
 \newcommand{\gui}[1]{\textbf{#1}}
 \newcommand{\menu}[1]{\textbf{#1}}
 \newcommand{\kbd}[1]{\texttt{#1}}
@@ -115,11 +118,17 @@ prefix = r'''
 \newcommand{\thead}[1]{\textbf{#1}}
 \newcommand{\Rsun}{\ensuremath{R_\odot}}
 '''
+# Keep the web edition aligned with the supplied LaTeX edition.
+style = (SOURCE / 'ecallisto-handbook.sty').read_text(encoding='utf-8')
+guide_version = re.search(r'\\newcommand\{\\appversion\}\{([^}]+)\}', style)[1]
+prefix = prefix.replace('GUIDE_VERSION', guide_version)
 chunks, metadata, figure_labels, index_entries = [], [], [], {}
 for file, part in parts:
     text = (SOURCE / (file + '.tex')).read_text(encoding='utf-8')
     text = re.sub(r'(?m)(?<!\\)%.*$', '', text)
     text = re.sub(r'(?m)^\\newcommand.*$', '', text)
+    # Pandoc's MathML writer cannot parse TeX spacing inside a text unit.
+    text = macro(text, 'text', 1, lambda value: r'\text{' + value.replace(r'\,', ' ') + '}')
     if file.endswith('copyright'):
         text = r'\chapter{About this edition}' + '\n' + text
     def screenshot(width, image, caption, label, capture):
@@ -168,7 +177,7 @@ for file, part in parts:
 combined = prefix + '\n'.join(chunks) + '\n\\chapter{Bibliography}\n'
 work = ROOT / '.tools/handbook'; work.mkdir(parents=True,exist_ok=True)
 (work/'combined.tex').write_text(combined,encoding='utf-8')
-cmd = [args.pandoc,str(work/'combined.tex'),'-f','latex','-t','html5','--math-method=mathml','--citeproc','--bibliography',str(SOURCE/'references.bib'),'-M','link-citations=true','-M','nocite=@*']
+cmd = [args.pandoc,str(work/'combined.tex'),'-f','latex','-t','html5','--mathml','--citeproc','--bibliography',str(SOURCE/'references.bib'),'-M','link-citations=true','-M','nocite=@*']
 result = subprocess.run(cmd,capture_output=True,text=True,encoding='utf-8',check=True)
 (work/'warnings.txt').write_text(result.stderr,encoding='utf-8')
 output=result.stdout
@@ -194,6 +203,9 @@ def figure_image(m, alt):
     src,attributes=m[1],m[2]
     path=FIGURES/Path(src).relative_to('figures').with_suffix('.webp')
     if not path.exists():
+        if src in SOURCE_PLACEHOLDERS:
+            return ('<div class="note" data-figure-placeholder="' + html.escape(src) + '">'
+                    '<p>Screenshot unavailable in the supplied guide. The card and its controls are described above.</p></div>')
         missing_figures.append(src); return ''
     width,height=webp_size(path)
     # Keep the book's relative width (\screenshot[0.45\linewidth]) and height cap.

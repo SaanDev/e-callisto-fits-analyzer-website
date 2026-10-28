@@ -1,0 +1,231 @@
+%% Chapter 15 ----------------------------------------------------------------
+\chapter{Event Context and Geomagnetic Response}
+\label{ch:event-context}
+\index{event context}
+
+A radio burst is one moment in a chain that can run from a flare and a coronal mass ejection
+at the Sun to a shock and a geomagnetic storm at Earth one to three days later. The tools in
+this chapter place the loaded event in that chain: the \emph{Geomagnetic Response} shows what
+Earth's environment did around the event, the \emph{Event Context Strip} draws the flare, CME,
+storm and burst catalogs above the spectrum, and the \emph{Event Figure} composer combines
+everything into one publication figure. The same information opens the project report's
+Event Story (Section~\ref{sec:project-report}).
+
+\section{The event and automatic fetching}
+\label{sec:event-time}
+\index{event time}
+
+The tools work around an \emph{event time}, which is set by the most recent of these actions:
+\begin{itemize}
+  \item loading data in the main window --- the observation start of the loaded spectrum
+    (\emph{FITS: \ldots});
+  \item selecting a row in the downloader's \gui{Burst List} (\emph{Burst list: \ldots});
+  \item selecting a day or a file in the e-CALLISTO downloader (\emph{Downloader: \ldots}).
+\end{itemize}
+The current event is named at the top of the \gui{Geomagnetic Response} card and window. After
+a burst-list or downloader selection, \gui{Use loaded data} returns to the event of the loaded
+file. Nothing ever pops up on its own: the card updates, and the window opens only when you ask
+for it.
+
+\index{Fetch Event Context Automatically}
+\menu{Solar Events > Fetch Event Context Automatically} (on by default, and remembered) fetches
+the geomagnetic response, and the event catalogs while the strip is shown, whenever data are
+loaded or an event is selected. Turn it off to download nothing on your behalf: the card then
+asks you to press \gui{Refresh}, and \gui{Refresh}, \menu{Refresh Event Context} and
+\menu{File > Generate Project Report...} still fetch when you ask.
+
+\section{Geomagnetic Response}
+\label{sec:geomagnetic-response}
+\index{Geomagnetic Response}
+
+The Geomagnetic Response follows the event to Earth. It covers, by default, one day before the
+event start to seven days after, on a single UTC axis. Two views show it: a summary card in the
+main window's sidebar (Section~\ref{sec:geomagnetic-card}) and the full window, opened with
+\menu{Solar Events > Geomagnetic > Geomagnetic Response…} or the card's \gui{Open window}
+button (Figure~\ref{fig:geomagnetic-window}).
+
+\screenshot{event-context/geomagnetic_response_window}{The Geomagnetic Response window for the radio event of 2~March 2022, with all six panels; the DONKI shock arrival at Earth and the moderate storm that followed are marked.}{fig:geomagnetic-window}{The Geomagnetic Response window for an event followed by a geomagnetic storm (for example 2024-05-10 or 2025-06-01): the event label and the Before/After spans at the top, the Panels check boxes with Export Figure… and Export CSV…, and the stacked Dst/SYM-H, Kp, IMF and plasma panels with the event line, the shaded radio interval and DONKI shock/storm markers.}
+
+\subsection{Controls}
+
+\begin{description}
+  \item[Event] the event the response is shown for, with where its time came from.
+  \item[Before, After] the span shown before and after the event start (0.25--10~days before,
+    default 1; 0.5--30~days after, default 7).
+  \item[Refresh] fetches the response again.
+  \item[Panels] check boxes that choose the panels shown (Table~\ref{tab:geo-panels}). The
+    choice is remembered between sessions.
+  \item[Export Figure…] saves the selected panels as an OriginPro-style figure (PNG, PDF, SVG,
+    EPS, TIFF or JPG), black on white whatever the application theme.
+  \item[Export CSV…] saves every series as CSV, with a provenance column naming the archive or
+    spacecraft of each value.
+\end{description}
+A line below the panels lists notes, such as data that are not yet published.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Panels of the Geomagnetic Response.}
+  \label{tab:geo-panels}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.2\linewidth}L@{}}
+    \toprule
+    \thead{Panel} & \thead{Content} \\
+    \midrule
+    Dst / SYM-H & Kyoto Dst (final, provisional or real-time, month by month) with the 1-minute SYM-H index. The scale follows the data; the storm levels it reaches (moderate \(-50\), intense \(-100\), severe \(-250\)~nT) are dotted, and the minimum is marked with its value. \\
+    Kp & GFZ Kp as bars coloured by NOAA G level, with the G1 (Kp~5) and G3 (Kp~7) levels dotted. \\
+    IMF Bt, Bz, By & Interplanetary magnetic field magnitude and components (GSM). \\
+    V, Np, T, Pdyn & Solar-wind speed and proton density, temperature and dynamic pressure; each half of the panel has two scales coloured like their lines. \\
+    Ey, β, Mach & Dawn--dusk electric field, plasma \(\beta\) and Alfvén Mach number. \\
+    AE / AL / AU & Auroral electrojet indices. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+The Dst/SYM-H, Kp, IMF and plasma panels are shown by default.
+
+\subsection{Markers}
+
+The event start is a dashed red line and the interval of the loaded radio data is shaded.
+DONKI interplanetary-shock arrivals at Earth, geomagnetic storms and the CMEs they are linked
+to are marked with labelled vertical lines. When the labels crowd, they are shortened (for
+example \emph{CME 1330}, \emph{Shock}, \emph{Kp 9.0}) and the least important are left unnamed,
+though their lines remain. Markers outside the plotted span are not shown.
+
+\subsection{Data sources}
+\index{OMNI}\index{DSCOVR}
+
+\begin{itemize}
+  \item \textbf{Solar wind, IMF and derived parameters} come from the OMNI 5-minute data set
+    \parencite{king2005}, which is time-shifted to the nose of Earth's bow shock and also carries
+    the SYM-H \parencite{iyemori1990} and AE \parencite{davis1966} indices.
+  \item OMNI is published with a delay of a few weeks. For the most recent days the
+    measurements of DSCOVR (NOAA NCEI archive) or NOAA SWPC's real-time solar-wind feed are used
+    instead. They are measured at the L1 point, upstream of Earth, and are labelled \emph{L1, not
+    time-shifted to the bow shock}; their Ey, \(\beta\) and Mach number are computed with OMNI's
+    formulas (Appendix~\ref{app:formulas}).
+  \item SYM-H and AE have no such stand-in and are reported as not yet published until OMNI
+    includes them.
+  \item \textbf{Dst} comes from the World Data Center for Geomagnetism, Kyoto, and
+    \textbf{Kp} from GFZ Potsdam, as in the stand-alone viewers (Chapter~\ref{ch:solar-events}).
+  \item \textbf{Markers} come from NASA's DONKI database \parencite{donki}
+    (Section~\ref{sec:event-strip}).
+\end{itemize}
+A source that fails is reported in the notes while the others still load. The response is saved
+in the project, so a reopened project shows it without fetching anything, and the project report
+includes it.
+
+\subsection{The Geomagnetic Response card}
+\label{sec:geomagnetic-card-summary}
+
+The sidebar card (Section~\ref{sec:geomagnetic-card}) summarizes the same response in five
+rows: the Dst minimum (with when it occurred and how many hours after the event start), the Kp
+maximum and its NOAA G level, the most southward Bz, the fastest solar wind and the storm class
+(Table~\ref{tab:storm-classes}). When the event moves to another hour, the previous event's
+numbers are cleared rather than shown under the new event.
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Storm classes and NOAA G levels used in the summary.}
+  \label{tab:storm-classes}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.24\linewidth}P{0.22\linewidth}L@{}}
+    \toprule
+    \thead{Storm class (Dst min)} & \thead{G level (Kp max)} & \thead{Notes} \\
+    \midrule
+    weak: \(\leq -30\)~nT & G1: Kp 5 & Classes after \textcite{gonzalez1994}. \\
+    moderate: \(\leq -50\)~nT & G2: Kp 6 & \\
+    intense: \(\leq -100\)~nT & G3: Kp 7 & \\
+    super: \(\leq -250\)~nT & G4: Kp 8 & \\
+     & G5: Kp 9 & NOAA space-weather scales \parencite{noaascales}. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{caution}
+  A storm within the window is not necessarily caused by the event: it may have been driven by
+  an earlier eruption. Compare the storm's timing with the shock arrivals and the transit time
+  from the Sun before attributing it. The project report's Event Story makes this check
+  (Section~\ref{sec:project-report}).
+\end{caution}
+
+\section{Event Context Strip}
+\label{sec:event-strip}
+\index{Event Context Strip}\index{event catalogs}
+
+\menu{View > Event Context Strip} adds lanes above the dynamic spectrum, on their own time
+axis, in both the Classic and the Modern view (Figure~\ref{fig:event-strip}). Each lane shows
+one catalog (Table~\ref{tab:event-lanes}); \menu{View > Event Context Sources} chooses the
+lanes, and \menu{View > Event Context Sources > Refresh Event Context} fetches them again.
+
+\screenshot{event-context/event_context_strip}{The Event Context Strip above a dynamic spectrum, as saved with \gui{Export Figure}. Edge labels count events just outside the plot; the CMEs lane is marked (!) because its catalog could not answer for that day.}{fig:event-strip}{The main window with View → Event Context Strip enabled over a spectrum containing a burst: the Flares, CMEs, DONKI and Bursts lanes above the plot, a hover tooltip on one marker, and an edge label such as "2 more nearby".}
+
+\begin{table}[!htbp]
+  \centering
+  \caption{Lanes of the Event Context Strip.}
+  \label{tab:event-lanes}
+  \small
+  \begin{tabularx}{\linewidth}{@{}P{0.24\linewidth}L@{}}
+    \toprule
+    \thead{Lane (source menu entry)} & \thead{Content} \\
+    \midrule
+    Flares (GOES/SWPC) & The NOAA SWPC flare list, through the Heliophysics Event Knowledgebase (HEK), as bars coloured by GOES class. \\
+    CMEs (CDAW) & The CDAW SOHO/LASCO CME catalog, at the first C2 appearance, with speed and width. \\
+    DONKI & NASA DONKI CMEs, flares, interplanetary shocks, geomagnetic storms and SEP events. \\
+    Bursts (e-CALLISTO) & The e-CALLISTO (Monstein) burst lists, as bars with their burst type. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{itemize}
+  \item Hover over a marker to read its details.
+  \item Events up to six hours outside the plotted time range are counted at the edge of their
+    lane, for example \emph{2 more nearby}.
+  \item The catalogs are cached on disk, one file per source and UTC day. Days within the last 30
+    days are refreshed after a day, because catalogs are still being filled in; older days never
+    expire.
+  \item A day that a catalog cannot answer for yet --- a CDAW month that has not been published,
+    or a DONKI service that failed --- is not cached. It is asked for again next time, and its
+    lane is marked \textbf{(!)} with the reason in the status bar.
+\end{itemize}
+While it is shown, the strip is included in \gui{Export Figure} and in the project report, and
+it is saved in the project. A project keeps its own strip and source choices without changing
+your View-menu preference.
+
+\section{Event Figure}
+\label{sec:event-figure}
+\index{Event Figure}
+
+\menu{File > Export As > Event Figure…} opens the \gui{Event Figure Composer}
+(Figure~\ref{fig:event-figure-composer}), which builds one publication figure of the whole
+event with a live preview. Figure~\ref{fig:event-figure-example} shows an example.
+
+\screenshot{event-context/event_figure_composer}{The Event Figure Composer.}{fig:event-figure-composer}{The Event Figure Composer with the Event panels list, Time range, Thumbnails table (two or three thumbnails), the Geomagnetic block options and the Page settings on the left, and the live preview of the composed figure on the right.}
+
+\begin{description}
+  \item[Event panels (top to bottom)] tick the panels to include --- \gui{CALLISTO dynamic
+    spectrum}, \gui{STEREO/SWAVES}, \gui{GOES X-ray flux}, \gui{GOES proton flux (SEP)} and
+    \gui{Event catalogs} --- set each panel's height, and reorder them with \gui{Move up} and
+    \gui{Move down}. The spectrum, GOES X-rays and catalogs are selected by default.
+  \item[Time range (UT)] \gui{Use the radio data's range}, or a \gui{Start} and \gui{End} of
+    your own.
+  \item[Thumbnails] a table of images (\gui{Time (UT)}, \gui{Source}, \gui{Image}) drawn as a row
+    above the panels. \gui{Add} and \gui{Remove} edit the list and \gui{Three across the range}
+    adds three evenly spaced thumbnails. Sources are AIA, EIT, LASCO C2 and C3, and STEREO COR1
+    and COR2. A frame already loaded in Solar Image Analysis or the GCS window near the chosen
+    time is used as it is processed there; otherwise a Helioviewer image is fetched. Each
+    thumbnail's time is drawn as a dashed line down through the panels.
+  \item[Geomagnetic block (its own time axis)] \gui{Show the geomagnetic response} adds the
+    Geomagnetic Response panels below the event panels, on their own days-long axis, with the
+    radio interval shaded and the DONKI markers; check boxes choose its panels.
+  \item[Page] \gui{Width}: \gui{8.8 cm (one column)}, \gui{12 cm}, \gui{18 cm (two columns)} or
+    custom (4--40~cm); \gui{Height}: automatic or fixed; \gui{Font scale} (0.5--2); and a
+    \gui{Title}.
+  \item[Fetch missing data] downloads what the chosen panels and thumbnails need and is not yet
+    loaded (GOES X-rays and protons, thumbnails). The status line reports what was fetched.
+  \item[Export…] saves the figure as PNG, PDF, EPS, SVG, TIFF or JPG.
+\end{description}
+
+\screenshot[0.6\linewidth]{event-context/event_figure_example}{An exported Event Figure (18~cm wide) for the event of 2~March 2022: AIA thumbnails, the CALLISTO and STEREO/SWAVES spectra, the catalog lanes and the geomagnetic block.}{fig:event-figure-example}{An exported Event Figure at 18 cm width: a row of three thumbnails (for example AIA 193 and LASCO C2) with dashed time lines, the CALLISTO spectrum, GOES X-ray flux, the event catalog lanes, and the geomagnetic block (Dst/SYM-H and Kp) on its own time axis.}
+
+The composer's settings are saved in the project. Fetched GOES and proton series are used only
+for the event and time range they were fetched for, so after loading another file press
+\gui{Fetch missing data} again.

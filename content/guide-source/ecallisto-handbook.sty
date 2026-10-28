@@ -1,0 +1,248 @@
+%% ecallisto-handbook.sty
+%% Layout and markup for the e-CALLISTO FITS Analyzer User Guide.
+%% Compile with pdfLaTeX + Biber + MakeIndex (the Overleaf default toolchain).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ecallisto-handbook}[2026/10/05 v1.0 e-CALLISTO FITS Analyzer handbook style]
+
+% ---------------------------------------------------------------------------
+% Fonts: Libertinus Serif (text), Libertinus Sans (headings, interface
+% labels), Libertinus Math, and Inconsolata for file names and code.
+% ---------------------------------------------------------------------------
+\RequirePackage[T1]{fontenc}
+\RequirePackage[english]{babel}
+\RequirePackage[mono=false]{libertinus}
+\RequirePackage{libertinust1math}
+\RequirePackage[varqu,varl,scaled=0.92]{zi4}
+\RequirePackage{textcomp}
+\RequirePackage[protrusion=true,expansion=true]{microtype}
+
+% Unicode characters that appear in interface labels
+\RequirePackage{newunicodechar}
+\newunicodechar{◀}{\ensuremath{\blacktriangleleft}}
+\newunicodechar{▶}{\ensuremath{\blacktriangleright}}
+\newunicodechar{☉}{\ensuremath{\odot}}
+\newunicodechar{↗}{\ensuremath{\nearrow}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{ε}{\ensuremath{\varepsilon}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{≤}{\ensuremath{\leq}}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{′}{\ensuremath{'}}
+\newunicodechar{″}{\ensuremath{''}}
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{₀}{\ensuremath{_0}}
+
+% ---------------------------------------------------------------------------
+% Colors
+% ---------------------------------------------------------------------------
+\RequirePackage[table]{xcolor}
+\definecolor{accent}{HTML}{1B4F8A}      % deep solar-physics blue
+\definecolor{accentdark}{HTML}{12345C}
+\definecolor{solar}{HTML}{D9822B}       % warm amber, used sparingly
+\definecolor{cautionc}{HTML}{A93226}
+\definecolor{tipc}{HTML}{2E7D4F}
+\definecolor{scic}{HTML}{5B4B8A}
+\definecolor{rulegray}{HTML}{B8C2CC}
+\definecolor{placeholderbg}{HTML}{F4F6F9}
+
+% ---------------------------------------------------------------------------
+% Graphics, tables, lists, maths, units
+% ---------------------------------------------------------------------------
+\RequirePackage{graphicx}
+\RequirePackage{amsmath}
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{xltabular}
+\RequirePackage{array}
+\RequirePackage{multirow}
+\RequirePackage{enumitem}
+\RequirePackage[detect-all=true]{siunitx}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,calc,arrows.meta,shapes.geometric}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{csquotes}
+\RequirePackage{xparse}
+
+\sisetup{range-phrase = --, range-units = single, per-mode = symbol}
+\DeclareSIUnit{\Rsun}{\ensuremath{R_\odot}}
+\DeclareSIUnit{\gauss}{G}
+
+\setlist{itemsep=2pt, topsep=1pt, partopsep=0pt, parsep=0pt}
+\setlist[itemize]{label=\textcolor{accent}{\raisebox{0.15ex}{\scriptsize$\blacksquare$}}, leftmargin=1.4em}
+\setlist[enumerate]{leftmargin=1.8em}
+\setlist[description]{font=\sffamily\bfseries\color{accentdark}, leftmargin=1.4em}
+
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Float placement: allow fuller pages of figures and text
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+
+% ---------------------------------------------------------------------------
+% Captions
+% ---------------------------------------------------------------------------
+\captionsetup{font=small, labelfont={sf,bf,color=accent}, labelsep=quad,
+  margin=4mm, skip=6pt}
+\captionsetup[table]{position=top}
+
+% ---------------------------------------------------------------------------
+% KOMA-Script headings and page styles
+% ---------------------------------------------------------------------------
+\setkomafont{disposition}{\sffamily\bfseries\color{accentdark}}
+\setkomafont{chapter}{\Huge\sffamily\bfseries\color{accentdark}}
+\setkomafont{section}{\Large\sffamily\bfseries\color{accentdark}}
+\setkomafont{subsection}{\large\sffamily\bfseries\color{accentdark}}
+\setkomafont{subsubsection}{\normalsize\sffamily\bfseries\color{accentdark}}
+\setkomafont{paragraph}{\normalsize\sffamily\bfseries\color{accentdark}}
+\setkomafont{descriptionlabel}{\sffamily\bfseries\color{accentdark}}
+\setkomafont{part}{\Huge\sffamily\bfseries\color{accentdark}}
+\setkomafont{partnumber}{\LARGE\sffamily\color{accent}}
+
+\makeatletter
+\renewcommand*{\chapterformat}{%
+  {\color{accent}\fontsize{56}{56}\selectfont\sffamily\bfseries\thechapter}}
+\renewcommand*{\chapterlinesformat}[3]{%
+  \def\@ecallisto@num{#2}%
+  \ifx\@ecallisto@num\@empty\else
+    {\raggedleft #2\par}\nobreak\vspace{2pt}%
+  \fi
+  {\color{accent}\rule{\linewidth}{1.4pt}}\par\nobreak\vspace{8pt}%
+  {\raggedright #3\par}%
+}
+\makeatother
+\RedeclareSectionCommand[beforeskip=-0pt, afterskip=1.8\baselineskip]{chapter}
+\RedeclareSectionCommand[beforeskip=-1.6\baselineskip plus -0.4\baselineskip minus -0.2\baselineskip,
+  afterskip=0.5\baselineskip plus 0.1\baselineskip]{section}
+\RedeclareSectionCommand[beforeskip=-1.2\baselineskip plus -0.3\baselineskip minus -0.2\baselineskip,
+  afterskip=0.35\baselineskip plus 0.1\baselineskip]{subsection}
+\RedeclareSectionCommand[beforeskip=-1.0\baselineskip plus -0.2\baselineskip minus -0.1\baselineskip,
+  afterskip=0.25\baselineskip plus 0.1\baselineskip]{subsubsection}
+
+\RequirePackage[automark,headsepline=0.4pt]{scrlayer-scrpage}
+\clearpairofpagestyles
+\automark[section]{chapter}
+\ihead{\headmark}
+\ohead{\pagemark}
+\ofoot[\pagemark]{}
+\setkomafont{pagehead}{\small\sffamily\color{accentdark}}
+\setkomafont{pagenumber}{\small\sffamily\bfseries\color{accent}}
+\setkomafont{pageheadfoot}{\small\sffamily}
+\renewcommand*{\chaptermarkformat}{\thechapter\enskip}
+\renewcommand*{\sectionmarkformat}{\thesection\enskip}
+
+% Wider page-number box in the table of contents
+\makeatletter\renewcommand*{\@pnumwidth}{2.4em}\makeatother
+
+% Table of contents in sans for entries of part/chapter level
+\setkomafont{chapterentry}{\sffamily\bfseries\color{accentdark}}
+\setkomafont{partentry}{\sffamily\bfseries\large\color{accent}}
+
+% ---------------------------------------------------------------------------
+% Interface markup
+% ---------------------------------------------------------------------------
+% \gui{Label}              a button, field, check box, tab or window label
+% \menu{File > Export As}  a menu path
+% \kbd{Ctrl+S}             a keyboard shortcut
+% \file{name.efaproj}      a file name, extension or folder (breakable)
+\newcommand{\gui}[1]{\textsf{#1}}
+\newcommand{\menusep}{\nobreak\hspace{0.2em}\textcolor{accent}{\ensuremath{\rightarrow}}\hspace{0.2em}\allowbreak}
+\ExplSyntaxOn
+\seq_new:N \l__ecallisto_menu_seq
+\NewDocumentCommand{\menu}{m}{
+  \seq_set_split:Nnn \l__ecallisto_menu_seq { > } { #1 }
+  \textsf{ \seq_use:Nn \l__ecallisto_menu_seq { \menusep } }
+}
+\ExplSyntaxOff
+\newtcbox{\kbd}{on line, enhanced, boxsep=0pt, left=2.2pt, right=2.2pt,
+  top=1.2pt, bottom=1.2pt, colback=black!4, colframe=black!45,
+  boxrule=0.45pt, arc=1.6pt, fontupper=\sffamily\footnotesize}
+\RequirePackage{url}
+\DeclareUrlCommand\file{\urlstyle{tt}}
+\Urlmuskip=0mu plus 2mu
+
+\newcommand{\Rsun}{\ensuremath{R_\odot}}
+\newcommand{\appname}{e-CALLISTO FITS Analyzer}
+\newcommand{\appversion}{3.2.0}
+\newcommand{\thead}[1]{\textsf{\bfseries\small #1}}
+\newcommand{\callout}[1]{\tikz[baseline=(c.base)]\node[circle, draw=cautionc,
+  line width=0.8pt, text=cautionc, inner sep=0.8pt, minimum size=1.15em,
+  font=\sffamily\bfseries\scriptsize] (c) {#1};}
+
+% ---------------------------------------------------------------------------
+% Admonitions
+% ---------------------------------------------------------------------------
+\tcbset{ecallistobox/.style={enhanced, breakable, boxrule=0pt, leftrule=2.6pt,
+  arc=0pt, outer arc=0pt, left=9pt, right=9pt, top=5pt, bottom=5pt,
+  before skip=8pt, after skip=8pt, fontupper=\small}}
+\newtcolorbox{note}[1][Note]{ecallistobox, colback=accent!5, colframe=accent,
+  before upper={\textsf{\textbf{\textcolor{accent}{#1.}}}\enspace}}
+\newtcolorbox{tip}[1][Tip]{ecallistobox, colback=tipc!6, colframe=tipc,
+  before upper={\textsf{\textbf{\textcolor{tipc}{#1.}}}\enspace}}
+\newtcolorbox{caution}[1][Caution]{ecallistobox, colback=cautionc!5, colframe=cautionc,
+  before upper={\textsf{\textbf{\textcolor{cautionc}{#1.}}}\enspace}}
+\newtcolorbox{background}[1][Background]{ecallistobox, colback=scic!5, colframe=scic,
+  colbacktitle=scic!12, coltitle=scic, fonttitle=\sffamily\bfseries\small,
+  toptitle=2pt, bottomtitle=2pt, titlerule=0pt, title={#1}}
+
+% Numbered procedure steps
+\newlist{steps}{enumerate}{1}
+\setlist[steps]{label=\textsf{\textbf{\textcolor{accent}{\arabic*}}}, leftmargin=1.9em, itemsep=3pt}
+\newcommand{\procedure}[1]{\par\medskip\noindent{\sffamily\bfseries\color{accentdark}#1}\par\nobreak\smallskip}
+
+% ---------------------------------------------------------------------------
+% Screenshots with automatic placeholders
+% ---------------------------------------------------------------------------
+% \screenshot[width]{folder/name}{Caption}{fig:label}{What to capture}
+% If figures/folder/name.png exists it is included; otherwise a framed
+% placeholder shows the expected file name and capture instructions.
+\newlength{\ecallistophw}
+\newtcolorbox{placeholderbox}{enhanced, width=\ecallistophw, colback=placeholderbg,
+  colframe=rulegray, boxrule=0.8pt, arc=2pt,
+  left=10pt, right=10pt, top=10pt, bottom=10pt, halign=center, valign=center,
+  height from={0.42\ecallistophw} to {0.9\textheight}, fontupper=\small\sffamily}
+\newcommand{\placeholder}[3][\linewidth]{%
+  \setlength{\ecallistophw}{#1}%
+  \begin{placeholderbox}%
+    {\color{accent}\large\textbf{Screenshot placeholder}}\par\smallskip
+    {\footnotesize\ttfamily figures/\detokenize{#2}.png}\par\medskip
+    {\color{black!70}\footnotesize #3\par}%
+  \end{placeholderbox}}
+\newcommand{\screenshot}[5][\linewidth]{%
+  \begin{figure}[!htbp]
+    \centering
+    \IfFileExists{figures/#2.png}{%
+      \includegraphics[width=#1,height=0.70\textheight,keepaspectratio]{figures/#2.png}%
+    }{%
+      \placeholder[#1]{#2}{#5}%
+    }%
+    \caption{#3}\label{#4}
+  \end{figure}}
+
+% Index group headings (used by index.ist)
+\newcommand{\indexgroup}[1]{\par\bigskip{\sffamily\bfseries\large\color{accent}#1}\par\smallskip}
+
+% ---------------------------------------------------------------------------
+% Cross-referencing, PDF metadata
+% ---------------------------------------------------------------------------
+\RequirePackage[hyperindex=true]{hyperref}
+\hypersetup{colorlinks=true, linkcolor=accent, citecolor=accent, urlcolor=accent,
+  bookmarksnumbered=true, bookmarksopen=true, bookmarksopenlevel=1,
+  pdftitle={e-CALLISTO FITS Analyzer User Guide},
+  pdfauthor={Sahan S Liyanage},
+  pdfsubject={User guide for the e-CALLISTO FITS Analyzer, version 3.2.0},
+  pdfkeywords={e-CALLISTO, solar radio, dynamic spectrum, type II burst, CME, GCS, PFSS, geomagnetic storm, space weather}}
+\RequirePackage{bookmark}
+\urlstyle{same}
+
+\endinput

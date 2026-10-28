@@ -157,10 +157,26 @@ The \gui{Observer separation}\index{Compare Viewpoint!observer separation} line 
 \label{sec:nrgf}
 \index{NRGF}
 
-For coronagraph data the \gui{Coronagraph Tools} card offers \gui{NRGF radial filter}\index{NRGF}, the
-normalizing-radial-graded filter \parencite{morgan2006}. It flattens the steep radial fall-off
-of coronal brightness so that faint CME fronts become visible at all heights. It applies to
-the plain frame view; difference images already remove the background.
+For coronagraph data the \gui{Coronagraph Tools} card offers two tools:
+\begin{description}
+  \item[NRGF radial filter]\index{NRGF} the normalizing-radial-graded filter
+    \parencite{morgan2006}. It flattens the steep radial fall-off of coronal brightness so that
+    faint CME fronts become visible at all heights. It applies to the plain frame view;
+    difference images already remove the background.
+  \item[AIA 193 Sun in the occulter]\index{AIA 193 Sun in the occulter} for SOHO/LASCO C2 and
+    C3 frames. One tick fills each frame's occulted center with the SDO/AIA 193~Å image nearest
+    its time, so that an eruption on the disk and the CME in the corona are seen together. The whole AIA image is kept, off-limb corona included, at true
+    scale (it is small in C3), and it never covers LASCO's own field of view. The AIA frames
+    come from Helioviewer's JPEG2000 archive, so a day's series builds in seconds.
+    \gui{AIA colormap}, below the tick box, recolors the AIA image at once (AIA passband maps,
+    grey, hot, inferno and others), while the LASCO color map stays under \gui{Display \&
+    Crop}. The layer is also listed in \gui{Overlay Layers}, where its color map, opacity and
+    midtones can be changed. Untick to return to the plain LASCO frames.
+\end{description}
+
+Composites are blended each time a frame is drawn, so the color map, contrast sliders, scale,
+NRGF filter and running or base difference keep working on them (in a difference view the AIA
+image is differenced too), and they play, measure and export like plain frames.
 
 \section{Overlay layers}
 \label{sec:overlay-layers}
@@ -182,9 +198,11 @@ to the outer corona.
     inner edge stay transparent so that the layer below shows through.
   \item[Time match] how far from each loaded frame's time a layer frame may be taken
     (1--720~min; default 30~min). Widen it for slow cadences or patchy archives.
-  \item[Build Composite] downloads each layer's matching frames, reprojects them onto the
-    loaded series and blends them, in the background with a progress bar. The result replaces
-    the view and works with the measurement tools, plot export and movie export.
+  \item[Build Composite] downloads each layer's matching frames and reprojects them onto the
+    loaded series, in the background with a progress bar. The layers are then blended live on
+    every draw, so the display controls keep working, and the result works with the
+    measurement tools, plot export and movie export. A composite built after a crop is cut to
+    the same crop.
   \item[Clear] drops the composite and restores the originally loaded frames.
 \end{description}
 
@@ -242,8 +260,12 @@ photospheric vector field:
 \begin{description}
   \item[Movie Export card] choose the \gui{Content} (\gui{Frames}, \gui{Running Difference}
     or \gui{Base Difference}\index{base difference}) and the \gui{Format} (\gui{MP4} or \gui{GIF}), and click
-    \gui{Build Movie…}\index{movie export}. Movies use the playback speed set under the viewer and the current
-    color map, scale, clipping and crop.
+    \gui{Build Movie…}\index{movie export}. Movies play north up, as on screen, and use the
+    playback speed set under the viewer and the current color map, scale, clipping and crop.
+    With \gui{Frame labels (instrument, date, time)} ticked (the default), each frame carries
+    its instrument and UTC observation date and time on a thin stripe along the bottom, and
+    the difference it shows in a running- or base-difference movie; untick it for a clean
+    movie.
   \item[Export MP4] in the header bar makes a one-click MP4 of the loaded sequence with the
     current display settings.
   \item[Export Plot] saves the current frame, with its overlays, as an image.

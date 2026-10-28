@@ -29,7 +29,7 @@ export default function Science() {
         <p>The emission mode matters: assigning the same observed frequency to fundamental or harmonic emission produces different inferred electron densities. A spectrum alone does not always resolve that ambiguity. <a href="https://science.nasa.gov/wp-content/uploads/2023/05/GapAnalysisReport_full_final1.pdf" target="_blank" rel="noreferrer">Background: NASA-hosted solar radio emission overview (§5.1.3)</a>.</p>
 
         <h2 id="drift">Frequency drift and the corona</h2>
-        <p>A drifting emission lane traces a change in observed frequency over time. Converting that drift to a radial height or speed requires an emission assumption and a coronal electron-density model. Version 3.1.0 provides the Newkirk, Saito, Leblanc, Baumbach–Allen and Mann models with 1–4 fold multipliers, and compares the resulting shock speeds and heights side by side.</p>
+        <p>A drifting emission lane traces a change in observed frequency over time. Converting that drift to a radial height or speed requires an emission assumption and a coronal electron-density model. The analyzer provides the Newkirk, Saito, Leblanc, Baumbach–Allen and Mann models with 1–4 fold multipliers, and compares the resulting shock speeds and heights side by side.</p>
         <p>For a chosen monotonic density model, a frequency can be mapped to a model height. The resulting height–time curve gives a model-dependent speed. Compare plausible models and document the frequency range, time origin and fitting choices. The formulas used by the analyzer are collected in <Link href="/guide/formulas/">Appendix D of the user guide</Link>.</p>
 
         <h2 id="imaging">Imaging and CME geometry</h2>

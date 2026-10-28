@@ -20,7 +20,7 @@ export default function GuidePdf({ reader = false }: { reader?: boolean }) {
         : <Link className="button" href="/guide/pdf/"><BookOpen size={17} />PDF edition</Link>}
       {reader && <a className="button ghost" href={href} target="_blank" rel="noreferrer"><ExternalLink size={16} />Open in a new tab</a>}
     </div>
-    <p className="small"><FileText size={14} />{guidePdf.pages} pages · PDF · {guidePdf.size} · First edition, October 2026</p>
-    {reader && open && <iframe className="guide-pdf-frame" src={href} title="e-CALLISTO FITS Analyzer User Guide v3.1.0" />}
+    <p className="small"><FileText size={14} />{guidePdf.pages} pages · PDF · {guidePdf.size} · {guidePdf.edition}, October 2026</p>
+    {reader && open && <iframe className="guide-pdf-frame" src={href} title={`e-CALLISTO FITS Analyzer User Guide v${guidePdf.version}`} />}
   </div>;
 }
