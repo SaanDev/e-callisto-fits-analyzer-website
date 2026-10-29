@@ -69,7 +69,7 @@ export function softwareData(): Thing {
     screenshot: [absoluteUrl('/showcase/radio.webp'), absoluteUrl('/showcase/solar.webp'), absoluteUrl('/showcase/gcs.webp')],
     applicationCategory: 'EducationalApplication',
     applicationSubCategory: 'Solar radio astronomy and solar physics',
-    operatingSystem: 'Windows 10, Windows 11, macOS 15 or later (Apple silicon), Debian, Ubuntu',
+    operatingSystem: 'Windows 10, Windows 11, macOS 13 or later (Apple silicon), Debian, Ubuntu',
     softwareVersion: version,
     downloadUrl: absoluteUrl('/download/'),
     releaseNotes: absoluteUrl('/download/#whats-new'),

@@ -31,7 +31,7 @@ or from the project's GitHub releases page,
     \thead{Item} & \thead{Requirement} \\
     \midrule
     Windows & 64-bit Windows able to run x64 applications. Installation needs administrator approval. \\
-    macOS & macOS~15 (Sequoia) or later on a Mac with Apple silicon (arm64). \\
+    macOS & macOS~13 (Ventura) or later on a Mac with Apple silicon (arm64). \\
     Linux & Debian, Ubuntu or a derivative on 64-bit x86 (\texttt{amd64}), with the Qt/OpenGL runtime libraries \texttt{libgl1}, \texttt{libegl1}, \texttt{libxkbcommon-x11-0} and \texttt{libxcb-cursor0} (installed automatically by \texttt{apt}). \\
     Disk space & About 3~GB for the application, plus space for the download caches. Solar image sequences can occupy several gigabytes. \\
     Display & 1280~\(\times\)~800 pixels or larger. A resolution of at least 1440~\(\times\)~900 is recommended for the Solar Image Analysis and GCS CME Fitting windows. \\
@@ -72,7 +72,9 @@ or from the project's GitHub releases page,
   The macOS application is not notarized, so macOS blocks it the first time it opens. Try to
   open the application, close the warning, then open \menu{System Settings > Privacy \&
   Security} and click \gui{Open Anyway}\index{installation!macOS security prompt} next to
-  the message about the \appname{}, and confirm with your password. macOS remembers the
+  the message about the \appname{}, and confirm with your password. On macOS~13 and~14,
+  you can also Control-click the application in \file{Applications}, choose \gui{Open}
+  and confirm. macOS remembers the
   choice, so this is needed only once for each installed version.
 \end{note}
 

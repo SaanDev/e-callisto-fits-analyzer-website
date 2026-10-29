@@ -103,8 +103,8 @@ export default function Downloads() {
             <h3><Laptop size={20} />macOS</h3>
             <ol>
               <li>Open the disk image and drag <strong>e-Callisto FITS Analyzer</strong> into <strong>Applications</strong>.</li>
-              <li>Open the app once, then choose <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
-              <li><strong>macOS 13 and 14:</strong> v{version} needs macOS 15 or later. Install <a className="text-link" href="#previous">v3.1.0</a> instead, then Control-click the app, choose <strong>Open</strong> and confirm.</li>
+              <li><strong>macOS 15 and later:</strong> open the app once, then choose <strong>System Settings → Privacy &amp; Security → Open Anyway</strong>.</li>
+              <li><strong>macOS 13 and 14:</strong> Control-click the app in <strong>Applications</strong>, choose <strong>Open</strong> and confirm.</li>
             </ol>
           </article>
         </div>
@@ -143,7 +143,7 @@ export default function Downloads() {
         <div>
           <strong>Earlier fixes in v3.1.2 and v3.1.1.</strong>
           {patchReleases.map(r => <p key={r.version}><strong>v{r.version} · {r.platforms}.</strong> {r.fixes.join(' ')}</p>)}
-          <p>The macOS app requires macOS 15 Sequoia or later. On macOS 13 or 14, use <a className="text-link" href="#previous">v3.1.0</a>. Everything below arrived in v3.1.0.</p>
+          <p>Both current editions support macOS 13 Ventura or later on Apple silicon. Everything below arrived in v3.1.0.</p>
         </div>
       </div>
       <div className="highlight-grid">

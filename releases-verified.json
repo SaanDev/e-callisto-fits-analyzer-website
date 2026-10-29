@@ -12,9 +12,9 @@
       },
       {
         "name": "e-callisto-fits-analyzer_3.2.0-lite_macOS_arm64.dmg",
-        "size": 15510102,
+        "size": 15509944,
         "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.2.0/e-callisto-fits-analyzer_3.2.0-lite_macOS_arm64.dmg",
-        "digest": "sha256:21c89c52d4f6fdc942326fa7c18eae73fed339da6f62caabc7c658aa87202e1f"
+        "digest": "sha256:fa12654b5e9c7f2146b027fc35ddf49641c9a05eb10dab98c46f7c69c87bc5eb"
       },
       {
         "name": "e-callisto-fits-analyzer_3.2.0_amd64.deb",
@@ -24,9 +24,9 @@
       },
       {
         "name": "e-callisto-fits-analyzer_3.2.0_macOS_arm64.dmg",
-        "size": 883742052,
+        "size": 559928611,
         "browser_download_url": "https://github.com/SaanDev/e-Callisto_FITS_Analyzer/releases/download/v3.2.0/e-callisto-fits-analyzer_3.2.0_macOS_arm64.dmg",
-        "digest": "sha256:d628848ec740f496102570a0ced3c55343a6ccd1bc82780d71de5ffe7309ea4b"
+        "digest": "sha256:6a92a18ca49e7b5b69b990afa50012d91baacc60140af84df15d1ed66f59c8bf"
       },
       {
         "name": "e-CALLISTO_FITS_Analyzer_v3.2.0-lite_Setup.exe",
@@ -41,7 +41,7 @@
         "digest": "sha256:e84f6ffdbb1dcbc6d58b6adac719c47b5e02338c58bc69dfd65d9a31f3df9dcc"
       }
     ],
-    "verification": "Size and SHA-256 from the GitHub release assets API, 2026-10-27."
+    "verification": "Size and SHA-256 from the GitHub release assets API, 2026-10-29."
   },
   {
     "tag": "v3.1.2(WIndows)",
