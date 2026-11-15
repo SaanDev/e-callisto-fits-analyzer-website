@@ -85,7 +85,7 @@ def main():
     except Exception as error:  # network, authentication or API errors
         message = f'Could not fetch sponsors from GitHub: {error}. Check that the SPONSORS_TOKEN secret is valid and has not expired.'
         # A failed daily refresh leaves the last deployment, and its list, online.
-        # A push still deploys, without the list, so content updates are never blocked.
+        # A push still deploys with the committed snapshot, so content updates are never blocked.
         if os.environ.get('GITHUB_EVENT_NAME') == 'schedule':
             print(f'::error title=Sponsors::{message}')
             sys.exit(1)

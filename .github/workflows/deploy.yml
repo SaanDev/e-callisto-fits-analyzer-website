@@ -43,7 +43,7 @@ jobs:
         run: python3 scripts/fetch-sponsors.py
         env:
           # Personal access token (classic) with read:user and read:org. Optional:
-          # without it the Sponsor page shows its "be the first" message.
+          # without it the Sponsor page uses the committed public snapshot.
           SPONSORS_TOKEN: ${{ secrets.SPONSORS_TOKEN }}
 
       - name: Build

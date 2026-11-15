@@ -1,4 +1,21 @@
 {
-  "updated": null,
-  "sponsors": []
+  "updated": "2026-11-15",
+  "sponsors": [
+    {
+      "login": "wreeve",
+      "name": "Whitham D. Reeve",
+      "url": "https://github.com/wreeve",
+      "avatar": "https://avatars.githubusercontent.com/u/7328781?s=160&v=4",
+      "active": true,
+      "since": null
+    },
+    {
+      "login": "KhPre",
+      "name": "KhPre",
+      "url": "https://github.com/KhPre",
+      "avatar": "https://avatars.githubusercontent.com/u/338719422?s=160&v=4",
+      "active": false,
+      "since": null
+    }
+  ]
 }

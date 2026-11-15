@@ -62,9 +62,9 @@ The Community page links to [GitHub Discussions](https://github.com/SaanDev/e-Ca
 
 ## Sponsors
 
-The Sponsor page (`/sponsor/`) links to [GitHub Sponsors](https://github.com/sponsors/SaanDev) and lists the maintainer's public sponsors. `scripts/fetch-sponsors.py` writes them to `content/sponsors.json` before each build, and the deploy workflow also runs once a day so new sponsors appear without a push. Private sponsors and amounts are never fetched. The committed `content/sponsors.json` is an empty list, which the page shows as "Be the first to sponsor".
+The Sponsor page (`/sponsor/`) links to [GitHub Sponsors](https://github.com/sponsors/SaanDev) and lists the maintainer's public sponsors. `content/sponsors.json` contains a verified public snapshot so sponsors appear even without a sync token. Sponsorship dates are left as `null` when they are unavailable; the page only displays a date when GitHub supplies one. Private sponsors and amounts are never fetched.
 
-To turn the list on, create a [personal access token (classic)](https://github.com/settings/tokens/new) with the `read:user` and `read:org` scopes, then add it to this repository under **Settings → Secrets and variables → Actions** as a secret named `SPONSORS_TOKEN`. When the token expires, the daily run fails with a message saying so (the site stays online with the last list) and pushes still deploy, without the list, until the secret is renewed.
+To enable automatic updates, create a [personal access token (classic)](https://github.com/settings/tokens/new) with the `read:user` and `read:org` scopes, then add it to this repository under **Settings → Secrets and variables → Actions** as a secret named `SPONSORS_TOKEN`. `scripts/fetch-sponsors.py` refreshes the list before each build, and the deploy workflow also runs once a day. Without a token, it keeps the committed snapshot. When the token expires, the daily run fails with a message saying so (the site stays online with the last list) and pushes still deploy using the committed snapshot until the secret is renewed. Refresh and commit the snapshot when updating sponsors manually.
 
 GitHub pauses scheduled workflows in a public repository after 60 days without activity. Re-enable it from the **Actions** tab if that happens.
 
@@ -78,7 +78,7 @@ GitHub pauses scheduled workflows in a public repository after 60 days without a
 | Tutorials | `lib/tutorials.ts` |
 | ecallistolib library overview, installation and Python examples | `app/ecallistolib/page.tsx` (based on the library’s v1.5.0 README and package metadata) |
 | Citation and BibTeX | `lib/citation.ts` |
-| Public sponsors (generated at deploy time) | `content/sponsors.json` |
+| Public sponsors (saved snapshot, refreshed at deploy time when configured) | `content/sponsors.json` |
 | User guide PDF | `public/docs/e-CALLISTO_FITS_Analyzer_User_Guide_v3.2.0.pdf` |
 | User guide LaTeX source | `content/guide-source/` |
 | Web edition of the guide | `content/handbook.json` (generated) |

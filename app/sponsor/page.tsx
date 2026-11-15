@@ -28,7 +28,7 @@ function formatDate(date: string, month: 'long' | 'short' = 'long') {
 
 function SponsorWall({ list, past = false }: { list: SponsorEntry[]; past?: boolean }) {
   return <div className={'sponsor-wall' + (past ? ' past' : '')} data-reveal>
-    {list.map(s => <a key={s.login} className="sponsor-person" href={s.url} target="_blank" rel="noreferrer" title={`Sponsor since ${formatDate(s.since, 'short')}`}>
+    {list.map(s => <a key={s.login} className="sponsor-person" href={s.url} target="_blank" rel="noreferrer" title={s.since ? `Sponsor since ${formatDate(s.since, 'short')}` : undefined}>
       <img src={s.avatar} alt="" width={52} height={52} loading="lazy" />
       <span><strong>{s.name}</strong><small>@{s.login}</small></span>
     </a>)}
@@ -112,7 +112,7 @@ export default function Sponsor() {
         </div>
         <a className="button" href={links.sponsor} target="_blank" rel="noreferrer"><Heart size={17} style={{ color: 'var(--sponsor)' }} />Become a sponsor</a>
       </div>}
-      {sponsorsUpdated && <p className="small sponsor-updated">Updated daily from GitHub Sponsors. Last checked {formatDate(sponsorsUpdated)}.</p>}
+      {sponsorsUpdated && <p className="small sponsor-updated">Last checked against GitHub Sponsors on {formatDate(sponsorsUpdated)}.</p>}
     </section>
 
     <section className="section band" id="other-ways"><div className="wrap">

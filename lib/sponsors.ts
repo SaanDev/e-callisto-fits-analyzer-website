@@ -1,5 +1,5 @@
-// Public GitHub Sponsors, written to content/sponsors.json at deploy time by
-// scripts/fetch-sponsors.py. The committed file is an empty list.
+// Verified public GitHub Sponsors. scripts/fetch-sponsors.py refreshes the
+// committed snapshot at deploy time when SPONSORS_TOKEN is configured.
 import data from '@/content/sponsors.json';
 
 export type Sponsor = {
@@ -9,8 +9,8 @@ export type Sponsor = {
   avatar: string;
   /** Sponsoring now, rather than in the past. */
   active: boolean;
-  /** Date of the first sponsorship, YYYY-MM-DD. */
-  since: string;
+  /** Date of the first sponsorship, YYYY-MM-DD, when available from GitHub. */
+  since: string | null;
 };
 
 export const sponsors = data.sponsors as Sponsor[];
