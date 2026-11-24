@@ -2,18 +2,19 @@
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
-import { Radio, Orbit, Box, ArrowUpRight, Check } from 'lucide-react';
-import { asset, version } from '@/lib/site';
+import { Radio, Orbit, Box, ArrowUpRight, Maximize2, X } from 'lucide-react';
+import { asset } from '@/lib/site';
 
 const views = [
-  { id: 'radio', name: 'Radio spectra', image: 'radio.webp', caption: 'Process and analyze dynamic spectra', link: '/guide/processing-tools/', icon: Radio },
-  { id: 'imaging', name: 'Solar imaging', image: 'solar.webp', caption: 'Imaging, CME tracking and magnetic context', link: '/tools/solar-imaging/', icon: Orbit },
-  { id: 'gcs', name: '3D CME fitting', image: 'gcs.webp', caption: 'Reconstruct an eruption from multiple viewpoints', link: '/tools/gcs-fitting/', icon: Box },
+  { id: 'radio', name: 'Radio spectra', image: 'radio.webp', height: 1120, caption: 'Process spectra. Measure solar radio bursts.', alt: 'e-CALLISTO FITS Analyzer displaying a background-subtracted solar radio dynamic spectrum with frequency, time and intensity axes', link: '/guide/processing-tools/', icon: Radio },
+  { id: 'imaging', name: 'Solar imaging', image: 'solar.webp', height: 1172, caption: 'Track eruptions. Explore magnetic context.', alt: 'Solar Image Analyzer showing solar imagery, PFSS magnetic field lines and a CME height–time plot', link: '/tools/solar-imaging/', icon: Orbit },
+  { id: 'gcs', name: '3D CME fitting', image: 'gcs.webp', height: 1249, caption: 'Reconstruct a CME from multiple viewpoints.', alt: 'GCS CME fitting workspace with a red wireframe fitted to three coronagraph viewpoints', link: '/tools/gcs-fitting/', icon: Box },
 ];
 
 export default function WorkspacePreview() {
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const lightbox = useRef<HTMLDialogElement>(null);
 
   function onKeyDown(event: React.KeyboardEvent) {
     let next: number;
@@ -29,58 +30,21 @@ export default function WorkspacePreview() {
 
   const view = views[active];
   return <div className="workspace-preview">
-    <div className="workspace-heading">
-      <span className="workspace-kicker">Your observation. Every perspective.</span>
-      <span className="workspace-status"><span aria-hidden="true" />Actual software workspaces</span>
-    </div>
-    <div className="app-showcase-wrap">
-      <div className="app-showcase">
-        <div className="window-bar" aria-hidden="true">
-          <div className="window-dots"><i /><i /><i /></div>
-          <span className="window-title">e-CALLISTO FITS Analyzer</span>
-          <span className="window-label">V{version}</span>
-        </div>
-        <div className="workspace-tabs" role="tablist" aria-label="Explore analysis workspaces" onKeyDown={onKeyDown}>
-          {views.map((v, i) => <button
-            key={v.id}
-            ref={el => { tabs.current[i] = el; }}
-            type="button"
-            role="tab"
-            id={`workspace-tab-${v.id}`}
-            aria-selected={i === active}
-            aria-controls={`workspace-panel-${v.id}`}
-            tabIndex={i === active ? 0 : -1}
-            onClick={() => setActive(i)}
-          ><v.icon size={16} />{v.name}</button>)}
-          <span className="workspace-included"><Check size={13} />All included</span>
-        </div>
-        <div className="showcase-stage">
-          {views.map((v, i) => <div
-            key={v.id}
-            id={`workspace-panel-${v.id}`}
-            role="tabpanel"
-            tabIndex={0}
-            aria-labelledby={`workspace-tab-${v.id}`}
-            hidden={i !== active}
-            className="workspace-panel"
-          >
-            <img
-              src={asset(`/showcase/${v.image}`)}
-              alt={`${v.name} workspace: ${v.caption}`}
-              width={1800}
-              height={1172}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchPriority={i === 0 ? 'high' : 'low'}
-              decoding="async"
-            />
-          </div>)}
-        </div>
-        <div className="workspace-caption">
-          <p><view.icon size={15} /><span>{view.caption}</span></p>
-          <Link href={view.link}>Explore workspace <ArrowUpRight size={15} /></Link>
-        </div>
+    <div className="workspace-heading"><span className="workspace-kicker">Inside the analyzer</span><span className="workspace-status"><span aria-hidden="true" />Actual software screenshots</span></div>
+    <div className="app-showcase">
+      <div className="showcase-stage">
+        {views.map((v, i) => <div key={v.id} id={`workspace-panel-${v.id}`} role="tabpanel" tabIndex={0} aria-labelledby={`workspace-tab-${v.id}`} hidden={i !== active} className="workspace-panel">
+          <img src={asset(`/showcase/${v.image}`)} alt={v.alt} width={1800} height={v.height} loading={i === 0 ? 'eager' : 'lazy'} fetchPriority={i === 0 ? 'high' : 'low'} decoding="async" />
+        </div>)}
+        <button className="workspace-enlarge" type="button" onClick={() => lightbox.current?.showModal()} aria-label={`Enlarge ${view.name} screenshot`} title="View full screenshot"><Maximize2 size={16} /></button>
+      </div>
+      <div className="workspace-tabs" role="tablist" aria-label="Explore analysis workspaces" onKeyDown={onKeyDown}>
+        {views.map((v, i) => <button key={v.id} ref={el => { tabs.current[i] = el; }} type="button" role="tab" id={`workspace-tab-${v.id}`} aria-selected={i === active} aria-controls={`workspace-panel-${v.id}`} tabIndex={i === active ? 0 : -1} onClick={() => setActive(i)}><v.icon size={16} />{v.name}</button>)}
       </div>
     </div>
-    <div className="workspace-footnote"><Check size={14} aria-hidden="true" />No separate Python installation needed. Just install and explore.</div>
+    <div className="workspace-caption"><p>{view.caption}</p><Link href={view.link}>Explore<ArrowUpRight size={14} /></Link></div>
+    <dialog className="workspace-lightbox" ref={lightbox} aria-labelledby="workspace-lightbox-title" onClick={event => { if (event.target === event.currentTarget) lightbox.current?.close(); }}>
+      <div className="lightbox-content"><div className="lightbox-heading"><h2 id="workspace-lightbox-title">{view.name}</h2><form method="dialog"><button type="submit" className="icon-button" aria-label="Close screenshot"><X size={20} /></button></form></div><img src={asset(`/showcase/${view.image}`)} alt={view.alt} width={1800} height={view.height} /></div>
+    </dialog>
   </div>;
 }

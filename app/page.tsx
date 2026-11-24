@@ -1,29 +1,20 @@
 import Link from 'next/link';
-import { Download, BookOpen, ArrowRight, Activity, ScanLine, Layers, Monitor, ShieldCheck, Code2, MessagesSquare, Quote, Sparkles, Orbit, Box, Image as ImageIcon, FolderOpen, Satellite, Plus, Zap, CalendarRange, PanelsTopLeft, Earth } from 'lucide-react';
-import HeroSpectrum from '@/components/hero-spectrum';
+import { Download, BookOpen, ArrowRight, ArrowUpRight, Activity, ScanLine, Layers, Monitor, ShieldCheck, MessagesSquare, Quote, Orbit, Box, FolderOpen, Plus, Check, FileChartColumn } from 'lucide-react';
 import WorkspacePreview from '@/components/workspace-preview';
-import StatsBand from '@/components/stats-band';
-import ToolMap from '@/components/tool-map';
-import SolarShowcase from '@/components/solar-showcase';
-import HandbookCover from '@/components/handbook-cover';
 import { GitHubIcon } from '@/components/icons';
 import EditionComparison from '@/components/edition-comparison';
-import { releaseHighlights } from '@/lib/release-notes';
 import JsonLd from '@/components/json-ld';
-import { links, version } from '@/lib/site';
+import { asset, links, version } from '@/lib/site';
 import { pageMetadata, siteName, defaultDescription, websiteData, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: `${siteName} · Solar radio burst analysis software`, absoluteTitle: true, description: defaultDescription, path: '/' });
 
-const highlightIcons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, reports: BookOpen, imaging: ImageIcon, reset: Sparkles, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
-
-const radioFeatures = [
-  { icon: Activity, title: 'Clean solar radio spectra', body: 'Subtract the background, tune display thresholds and clean radio-frequency interference from raw spectra.', items: ['Mean, median or median (dB) background', 'RFI cleaning and noise clipping', 'Combine files across time and frequency'] },
-  { icon: ScanLine, title: 'Measure Type II radio bursts', body: 'Isolate features, extract intensity maxima and quantify drift, shock speed and Type II band splitting.', items: ['Automatic ridge tracking', 'Five coronal density models', 'Band-splitting magnetic field'] },
-  { icon: Layers, title: 'Explore space weather context', body: 'Place your observation in its space weather context with GOES X-rays, CME catalogs, geomagnetic indices and solar imagery.', items: ['GOES XRS & SEP, Kp, Dst', 'LASCO CME catalog', 'e-CALLISTO, Learmonth & STEREO/WAVES'] },
+const workflow = [
+  { icon: FolderOpen, title: 'Start with your observation', body: 'Open and combine FITS files, or find an event with the built-in archive downloader.', link: '/guide/opening-data/', label: 'Open your data' },
+  { icon: ScanLine, title: 'Bring the signal into focus', body: 'Subtract the background, clean radio interference and measure Type II burst drift.', link: '/guide/type-ii/', label: 'Explore burst analysis' },
+  { icon: FileChartColumn, title: 'Take your results further', body: 'Save your analysis as a project and export figures, measurements and reports.', link: '/guide/', label: 'Explore the user guide' },
 ];
 
-// Answers to what people search for before they find the analyzer. Each links to the guide chapter that covers it.
 const faqs = [
   { q: 'Which edition should I choose?', a: 'Choose Analyzer Lite for a lightweight CALLISTO radio workflow, including spectrum processing, burst measurements and exports. Choose the full analyzer for solar imaging, PFSS, GCS CME fitting, SWAVES and space-weather context. Both editions are available for Windows, Linux and macOS.', link: ['Compare editions and downloads', '/download/#editions'] },
   { q: 'What is e-CALLISTO FITS Analyzer?', a: 'e-CALLISTO FITS Analyzer is a free, open-source desktop application for Windows, macOS and Linux. It visualizes, processes and analyzes the solar radio dynamic spectra recorded by the e-CALLISTO spectrometer network, together with solar images from SDO, SOHO and STEREO.', link: ['Introduction', '/guide/introduction/'] },
@@ -34,145 +25,119 @@ const faqs = [
   { q: 'Do I need Python, and is it free?', a: 'No separate Python installation is needed: the installers for Windows, macOS and Linux include everything the analyzer uses. It is free and open source under the MIT license.', link: ['Installation and startup', '/guide/installation/'] },
 ];
 
-/** Keeps "e-CALLISTO" from breaking at its hyphen. */
+/** Keeps the product name together in narrow layouts. */
 const keepName = (text: string) => text.split('e-CALLISTO').flatMap((part, i) => i ? [<span className="nowrap" key={i}>e-CALLISTO</span>, part] : [part]);
 
 export default function Home() {
-  return <>
+  return <div className="homepage">
     <JsonLd data={[websiteData(), softwareData()]} />
-    <section className="hero">
-      <HeroSpectrum />
-      <div className="wrap">
-        <Link className="release-pill" href="/download/#whats-new">
-          <span className="dot" aria-hidden="true" />Introducing v{version} + Lite
-          <span className="pill-cta">See what’s new <ArrowRight size={13} /></span>
-        </Link>
-        <h1><span className="eyebrow">e-CALLISTO FITS Analyzer · Solar radio &amp; CME analysis</span> A clearer view of <em>our dynamic Sun.</em></h1>
-        <p className="hero-copy">e-CALLISTO FITS Analyzer is free, open-source software for visualizing and analyzing solar radio FITS data on Windows, macOS and Linux. Process dynamic spectra, measure Type II radio bursts and connect observations with solar imaging and CME reconstruction.</p>
-        <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Choose your edition</Link>
-          <Link className="button lg" href="/guide/"><BookOpen size={18} />Explore the user guide</Link>
-        </div>
-        <div className="hero-meta">
-          <span><Monitor size={15} />Windows · Linux · macOS</span><i />
-          <span><ShieldCheck size={15} />Free &amp; open source · MIT</span><i />
-          <span><Quote size={15} />Published in RAS Techniques &amp; Instruments</span>
+
+    <section className="product-hero" aria-labelledby="home-title">
+      <div className="wrap hero-grid">
+        <div className="hero-content">
+          <Link className="product-release" href="/download/#whats-new"><span>NEW</span>v{version} &amp; Analyzer Lite<ArrowRight size={14} /></Link>
+          <h1 id="home-title"><span className="product-name">e-CALLISTO FITS Analyzer</span>Solar radio data.<br /><em>Scientific clarity.</em></h1>
+          <p className="product-lede">Turn solar observations into scientific insight. Explore dynamic spectra, measure radio bursts and connect the full story of a solar eruption in one desktop toolkit.</p>
+          <div className="actions">
+            <Link className="button primary lg" href="/download/"><Download size={18} />Download for free</Link>
+            <Link className="button lg" href="/guide/"><BookOpen size={18} />User guide</Link>
+          </div>
+          <div className="product-platforms"><Monitor size={15} aria-hidden="true" /><span>Windows, macOS &amp; Linux</span><span className="platform-divider" aria-hidden="true" /><span>Free &amp; open source</span></div>
+          <p className="product-install-note"><Check size={14} aria-hidden="true" />No separate Python installation needed</p>
         </div>
         <WorkspacePreview />
       </div>
     </section>
 
-    <StatsBand />
+    <section className="research-strip" aria-label="About the software">
+      <div className="wrap research-strip-inner">
+        <p>Open tools.<br /><strong>Reproducible science.</strong></p>
+        <a href={links.repo} target="_blank" rel="noreferrer"><GitHubIcon size={22} /><span>Open development<small>Source available on GitHub</small></span><ArrowUpRight size={14} /></a>
+        <Link href="/citation/"><Quote size={23} /><span>Published research<small>RAS Techniques and Instruments</small></span><ArrowUpRight size={14} /></Link>
+        <a href={asset('/LICENSE.txt')} target="_blank" rel="noreferrer"><ShieldCheck size={23} /><span>Free to use &amp; build on<small>Licensed under MIT</small></span><ArrowUpRight size={14} /></a>
+      </div>
+    </section>
 
-    <ToolMap />
+    <section className="section wrap home-workflow" id="radio-tool" aria-labelledby="workflow-title">
+      <div className="section-heading" data-reveal>
+        <div><span className="eyebrow">A complete research workflow</span><h2 id="workflow-title">From your first FITS file<br />to your next finding.</h2></div>
+        <p>Spend less time moving between tools. Bring your data, processing and measurements together in a visual workspace.</p>
+      </div>
+      <div className="workflow-grid">
+        {workflow.map((step, i) => <article className="workflow-step" key={step.title} data-reveal>
+          <div className="workflow-step-top"><span className="workflow-icon"><step.icon size={22} /></span><span className="workflow-number">0{i + 1}</span></div>
+          <h3>{step.title}</h3><p>{step.body}</p>
+          <Link className="text-link" href={step.link}>{step.label}<ArrowRight size={15} /></Link>
+        </article>)}
+      </div>
+      <div className="workflow-capabilities"><span><Activity size={15} />Dynamic spectra</span><span><ScanLine size={15} />Automatic ridge tracking</span><span><Layers size={15} />Five coronal density models</span><span><FileChartColumn size={15} />Publication-ready figures</span></div>
+    </section>
 
-    <section className="section band" id="radio-tool">
+    <section className="section band home-perspectives" id="tools" aria-labelledby="perspectives-title">
       <div className="wrap">
         <div className="section-heading" data-reveal>
-          <div><span className="eyebrow">Tool 01 · e-CALLISTO FITS Analyzer</span><h2>Analyze solar radio<br />FITS data.</h2></div>
-          <p>Open e-CALLISTO FITS files, visualize solar radio dynamic spectra and analyze Type II bursts, from background subtraction to drift-rate measurements and publication-ready figures.</p>
+          <div><span className="eyebrow">The full analyzer</span><h2 id="perspectives-title">See the event.<br />Understand the bigger picture.</h2></div>
+          <p>Go beyond the radio spectrum with dedicated solar imaging and 3D reconstruction workspaces, included in the full edition.</p>
         </div>
-        <div className="feature-grid">
-          {radioFeatures.map((f, i) => <article className="feature spotlight" key={f.title} data-reveal style={{ '--delay': `${i * 90}ms` } as React.CSSProperties}>
-            <span className="card-icon"><f.icon size={22} /></span>
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-            <ul>{f.items.map(item => <li key={item}>{item}</li>)}</ul>
-          </article>)}
+        <div className="perspective-grid">
+          <article className="perspective-card" data-reveal>
+            <Link className="perspective-image" href="/tools/solar-imaging/" aria-label="Explore the Solar Image Analyzer"><img src={asset('/showcase/solar.webp')} alt="Solar Image Analyzer showing solar imagery, magnetic field lines and a CME height–time plot" width={1800} height={1172} loading="lazy" /></Link>
+            <div className="perspective-copy"><span className="perspective-label"><Orbit size={17} />Solar imaging</span><h3>Follow the Sun, frame by frame.</h3><p>Explore SDO, SOHO and STEREO images. Track CMEs, compare image sequences and overlay PFSS magnetic fields.</p><Link className="text-link" href="/tools/solar-imaging/">Explore solar imaging<ArrowRight size={15} /></Link></div>
+          </article>
+          <article className="perspective-card" data-reveal>
+            <Link className="perspective-image" href="/tools/gcs-fitting/" aria-label="Explore GCS CME fitting"><img src={asset('/showcase/gcs.webp')} alt="GCS CME fitting with a shared red wireframe across three coronagraph viewpoints" width={1800} height={1249} loading="lazy" /></Link>
+            <div className="perspective-copy"><span className="perspective-label"><Box size={17} />3D CME reconstruction</span><h3>One eruption. Multiple perspectives.</h3><p>Fit a shared GCS model to coronagraph observations. Reconstruct CME geometry, measure its evolution and export your results.</p><Link className="text-link" href="/tools/gcs-fitting/">Explore GCS fitting<ArrowRight size={15} /></Link></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section className="section wrap" id="editions">
+    <section className="section wrap home-editions" id="editions" aria-labelledby="editions-title">
       <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">Introducing Analyzer Lite</span><h2>Two editions.<br />One radio workflow.</h2></div>
-        <p>Choose a lightweight workspace for CALLISTO data or the complete solar analysis toolkit. Free and open source, on Windows, Linux and macOS.</p>
+        <div><span className="eyebrow">Choose your workspace</span><h2 id="editions-title">Two editions.<br />Open science in both.</h2></div>
+        <p>A focused radio workflow or the complete solar analysis toolkit. Choose what fits your research, on any supported platform.</p>
       </div>
       <EditionComparison />
+      <div className="home-release-note"><span className="tag">v{version}</span><p>New in this release: connected projects, event context and multi-panel figures.</p><Link className="text-link" href="/download/#whats-new">See what’s new<ArrowRight size={15} /></Link></div>
     </section>
 
-    <SolarShowcase />
-
-    <section className="section wrap" id="whats-new">
-      <div className="section-heading" data-reveal>
-        <div><span className="eyebrow">New in v{version}</span><h2>From a radio burst<br />to the whole event.</h2></div>
-        <p>A new Lite edition, event context on your spectrum, multi-panel event figures and expanded geomagnetic analysis. <Link className="text-link" href="/download/#whats-new">Full release notes <ArrowRight size={15} /></Link></p>
-      </div>
-      <div className="highlight-grid">
-        {releaseHighlights.map((h, i) => {
-          const Icon = highlightIcons[h.id as keyof typeof highlightIcons] ?? Sparkles;
-          return <article className={'highlight spotlight' + (h.tone ? ' ' + h.tone : '')} key={h.id} data-reveal style={{ '--delay': `${(i % 3) * 80}ms` } as React.CSSProperties}>
-            <span className="card-icon"><Icon size={20} /></span>
-            <h3>{h.title}</h3>
-            <ul>{h.items.slice(0, 3).map(([title]) => <li key={title}>{title}</li>)}</ul>
-          </article>;
-        })}
-      </div>
-    </section>
-
-    <section className="section band">
-      <div className="wrap learn-grid">
-        <div data-reveal>
-          <span className="eyebrow">Start curious. Go deeper.</span>
-          <h2>Your next discovery<br />starts here.</h2>
-          <p>The e-CALLISTO FITS Analyzer user guide covers every window, method and formula, from opening solar radio FITS files to three-dimensional CME reconstruction. Read it online or keep the PDF.</p>
-          <div className="resource-links" style={{ marginTop: 32 }}>
-            {[['01', 'User guide', 'Searchable, illustrated, chapter by chapter.', '/guide/'], ['02', 'Tutorials', 'Follow an observation from import to export.', '/tutorials/'], ['03', 'The science', 'Understand the physics behind the spectrum.', '/science/']].map(([n, title, body, url]) =>
-              <Link href={url} key={n}><span>{n}</span><div><h3>{title}</h3><p>{body}</p></div><ArrowRight size={20} /></Link>)}
-          </div>
-        </div>
-        <div data-reveal="scale" style={{ '--delay': '120ms' } as React.CSSProperties}><HandbookCover badge={false} /></div>
-      </div>
-    </section>
-
-    <section className="section wrap">
-      <div className="community-banner">
-        <div className="community-card" data-reveal>
-          <span className="eyebrow">Science works better together</span>
-          <h2>A shared sky.<br />A shared conversation.</h2>
-          <p>Ask questions, compare methods and share what you’re learning with researchers and students using the analyzer.</p>
-          <div className="actions">
-            <Link className="button primary" href="/community/"><MessagesSquare size={17} />Join the discussion</Link>
-            <a className="button" href={links.repo} target="_blank" rel="noreferrer"><GitHubIcon size={17} />Star on GitHub</a>
-          </div>
-        </div>
-        <div className="citation-teaser" data-reveal style={{ '--delay': '100ms' } as React.CSSProperties}>
-          <span className="eyebrow">Built for research</span>
-          <h3>Using the analyzer<br />in your work?</h3>
-          <p>Credit the software and make your methods easier to reproduce. The paper is published in RAS Techniques and Instruments.</p>
-          <Link className="text-link" href="/citation/">Citation &amp; BibTeX <ArrowRight size={15} /></Link>
-          <a className="github-link" href={links.repo} target="_blank" rel="noreferrer"><Code2 size={18} />Explore the source on GitHub</a>
-        </div>
-      </div>
-    </section>
-
-    <section className="section band" id="faq">
+    <section className="section band home-resources" aria-labelledby="resources-title">
       <div className="wrap">
         <div className="section-heading" data-reveal>
-          <div><span className="eyebrow">Frequently asked questions</span><h2>New to <span className="nowrap">e-CALLISTO</span> data?</h2></div>
-          <p>Short answers to common questions. Each links to the user guide chapter that covers it in depth.</p>
+          <div><span className="eyebrow">Built for your next question</span><h2 id="resources-title">A clear path to getting started.</h2></div>
+          <p>Practical guidance, scientific background and an open community to help you move your research forward.</p>
+        </div>
+        <div className="home-resource-grid">
+          {[
+            { icon: BookOpen, title: 'Read the user guide', body: 'Illustrated, searchable documentation for every workspace, method and formula.', label: 'Explore the guide', href: '/guide/' },
+            { icon: ScanLine, title: 'Learn by doing', body: 'Follow practical tutorials that take an observation from import to analysis and export.', label: 'Browse tutorials', href: '/tutorials/' },
+            { icon: MessagesSquare, title: 'Join the conversation', body: 'Ask questions, discuss methods and share your work with researchers and students.', label: 'Visit the community', href: '/community/' },
+          ].map(resource => <Link className="home-resource" href={resource.href} key={resource.href} data-reveal><resource.icon size={23} /><h3>{resource.title}</h3><p>{resource.body}</p><span>{resource.label}<ArrowUpRight size={16} /></span></Link>)}
+        </div>
+      </div>
+    </section>
+
+    <section className="section home-faq" id="faq">
+      <div className="wrap">
+        <div className="section-heading" data-reveal>
+          <div><span className="eyebrow">A few useful answers</span><h2>Before you get started.</h2></div>
+          <p>New to <span className="nowrap">e-CALLISTO</span> data? Find the essentials here, with more detail in the user guide.</p>
+          <Link className="text-link" href="/guide/">Visit the documentation<ArrowRight size={15} /></Link>
         </div>
         <div className="faq-list" data-reveal>
           {faqs.map((f, i) => <details className="faq-item" name="home-faq" key={f.q} open={i === 0}>
             <summary><span className="faq-number" aria-hidden="true">0{i + 1}</span><h3>{keepName(f.q)}</h3><Plus size={19} aria-hidden="true" /></summary>
-            <div className="faq-answer">
-              <p>{keepName(f.a)}</p>
-              <Link className="text-link" href={f.link[1]}>{f.link[0]} <ArrowRight size={15} /></Link>
-            </div>
+            <div className="faq-answer"><p>{keepName(f.a)}</p><Link className="text-link" href={f.link[1]}>{f.link[0]}<ArrowRight size={15} /></Link></div>
           </details>)}
         </div>
       </div>
     </section>
 
-    <section className="wrap" style={{ paddingBlock: 96 }}>
-      <div className="cta-banner" data-reveal="scale">
-        <h2>Ready to look closer at the Sun?</h2>
-        <p>Download the latest e-CALLISTO FITS Analyzer for Windows, Linux or macOS. Free, open source and ready for your next observation.</p>
-        <div className="actions">
-          <Link className="button primary lg" href="/download/"><Download size={18} />Choose your edition</Link>
-          <Link className="button secondary lg" href="/guide/"><BookOpen size={18} />Read the guide</Link>
-        </div>
+    <section className="wrap home-cta-section">
+      <div className="home-cta" data-reveal>
+        <div><span className="eyebrow">Your next observation starts here</span><h2>Bring your solar data to life.</h2><p>Free, open-source tools for a closer look at our dynamic Sun.</p></div>
+        <div><Link className="button primary lg" href="/download/"><Download size={18} />Download the analyzer<ArrowRight size={17} /></Link><span>Windows · macOS · Linux</span></div>
       </div>
     </section>
-  </>;
+  </div>;
 }
