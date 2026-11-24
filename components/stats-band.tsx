@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { version } from '@/lib/site';
+import { links, version } from '@/lib/site';
 
 const CACHE_KEY = 'callisto-download-total';
 const CACHE_MS = 30 * 60 * 1000;
@@ -37,6 +37,15 @@ function subscribeDownloads(listener: () => void) {
 
 function useDownloadTotal() {
   return useSyncExternalStore(subscribeDownloads, () => downloadTotal, () => null);
+}
+
+/** Compact download total for the Overview page's research strip. */
+export function InstallerDownloadCount() {
+  const downloads = useDownloadTotal();
+  return <a className="installer-downloads" href={links.releases} target="_blank" rel="noreferrer" title="Installer downloads reported by GitHub Releases">
+    <strong aria-live="polite">{downloads === null ? '—' : downloads.toLocaleString('en-US')}</strong>
+    <span>Installer downloads<small>Across all releases</small></span>
+  </a>;
 }
 
 function CountUp({ value, suffix = '' }: { value: number; suffix?: string }) {

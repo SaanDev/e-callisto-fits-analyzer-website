@@ -282,8 +282,8 @@ body:has(.workspace-lightbox[open]) { overflow: hidden; }
 
 .research-strip { border-block: 1px solid var(--line); background: var(--panel); }
 .research-strip-inner { display: grid; grid-template-columns: .85fr 1fr 1.15fr 1fr; align-items: center; gap: 28px; padding-block: 29px; }
-.research-strip-inner > p { font-size: 12px; line-height: 1.65; }
-.research-strip-inner > p strong { color: var(--ink-2); font-weight: 550; }
+.research-strip .installer-downloads { gap: 12px; }
+.installer-downloads strong { color: var(--ink); font-size: 32px; font-weight: 600; line-height: 1.1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; min-width: 2ch; }
 .research-strip a { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 550; color: var(--ink-2); }
 .research-strip a > svg:first-child { flex-shrink: 0; color: var(--muted); }
 .research-strip small { display: block; font-size: 10px; font-weight: 400; margin-top: 3px; color: var(--muted); }
@@ -350,9 +350,7 @@ body:has(.workspace-lightbox[open]) { overflow: hidden; }
   .product-lede { max-width: 540px; }
   .workspace-preview { width: 100%; max-width: 700px; justify-self: center; }
   .research-strip-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .research-strip-inner > p { grid-column: 1 / -1; }
-  .research-strip-inner > p br { display: none; }
-  .research-strip-inner > p strong { margin-left: 5px; }
+  .research-strip .installer-downloads { grid-column: 1 / -1; }
   .research-strip a { font-size: 11px; gap: 9px; }
   .research-strip small { font-size: 9px; }
   .research-strip a > svg:last-child { display: none; }
@@ -391,7 +389,7 @@ body:has(.workspace-lightbox[open]) { overflow: hidden; }
   .workspace-enlarge { width: 34px; height: 34px; bottom: 7px; right: 7px; }
   .workspace-lightbox { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
   .research-strip-inner { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 24px; }
-  .research-strip-inner > p { margin-bottom: 14px; }
+  .research-strip .installer-downloads { padding: 0 0 18px; border-top: 0; }
   .research-strip a { padding-block: 13px; border-top: 1px solid var(--line); gap: 13px; font-size: 12px; }
   .research-strip small { font-size: 10px; }
   .research-strip a > svg:last-child { display: block; }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Download, BookOpen, ArrowRight, ArrowUpRight, Activity, ScanLine, Layers, Monitor, ShieldCheck, MessagesSquare, Quote, Orbit, Box, FolderOpen, Plus, Check, FileChartColumn } from 'lucide-react';
 import WorkspacePreview from '@/components/workspace-preview';
+import { InstallerDownloadCount } from '@/components/stats-band';
 import { GitHubIcon } from '@/components/icons';
 import EditionComparison from '@/components/edition-comparison';
 import JsonLd from '@/components/json-ld';
@@ -51,7 +52,7 @@ export default function Home() {
 
     <section className="research-strip" aria-label="About the software">
       <div className="wrap research-strip-inner">
-        <p>Open tools.<br /><strong>Reproducible science.</strong></p>
+        <InstallerDownloadCount />
         <a href={links.repo} target="_blank" rel="noreferrer"><GitHubIcon size={22} /><span>Open development<small>Source available on GitHub</small></span><ArrowUpRight size={14} /></a>
         <Link href="/citation/"><Quote size={23} /><span>Published research<small>RAS Techniques and Instruments</small></span><ArrowUpRight size={14} /></Link>
         <a href={asset('/LICENSE.txt')} target="_blank" rel="noreferrer"><ShieldCheck size={23} /><span>Free to use &amp; build on<small>Licensed under MIT</small></span><ArrowUpRight size={14} /></a>
