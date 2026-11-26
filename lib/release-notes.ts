@@ -123,3 +123,19 @@ export const releaseHighlights: Highlight[] = [
     ['One release, two editions', 'Full and Lite installers for Windows, Linux and macOS are published together under v3.2.0; each edition’s update checker selects its own installer.'],
   ] },
 ];
+
+// Preview highlights from the analyzer repository's finalized v3.3.0 notes.
+export const upcomingReleaseHighlights: Highlight[] = [
+  { id: 'surface', title: 'Solar-surface measurements', tone: 'solar', items: [
+    ['Measure lengths and areas', 'Trace filaments and outline sunspots or post-flare arcades in Solar Image Analysis v1.8. Correct for foreshortening and compare surface measurements with values as seen in the image.'],
+    ['Track features over time', 'Carry shapes across frames, optionally rotating them with the Sun. Graph the changes and export a CSV or a JSON file with measurement provenance.'],
+  ] },
+  { id: 'imaging', title: 'Solar image orientation and exports', tone: 'solar', items: [
+    ['North Up by default', 'Rotate newly loaded solar images north up while keeping the grid, coordinates and catalog labels aligned.'],
+    ['Export the frame you see', 'Export Plot captures the displayed frame with its crop, color scale and measurement overlays, including with hardware acceleration enabled.'],
+  ] },
+  { id: 'downloader', title: 'Two FITS servers', items: [
+    ['Choose your server', 'Download FITS files from the e-CALLISTO archive or Astrodoncel in the full analyzer and Lite.'],
+    ['Keep sources traceable', 'The downloader remembers your choice, keeps each server’s cache separate and checks that newly downloaded FITS files are readable before caching them.'],
+  ] },
+];

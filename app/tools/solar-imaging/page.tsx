@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Download, ArrowRight, BookOpen } from 'lucide-react';
 import ExampleMovie from '@/components/example-movie';
 import PageIntro from '@/components/page-intro';
-import { asset } from '@/lib/site';
+import { asset, upcomingVersion } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: 'Solar Image Analyzer for SDO, SOHO and STEREO', description: 'Analyze SDO, SOHO and STEREO solar images with e-CALLISTO FITS Analyzer: CME tracking, height–time measurements, PFSS modelling and movie exports.', path: '/tools/solar-imaging/' });
@@ -34,6 +34,8 @@ export default function SolarImaging() {
         <h2>Image layers and CME geometry</h2>
         <p>Reproject compatible layers, adjust opacity and build contextual composites, now including SOHO/EIT 171, 195, 284 and 304 Å. Leading-edge tracking gives projected heights; Circle Fit models the CME as an expanding sphere resting on the solar surface (h = 1 R☉ + 2r). For a shared three-dimensional model across coronagraph viewpoints, continue to GCS fitting.</p>
         <p>Every window and option is described in <Link href="/guide/solar-window/">Part V of the user guide</Link>.</p>
+        <h2>Coming in v{upcomingVersion}</h2>
+        <p>Measure filament lengths and sunspot or post-flare arcade areas on the solar surface, track them across frames and export the results. <Link href="/download/#upcoming">Explore the v{upcomingVersion} preview</Link>.</p>
         <div className="actions" style={{ marginTop: 30 }}>
           <Link className="button primary" href="/tools/gcs-fitting/">Explore GCS CME fitting<ArrowRight className="arrow" size={16} /></Link>
           <Link className="button" href="/download/"><Download size={16} />Download e-CALLISTO FITS Analyzer</Link>

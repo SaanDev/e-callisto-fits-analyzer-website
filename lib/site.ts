@@ -30,6 +30,7 @@ export const googleAnalyticsId = 'G-V06VJQ9X56';
 export const version = '3.2.0';
 export const releaseDate = '27 October 2026';
 export const liteVersion = `${version}-lite`;
+export const upcomingVersion = '3.3.0';
 
 // One published tag contains the full and Lite installers for every platform.
 // Asset selection in lib/downloads.ts distinguishes the editions and platforms.

@@ -5,7 +5,7 @@ import { InstallerDownloadCount } from '@/components/stats-band';
 import { GitHubIcon } from '@/components/icons';
 import EditionComparison from '@/components/edition-comparison';
 import JsonLd from '@/components/json-ld';
-import { asset, links, version } from '@/lib/site';
+import { asset, links, upcomingVersion, version } from '@/lib/site';
 import { pageMetadata, siteName, defaultDescription, websiteData, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({ title: `${siteName} · Solar radio burst analysis software`, absoluteTitle: true, description: defaultDescription, path: '/' });
@@ -36,7 +36,7 @@ export default function Home() {
     <section className="product-hero" aria-labelledby="home-title">
       <div className="wrap hero-grid">
         <div className="hero-content">
-          <Link className="product-release" href="/download/#whats-new"><span>NEW</span>v{version} &amp; Analyzer Lite<ArrowRight size={14} /></Link>
+          <Link className="product-release" href="/download/#upcoming"><span>COMING SOON</span>v{upcomingVersion} · Solar measurements &amp; ARM64<ArrowRight size={14} /></Link>
           <h1 id="home-title"><span className="product-name">e-CALLISTO FITS Analyzer</span>Solar radio data.<br /><em>Scientific clarity.</em></h1>
           <p className="product-lede">Turn solar observations into scientific insight. Explore dynamic spectra, measure radio bursts and connect the full story of a solar eruption in one desktop toolkit.</p>
           <div className="actions">

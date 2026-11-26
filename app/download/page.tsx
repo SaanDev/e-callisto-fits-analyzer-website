@@ -1,21 +1,21 @@
 import Link from 'next/link';
-import { Monitor, Terminal, Laptop, Wrench, Info, BookOpen, ArrowRight, Activity, Box, Orbit, Image as ImageIcon, FolderOpen, Satellite, Sparkles, Zap, CalendarRange, PanelsTopLeft, Earth } from 'lucide-react';
+import { Monitor, Terminal, Laptop, Wrench, Info, BookOpen, ArrowRight, Activity, Box, Orbit, Image as ImageIcon, FolderOpen, Satellite, Sparkles, Zap, CalendarRange, PanelsTopLeft, Earth, Ruler } from 'lucide-react';
 import PageIntro from '@/components/page-intro';
 import DownloadCards from '@/components/download-cards';
 import EditionComparison from '@/components/edition-comparison';
 import releases from '@/releases-verified.json';
-import { highlights, releaseHighlights, fixes, notes, patchReleases } from '@/lib/release-notes';
-import { currentReleases, currentLiteReleases, asset, links, version, liteVersion, guidePdf } from '@/lib/site';
+import { highlights, upcomingReleaseHighlights, releaseHighlights, fixes, notes, patchReleases } from '@/lib/release-notes';
+import { currentReleases, currentLiteReleases, asset, links, version, liteVersion, guidePdf, upcomingVersion } from '@/lib/site';
 import JsonLd from '@/components/json-ld';
 import { pageMetadata, softwareData } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Download · Full analyzer & Lite',
-  description: `Download free, open-source e-CALLISTO FITS Analyzer v${version} for Windows, Linux and macOS. Compare the full edition with the lightweight Analyzer Lite v${liteVersion}, with installers and checksums.`,
+  description: `Download e-CALLISTO FITS Analyzer and Analyzer Lite v${version}. Preview v${upcomingVersion} solar-surface measurements and native Windows and Linux ARM64 builds.`,
   path: '/download/',
 });
 
-const icons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, reports: BookOpen, imaging: ImageIcon, reset: Sparkles, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite };
+const icons = { lite: Zap, context: CalendarRange, composer: PanelsTopLeft, geomagnetic: Earth, archives: Satellite, projects: FolderOpen, reports: BookOpen, imaging: ImageIcon, reset: Sparkles, radio: Activity, gcs: Box, solar: Orbit, figures: ImageIcon, files: FolderOpen, downloader: Satellite, surface: Ruler };
 
 const current: string[] = [...Object.values(currentReleases), ...Object.values(currentLiteReleases).filter((tag): tag is string => tag !== null)];
 const platformNames: Record<string, string> = { windows: 'Windows', macos: 'macOS', linux: 'Linux', appimage: 'AppImage' };
@@ -39,6 +39,7 @@ export default function Downloads() {
       <nav className="actions edition-nav" aria-label="Download page sections">
         <Link className="button primary" href="#installers">Download full analyzer</Link>
         <Link className="button" href="#lite">Analyzer Lite</Link>
+        <Link className="button" href="#upcoming">v{upcomingVersion} preview</Link>
         <Link className="button" href="#whats-new">v{version} features</Link>
       </nav>
       <div className="section-heading" data-reveal>
@@ -52,11 +53,49 @@ export default function Downloads() {
       </div>
     </section>
 
+    <section className="section band" id="upcoming" aria-labelledby="upcoming-title">
+      <div className="wrap">
+        <div className="section-heading" data-reveal>
+          <div><span className="eyebrow">Coming soon · v{upcomingVersion}</span><h2 id="upcoming-title">Measure features on the solar surface.</h2></div>
+          <p>Measure and track solar features, choose where to download FITS files, and run the full analyzer or Lite natively on Windows and Linux ARM64.</p>
+        </div>
+        <div className="highlight-grid">
+          {upcomingReleaseHighlights.map(h => {
+            const Icon = icons[h.id as keyof typeof icons] ?? Sparkles;
+            return <article key={h.id} className={'highlight spotlight' + (h.tone ? ' ' + h.tone : '')} data-reveal>
+              <span className="card-icon"><Icon size={20} /></span>
+              <h3>{h.title}</h3>
+              <ul>{h.items.map(([title, body]) => <li key={title}><strong>{title}.</strong> {body}</li>)}</ul>
+            </article>;
+          })}
+        </div>
+        <div className="upcoming-platforms" id="arm64">
+          <h3 data-reveal>Native ARM64 installers coming to both editions</h3>
+          <div className="cards two">
+            <article className="card" data-reveal>
+              <span className="card-icon"><Monitor size={20} /></span>
+              <h4>Windows 11 on ARM</h4>
+              <p>The native <code>.exe</code> installer can replace an x64 copy of the same edition and keep your settings. In the full analyzer, SOHO/LASCO catalog movies open in your browser.</p>
+            </article>
+            <article className="card" data-reveal>
+              <span className="card-icon"><Terminal size={20} /></span>
+              <h4>Linux ARM64</h4>
+              <p>Install the ARM64 Debian package (<code>.deb</code>) with apt. The full analyzer targets Ubuntu 24.04 or later and requires glibc 2.39 or newer. Debian 13 meets that glibc requirement.</p>
+            </article>
+          </div>
+        </div>
+        <div className="actions" style={{ marginTop: 28 }} data-reveal>
+          <a className="button" href={asset(`/docs/release-notes/RELEASE_NOTES_v${upcomingVersion}.md`)} download><BookOpen size={17} />Download v{upcomingVersion} preview notes</a>
+          <Link className="button ghost" href="#installers">Get the current release (v{version})<ArrowRight size={16} /></Link>
+        </div>
+      </div>
+    </section>
+
     <section className="section band" id="installers">
       <div className="wrap">
         <div className="section-heading" data-reveal>
           <div><span className="eyebrow">Available now · v{version}</span><h2>Download the full analyzer.</h2></div>
-          <p>The complete solar radio, imaging and CME toolkit. Choose your operating system below.</p>
+          <p>The complete solar radio, imaging and CME toolkit. Using Windows or Linux on ARM? <Link className="text-link" href="#arm64">See the upcoming ARM64 builds</Link>.</p>
         </div>
         <DownloadCards />
 
@@ -73,7 +112,7 @@ export default function Downloads() {
         <p>Built in Rust for a lightweight, responsive radio workspace, with GPU rendering and software fallbacks. Keep background subtraction, RFI cleaning, ridge tracking, Type II analysis, projects and exports in a familiar interface.</p>
       </div>
       <DownloadCards edition="lite" />
-      <p className="small edition-note">Lite has its own application, settings and cache, so you can keep the full analyzer installed. No separate Python or Rust installation is needed for packaged installers.</p>
+      <p className="small edition-note">Lite has its own application, settings and cache, so you can keep the full analyzer installed. No separate Python or Rust installation is needed for packaged installers. <Link className="text-link" href="#arm64">See the upcoming Lite ARM64 builds</Link>.</p>
     </section>
 
     <section className="section band" id="install">
